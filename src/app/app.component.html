@@ -1,0 +1,32 @@
+<nav class="navbar navbar-dark bg-dark ">
+  <a class="navbar-brand mb-0 h1" style="color: white">Document Managament System</a>
+  <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex" routerLinkActive="active">
+      <li *ngIf="authority === 'admin'" class="nav-item mr-4">
+          <a class="nav-link" routerLink="user">Show users</a>
+        </li>
+        <li *ngIf="authority === 'admin'" class="nav-item mr-4">
+          <a class="nav-link" routerLink="document">Show documents</a>
+        </li>
+        <li *ngIf="authority === 'user'" class="nav-item mr-4">
+          <a class="nav-link" routerLink="document">Show my documents</a>
+        </li>
+        
+    <li *ngIf="!authority" class="nav-item">
+      <a class="nav-link" routerLink="login">Login</a>
+    </li>
+    <li *ngIf="authority === 'user'" class="nav-item mr-2">
+      <a class="nav-link" routerLink="profile">{{username}}</a>
+    </li>
+    <li *ngIf="authority === 'admin'" class="nav-item mr-2">
+      <a class="nav-link" routerLink="profile">{{username}} (Admin)</a>
+    </li>
+    
+  </ul>
+  <button *ngIf="authority" class="btn btn-danger"  (click)="logout()">Logout</button>
+</nav>
+
+<br><br>
+
+<div class="container">
+  <router-outlet></router-outlet>
+</div>

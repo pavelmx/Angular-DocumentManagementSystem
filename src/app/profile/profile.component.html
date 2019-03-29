@@ -1,0 +1,70 @@
+<div *ngIf="isLogin; else notLogin" class="" style="max-width:500px;">
+  <h1 class="display-4">User: '{{form.username}}'</h1>
+  <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+
+    <div class="form-group">
+      <label for="id">Id</label>
+      <input type="text" class="form-control" name="id" [(ngModel)]="form.id" #id="ngModel" disabled />
+    </div>
+
+    <div class="form-group">
+      <label for="activationCode">Account status</label>
+      <input  type="text" class="form-control" placeholder="activated" [(ngModel)]="form.activationCode"
+        #activationCode="ngModel" disabled r/>        
+    </div>
+
+    <div class="form-group">
+        <label for="name">Full name</label>
+      <input type="text" class="form-control" disabled name="name" [(ngModel)]="form.name" #name="ngModel" />
+      
+    </div>
+
+    <div class="form-group">
+        <label for="username">Username</label>
+      <input type="text" class="form-control" disabled name="username" [(ngModel)]="form.username" #username="ngModel" />
+    </div>
+
+    <div class="form-group">
+        <label for="email">Email</label>
+      <input type="text" class="form-control" name="email" [(ngModel)]="form.email" #email="ngModel" required email
+        [ngClass]="{'is-valid':email.valid && email.touched,'is-invalid':email.invalid && email.touched}" />
+      <div *ngIf="f.submitted && email.invalid || email.touched && email.invalid">
+        <small class="form-text alert alert-warning" *ngIf="email.errors.required">Email is required</small>
+        <small class="form-text alert alert-warning" *ngIf="email.errors.email">Email must be a valid email
+          address</small>
+      </div>
+    </div>
+
+    <div class="form-group">
+        <label for="password">Password</label>
+      <input type="text" class="form-control" name="password" [(ngModel)]="form.password" #password="ngModel" required
+        minlength="6"
+        [ngClass]="{'is-valid':password.valid && password.touched,'is-invalid':password.invalid && password.touched}" />
+      <div *ngIf="f.submitted && password.invalid || password.touched && password.invalid">
+        <small class="form-text alert alert-warning" *ngIf="password.errors.required">Password is required</small>
+        <small class="form-text alert alert-warning" *ngIf="password.errors.minlength">Password must be at least 6
+          characters
+        </small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <button [disabled]="email.invalid || password.invalid"
+        class="btn btn-primary">Update account</button>
+      <div><br></div>
+      <div *ngIf="f.submitted" class="alert alert-danger">
+        {{errorMessage}}
+      </div>
+    </div>
+  </form>
+</div>
+
+
+<ng-template #notLogin>
+  <div class="alert alert-danger" role="alert">
+    <h2 class="alert-heading">Oops...</h2>
+    <hr>
+    <h5 class="mb-0">Unauthorized users are denied access. Please <a routerLink="/login" class="alert-link">login</a>!
+    </h5>
+  </div>
+</ng-template>

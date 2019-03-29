@@ -1,0 +1,119 @@
+<!--<div class="input-group input-group-lg">
+  <div class="input-group-prepend">
+    <button class="btn btn-outline-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
+      aria-expanded="false">{{searchOption}}</button>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" (click)=setSearchTitle()>Search by title</a>
+      <a class="dropdown-item" (click)=setSearchUser()>Search by user</a>
+      <a class="dropdown-item" (click)=setSearchCustomer()>Search by customer</a>
+    </div>
+  </div>
+  <input type="text" class="form-control" [(ngModel)]="searchStr">
+</div>
+<br>
+
+<div class="custom-control custom-checkbox">
+  <input class="custom-control-input" type="checkbox" id="customCheck1" #checkbox1 [(ngModel)]="bool">
+  <label class="custom-control-label" for="customCheck1">
+    Hide expired documents
+  </label>
+</div>-->
+<div *ngIf="isLogin; else notLogin">
+  <div class=" text-center">
+    <button class="btn btn-success btn-lg " routerLink="/document-add">Create document!</button>
+  </div>
+  <br>
+
+
+  <div class="row">
+    <div class="col">
+      <h1 class="display-4">List of documents</h1>
+    </div>
+    <div class="col ">
+      <button *ngIf="role === 'ROLE_ADMIN'" (click)="deleteAll()" class="btn btn-danger float-right">DeleteAll</button>
+    </div>
+  </div>
+
+
+
+  <div *ngIf="listDocs.length > 0; else falseLength">
+    <table class="table table-hover  table-sm">
+      <thead class="thead-dark">
+        <tr>
+
+          <th scope="col">User</th>
+          <th scope="col">Date</th>
+          <th scope="col">Title</th>
+          <th scope="col">Customer</th>
+          <th scope="col">Status</th>
+          <th scope="col">Options</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!---| search:searchStr:searchColumn | filter:checkbox1.checked-->
+        <tr *ngFor="let doc of listDocs ">
+
+          <td style="width: 7%;">{{doc.user.username}}</td>
+          <td style="width: 15%;">{{doc.dateOfCreation}}</td>
+          <td style="width: 25%;">{{doc.title}}</td>
+          <td style="width: 20%;">{{doc.customer}}</td>
+          <td style="width: 10%;" *ngIf=!doc.expired style="color:green">Active</td>
+          <td style="width: 10%;" *ngIf=doc.expired style="color:red">Expired</td>
+          <td style="width: 20%;">
+            <button routerLink="/document-edit" (click)="docEdit(doc)" class="btn btn-warning mr-2">View / Edit</button>
+            <button (click)="deleteDocument(doc)" class="btn btn-danger">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="row">
+      <div class="col">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination ">
+            <li class="page-item" [ngClass]="{'disabled':page==0}">
+              <a class="page-link " aria-disabled="true" (click)=nextPage(false)>Previous</a>
+            </li>
+            <li class="page-item" *ngFor="let p of pages; let i = index" [ngClass]="{'active':page==i}">
+              <a class="page-link" (click)=setPage(i)>{{i+1}}</a>
+            </li>
+            <li class="page-item" [ngClass]="{'disabled':page==length-1}">
+              <a class="page-link" (click)=nextPage(true)>Next</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div class="col">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination ">
+            <li class="page-item disabled">
+              <a class="page-link " aria-disabled="true">Show by </a>
+            </li>
+            <li class="page-item" *ngFor="let s of sizes" [ngClass]="{'active':size==s}">
+              <a class="page-link" (click)=setSize(s)>{{s}}</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <br>
+
+
+
+</div>
+
+
+<ng-template #falseLength>
+  Empty list of documents
+</ng-template>
+
+
+<ng-template #notLogin>
+  <div class="alert alert-danger" role="alert">
+    <h2 class="alert-heading">Oops...</h2>
+    <hr>
+    <h5 class="mb-0">Unauthorized users are denied access. Please <a routerLink="/login" class="alert-link">login</a>!
+    </h5>
+  </div>
+</ng-template>

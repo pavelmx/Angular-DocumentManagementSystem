@@ -1,0 +1,60 @@
+<div *ngIf="isLogin; else notLogin">
+  <div *ngIf="role === 'ROLE_ADMIN';else notAdmin">
+    <div class="row">
+      <div class="col">
+        <h1 class="display-4">List of users</h1>
+      </div>
+      <div class="col">
+        <button *ngIf="role === 'ROLE_ADMIN'" (click)="deleteAll()"
+          class="btn btn-danger float-right">DeleteAll</button>
+      </div>
+    </div>
+    <div *ngIf="listUsers.length > 0; else falseLength">
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">№</th>
+            <th scope="col">Full name</th>
+            <th scope="col">Username</th>
+            <th scope="col">Email</th>
+            <th scope="col">Account</th>
+            <th scope="col">Option</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of listUsers; let i = index">
+            <th scope="row">{{i+1}}</th>
+            <td>{{user.name}}</td>
+            <td>{{user.username}}</td>
+            <td>{{user.email}}</td>
+            <td *ngIf="user.activationCode" style="color: red">Not confirm</td>
+            <td *ngIf="!user.activationCode" style="color: green">Confirm</td>
+            <td style="width: 10%">
+              <button (click)="deleteUser(user)" class="btn btn-danger">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<ng-template #falseLength>
+  Empty list of users
+</ng-template>
+
+<ng-template #notLogin>
+  <div class="alert alert-danger" role="alert">
+    <h2 class="alert-heading">Oops...</h2>
+    <hr>
+    <h5 class="mb-0">Unauthorized users are denied access. Please <a routerLink="/login" class="alert-link">login</a>!
+    </h5>
+  </div>
+</ng-template>
+
+<ng-template #notAdmin>
+    <div class="alert alert-danger" role="alert">
+      <h2 class="alert-heading">Oops...</h2>
+      <hr>
+      <h5 class="mb-0">Sorry, error: {{errorMessage}}</h5>
+    </div>
+  </ng-template>
