@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { TokenStorageService } from '../auth/token-storage.service';
 import { tokenKey } from '@angular/core/src/view';
-import { User } from './user.model';
+import { User } from '../models/user.model';
  
 @Injectable({
   providedIn: 'root'

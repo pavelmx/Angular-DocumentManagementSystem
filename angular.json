@@ -23,7 +23,11 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"                          
+              "src/styles.css",
+              {
+                "input": "./node_modules/ngx-toastr/toastr.css"
+              }      
+                                                      
             ],
             "scripts": [],
             "es5BrowserSupport": true

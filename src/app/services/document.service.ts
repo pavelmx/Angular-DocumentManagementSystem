@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TokenStorageService } from '../auth/token-storage.service';
 
-import { Document } from './document.model';
+import { Document } from '../models/document.model';
 import { HttpClient } from '@angular/common/http';
 
 

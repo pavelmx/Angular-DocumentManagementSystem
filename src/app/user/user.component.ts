@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from './user.service';
-import { User } from './user.model';
+import { UserService } from '../services/user.service';
+import { User } from '../models/user.model';
 import { TokenStorageService } from '../auth/token-storage.service';
 import { Router } from '@angular/router';
+import { ToastService } from '../services/toast.service';
 
 @Component({
   selector: 'app-user',
@@ -27,7 +28,8 @@ export class UserComponent implements OnInit {
   constructor(
     private userService: UserService,
     private tokenStorage: TokenStorageService,
-    private router: Router) { }
+    private router: Router,
+    private toast: ToastService) { }
 
   ngOnInit() {
     this.role = this.tokenStorage.getAuthorities()[0];
@@ -90,6 +92,7 @@ export class UserComponent implements OnInit {
   deleteUser(user: User): void {
     this.userService.deleteUser(user.id).subscribe(data => {
       this.getAllUsers();
+      this.toast.showSuccess('Delete all', 'User deleted successfully');
     });
     console.log(user.id);
   }
@@ -97,6 +100,7 @@ export class UserComponent implements OnInit {
   deleteAll(): void {
     this.userService.deleteAll().subscribe(data => {
       this.getAllUsers();
+      this.toast.showSuccess('Delete all', 'All users deleted successfully');
     });
   }
 

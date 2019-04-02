@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { DocumentService } from '../document/document.service';
-import { User } from '../user/user.model';
-import { UserService } from '../user/user.service';
+import { DocumentService } from '../services/document.service';
+import { User } from '../models/user.model';
+import { UserService } from '../services/user.service';
 import { TokenStorageService } from '../auth/token-storage.service';
 import { Router } from '@angular/router';
+import { ToastService } from '../services/toast.service';
 
 @Component({
   selector: 'app-document-add',
@@ -22,13 +23,14 @@ export class DocumentAddComponent implements OnInit {
     private docService: DocumentService,
     private userService: UserService,
     private tokenStorage: TokenStorageService,
-    private router: Router) { }
+    private router: Router,
+    private toast: ToastService) { }
 
   ngOnInit() {
     this.addNewDoc();
 
-    this.isLogin =  this.tokenStorage.isLogin();
-    if(!this.tokenStorage.isLogin()){
+    this.isLogin = this.tokenStorage.isLogin();
+    if (!this.tokenStorage.isLogin()) {
       this.router.navigate(['/login']);
     }
     this.userService.getByUsername(this.tokenStorage.getUsername())
@@ -37,22 +39,23 @@ export class DocumentAddComponent implements OnInit {
       });
   }
 
-  addDoc() {     
+  addDoc() {
     console.log(this.curUser.id)
     this.docService.addDocument(this.curUser.id, this.form)
-      .subscribe(data => { 
+      .subscribe(data => {
         this.isFailed = false;
         this.router.navigate(['/document']);
-      },        
-      error => {
+        this.toast.showSuccess("", "Document '" + data.title + "' created successfully");
+      },
+        error => {          
           console.log(error);
           this.errorMessage = error.error.message;
-         this.isFailed = true;
-         console.log( this.errorMessage)
-        });      
+          this.isFailed = true;
+          console.log(this.errorMessage)
+        });
   }
 
-  addNewDoc() {    
+  addNewDoc() {
     this.form.id = null;
     this.form.dateOfCreation = new Date();
     this.form.title = null;

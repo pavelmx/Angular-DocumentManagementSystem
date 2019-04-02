@@ -4,6 +4,7 @@ import { AuthService } from '../auth/auth.service';
 import { TokenStorageService } from '../auth/token-storage.service';
 import { Login } from '../auth/login';
 import { Router } from '@angular/router';
+import { ToastService } from '../services/toast.service';
  
 @Component({
   selector: 'app-login',
@@ -19,7 +20,9 @@ export class LoginComponent implements OnInit {
   roles: string[] = [];
   private loginInfo: Login;
  
-  constructor(private authService: AuthService, private tokenStorage: TokenStorageService, 
+  constructor(
+    private authService: AuthService,
+    private tokenStorage: TokenStorageService, 
     private router: Router) { }
  
   ngOnInit() {   

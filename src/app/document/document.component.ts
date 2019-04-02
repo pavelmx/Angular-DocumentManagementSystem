@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { DocumentService } from './document.service';
-import { Document } from './document.model';
+import { DocumentService } from '../services/document.service';
+import { Document } from '../models/document.model';
 import { TokenStorageService } from '../auth/token-storage.service';
 
-import { User } from '../user/user.model';
+import { User } from '../models/user.model';
 
 import { Router } from '@angular/router';
-import { UserService } from '../user/user.service';
+import { UserService } from '../services/user.service';
+import { ToastService } from '../services/toast.service';
 
 @Component({
   selector: 'app-document',
@@ -37,12 +38,13 @@ export class DocumentComponent implements OnInit {
     private documentService: DocumentService,
     private userService: UserService,
     private tokenStorage: TokenStorageService,
-    private router: Router) { }
+    private router: Router,
+    private toast: ToastService) { }
 
   ngOnInit() {    
     this.init();
-    this.getAllDocs();   
-
+    this.getAllDocs();  
+    
     if (this.role == 'ROLE_ADMIN') {
       this.userService.getAll()
         .subscribe(data => {
@@ -115,6 +117,7 @@ init(){
   deleteDocument(doc: Document): void {
     this.documentService.deleteDocument(doc.id).subscribe(data => {
       this.getAllDocs();
+      this.toast.showSuccess('', 'Document deleted successfully'); 
     });
     console.log(doc.id);
   }
@@ -122,11 +125,19 @@ init(){
   deleteAll(): void {
     this.documentService.deleteAll().subscribe(data => {
       this.getAllDocs();
+      this.toast.showSuccess('', 'All documents deleted successfully'); 
     });
   }
 
   docEdit(doc: Document) {
     window.sessionStorage.setItem("docId", doc.id.toString());
   }
+
+  
+    
+  
+
+
+
 
 }

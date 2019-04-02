@@ -39,6 +39,14 @@
       <div class="col">
         <div class="form-group">
           <label for="dateOfCreation">Date of creation</label>
+          <a data-toggle="collapse" href="#collapseDate" role="button" aria-expanded="false"
+            aria-controls="collapseExample">
+            *</a>
+          <div class="collapse" id="collapseDate">
+            <small class="form-text alert alert-info">
+              Default date value is <strong>today</strong>
+            </small>
+          </div>
           <input type="date" class="form-control" name="dateOfCreation" [(ngModel)]="form.dateOfCreation"
             #dateOfCreation="ngModel"
             [ngClass]="{'is-valid':dateOfCreation.valid && dateOfCreation.touched,'is-invalid':dateOfCreation.invalid && dateOfCreation.touched}" />

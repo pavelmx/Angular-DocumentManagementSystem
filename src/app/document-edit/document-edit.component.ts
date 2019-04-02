@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { DocumentService } from '../document/document.service';
-import { Document } from '../document/document.model';
+import { DocumentService } from '../services/document.service';
+import { Document } from '../models/document.model';
 import { TokenStorageService } from '../auth/token-storage.service';
-import { User } from '../user/user.model';
-import { UserService } from '../user/user.service';
-import { FileService } from '../file/file.service';
+import { User } from '../models/user.model';
+import { UserService } from '../services/user.service';
+import { FileService } from '../services/file.service';
 import * as fileSaver from 'file-saver';
 import { Router } from '@angular/router';
+import { ToastService } from '../services/toast.service';
 
 @Component({
   selector: 'app-document-edit',
@@ -31,14 +32,16 @@ export class DocumentEditComponent implements OnInit {
   errorMessageUpdate: string = '';
   isFailedDownload: boolean = false;
   isFailed = false;
-
+  uploadResponse = { status: '', message: '', filePath: '' };
+  
 
   constructor(
     private docService: DocumentService,
     private userService: UserService,
     private tokenStorage: TokenStorageService,
     private fileService: FileService,
-    private router: Router) { }
+    private router: Router,
+    private toast: ToastService) { }
 
 
   ngOnInit() {
@@ -86,11 +89,14 @@ export class DocumentEditComponent implements OnInit {
       });
   }
 
-  updateDoc() {    
+  updateDoc() { 
+    if (this.form.dateOfCreation === '') 
+      this.form.dateOfCreation = new Date();
     this.docService.updateDocument(this.curUser.id, this.form)
       .subscribe(() => {
         this.router.navigate(['/document']);
         this.isFailed = false;
+        this.toast.showSuccess("", "File updated successfully");
       },
         error => {
           console.log(error);
@@ -117,21 +123,31 @@ export class DocumentEditComponent implements OnInit {
         this.form.size = data.size;
         this.form.fileType = data.fileType;
         this.form.fileOriginalName = data.fileOriginalName;
+        this.uploadResponse = data;
+        console.log(data)
+        this.initDoc();
+        if(this.uploadResponse.message == '100')
+        this.toast.showSuccess("", "File uploaded successfully");        
+      },
+      error => {
+        console.log(error)
+      this.errorMessage = error.message;
+      this.toast.showError("", "File wasn't uploaded");
       });
     this.selectedFile = undefined;
-    this.show = false;
-    
+    this.show = false;  
+     
   }
 
   downloadFile() {
+    this.toast.showInfo("", "File is downloading...");
     this.fileService.downloadFile(this.form.filename)
       .subscribe(response => {
-        this.saveFile(response);
-        this.isFailedDownload = false;
+        this.saveFile(response);        
       },
         error => {
-          this.errorMessage = error.message;
-          this.isFailedDownload = true;
+          this.errorMessage = error.message;          
+          this.toast.showError("","File can't be download, maybe it was deleted from storage");
           console.log(error);
           this.initDoc();
         });
@@ -146,6 +162,7 @@ export class DocumentEditComponent implements OnInit {
     this.fileService.deleteFile(data).subscribe(()=>{
       console.log("succes delete");
       this.initDoc();
+      this.toast.showSuccess("", "File deleted successfully");
     },
     error=>{
       console.log("unsucces delete");
