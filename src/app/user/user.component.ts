@@ -11,11 +11,18 @@ import { Router } from '@angular/router';
 })
 export class UserComponent implements OnInit {
 
+  form: any = {}
   listUsers: User[] = [];
-  private role: string;
+  role: string;
   isLogin = false;
-  errorMessage = ';'
-
+  errorMessage = '';
+  size: number = 5;
+  page: number = 0;
+  sizes: Array<number>;
+  pages: Array<number>;
+  length: number;
+  totalElements: number;
+  
 
   constructor(
     private userService: UserService,
@@ -24,6 +31,7 @@ export class UserComponent implements OnInit {
 
   ngOnInit() {
     this.role = this.tokenStorage.getAuthorities()[0];
+    this.init();
     this.getAllUsers();
     this.isLogin = this.tokenStorage.isLogin();
     if (!this.tokenStorage.isLogin()) {
@@ -31,10 +39,48 @@ export class UserComponent implements OnInit {
     }
   }
 
+  init(){
+    this.role = this.tokenStorage.getAuthorities()[0];
+    this.isLogin = this.tokenStorage.isLogin();    
+    this.sizes = [5, 10, 25, 50];
+    this.form.username = "";
+    this.form.name = "";
+    this.form.email = "";
+    this.form.sortOrder = "ASC";
+    this.form.sortField = "username";
+    this.form.activationCode = "";
+  }
+    
+  setSize(s: number) {
+    this.size = s;    
+    this.setPage(0);
+    console.log("page " + this.page)
+  }
+
+  setPage(i: number) {
+    this.page = i;
+    this.getAllUsers();
+    console.log("set page " + this.page)
+  }
+
+  nextPage(value: boolean) {
+    if (value) {
+      this.page = this.page + 1;
+    } else {
+      this.page = this.page - 1;
+    }
+    this.getAllUsers();
+    console.log(this.page)
+  }
+
   getAllUsers() {
-    this.userService.getAll()
-      .subscribe((data: any) => {
-        this.listUsers = data;
+    this.userService.getUsersByFilter(this.page, this.size, this.form.sortField, 
+      this.form.sortOrder, this.form.name, this.form.username, this.form.email, this.form.activationCode)
+           .subscribe((data: any) => {
+        this.listUsers = data['content'];        
+        this.pages = new Array(data['totalPages']);
+        this.length = this.pages.length;
+        this.totalElements = data['totalElements'];
       },
       error =>{
         this.errorMessage = error.error.message;

@@ -9,8 +9,8 @@
 
     <div class="form-group">
       <label for="activationCode">Account status</label>
-      <input  type="text" class="form-control" placeholder="activated" [(ngModel)]="form.activationCode"
-        #activationCode="ngModel" disabled r/>        
+      <input  type="text" class="form-control" name="activationCode" placeholder="activated" [(ngModel)]="form.activationCode"
+        #activationCode="ngModel" disabled />        
     </div>
 
     <div class="form-group">
@@ -26,7 +26,7 @@
 
     <div class="form-group">
         <label for="email">Email</label>
-      <input type="text" class="form-control" name="email" [(ngModel)]="form.email" #email="ngModel" required email
+      <input type="text" class="form-control" disabled name="email" [(ngModel)]="form.email" #email="ngModel" required email
         [ngClass]="{'is-valid':email.valid && email.touched,'is-invalid':email.invalid && email.touched}" />
       <div *ngIf="f.submitted && email.invalid || email.touched && email.invalid">
         <small class="form-text alert alert-warning" *ngIf="email.errors.required">Email is required</small>
@@ -37,7 +37,7 @@
 
     <div class="form-group">
         <label for="password">Password</label>
-      <input type="text" class="form-control" name="password" [(ngModel)]="form.password" #password="ngModel" required
+      <input type="text" class="form-control" disabled name="password" [(ngModel)]="form.password" #password="ngModel" required
         minlength="6"
         [ngClass]="{'is-valid':password.valid && password.touched,'is-invalid':password.invalid && password.touched}" />
       <div *ngIf="f.submitted && password.invalid || password.touched && password.invalid">
@@ -47,9 +47,9 @@
         </small>
       </div>
     </div>
-
+    <!--[disabled]="email.invalid || password.invalid"-->
     <div class="form-group">
-      <button [disabled]="email.invalid || password.invalid"
+      <button disabled 
         class="btn btn-primary">Update account</button>
       <div><br></div>
       <div *ngIf="f.submitted" class="alert alert-danger">

@@ -11,6 +11,7 @@ import { User } from './user.model';
 export class UserService {
  
   private userUrl = 'http://localhost:8080/user/';
+  private filterUrl = 'http://localhost:8080/filter/';
  
  
   constructor(private http: HttpClient, private token: TokenStorageService) {}
@@ -25,6 +26,13 @@ export class UserService {
 
   public getAll(): Observable<User[]>{
     return this.http.get<User[]>(this.userUrl + "getall");
+  }
+
+  public getUsersByFilter(page: number, size: number, sortField: string, sortOrder: string,
+    name: string, username: string, email: string, activationCode: string): Observable<User[]>{
+    return this.http.get<User[]>(this.filterUrl + "users-all?" + "page=" + page + "&size=" + size
+    + "&name=" + name + "&username=" + username + "&email=" + email + "&sortField=" + sortField 
+    +  "&sortOrder=" + sortOrder + "&activationCode=" + activationCode);
   }
 
   public updateUser(user: User){

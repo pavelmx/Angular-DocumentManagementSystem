@@ -41,7 +41,9 @@ export class DocumentAddComponent implements OnInit {
     console.log(this.curUser.id)
     this.docService.addDocument(this.curUser.id, this.form)
       .subscribe(data => { 
-        this.isFailed = false;},        
+        this.isFailed = false;
+        this.router.navigate(['/document']);
+      },        
       error => {
           console.log(error);
           this.errorMessage = error.error.message;

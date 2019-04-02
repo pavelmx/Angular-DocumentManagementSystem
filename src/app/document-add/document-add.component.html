@@ -103,7 +103,7 @@
     <div class="form-group">
       <hr>
       <button [disabled]="title.invalid || documentDescription.invalid || customer.invalid || contractTerm.invalid"
-        class="btn btn-success">Add new file</button>
+        class="btn btn-success" >Add new file</button>
       <div><br></div>
       <small *ngIf="f.submitted && isFailed" class="form-text alert alert-danger">
         {{errorMessage}}

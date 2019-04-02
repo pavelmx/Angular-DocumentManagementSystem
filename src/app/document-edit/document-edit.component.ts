@@ -27,6 +27,10 @@ export class DocumentEditComponent implements OnInit {
   filename: string;
   show: boolean = false;
   isLogin = false;
+  errorMessage: string = '';
+  errorMessageUpdate: string = '';
+  isFailedDownload: boolean = false;
+  isFailed = false;
 
 
   constructor(
@@ -58,6 +62,7 @@ export class DocumentEditComponent implements OnInit {
   }
 
   initDoc() {
+    this.isEdit = false;
     this.docService.getById(this.docId)
       .subscribe((data: any) => {
         if (data) {
@@ -80,9 +85,17 @@ export class DocumentEditComponent implements OnInit {
       });
   }
 
-  updateDoc() {
+  updateDoc() {    
     this.docService.updateDocument(this.curUser.id, this.form)
-      .subscribe();
+      .subscribe(() => {
+        this.router.navigate(['/document']);
+        this.isFailed = false;
+      },
+        error => {
+          console.log(error);
+          this.errorMessageUpdate = error.error.message;
+          this.isFailed = true;
+        });
     this.isEdit = false;
   }
 
@@ -110,8 +123,14 @@ export class DocumentEditComponent implements OnInit {
   downloadFile() {
     this.fileService.downloadFile(this.form.filename)
       .subscribe(response => {
-        this.saveFile(response);        
-      });
+        this.saveFile(response);
+        this.isFailedDownload = false;
+      },
+        error => {
+          this.errorMessage = error.message;
+          this.isFailedDownload = true;
+          console.log(error);
+        });
   }
 
   saveFile(data: any) {

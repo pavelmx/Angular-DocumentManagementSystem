@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { DocumentService } from './document.service';
 import { Document } from './document.model';
 import { TokenStorageService } from '../auth/token-storage.service';
-import { UseExistingWebDriver } from 'protractor/built/driverProviders';
+
 import { User } from '../user/user.model';
-import { CheckType } from '@angular/core/src/view';
+
 import { Router } from '@angular/router';
+import { UserService } from '../user/user.service';
 
 @Component({
   selector: 'app-document',
@@ -14,51 +15,78 @@ import { Router } from '@angular/router';
 })
 export class DocumentComponent implements OnInit {
 
+  form: any = {}
   listDocs: Document[] = [];
-  private username: string; 
-  private role: string; 
+  listUsers: User[] = [];
+  totalElements: number;
+  role: string;
+  username: string;
   searchStr = '';
   bool = false;
-  size: number = 5;
   sizes: Array<number>;
-  page: number = 0;
-  pages:Array<number>;
+  pages: Array<number>;
   length: number;
   isLogin = false;
- 
+  label: string;
+  size: number = 5;
+  page: number = 0;
+
+
 
   constructor(
-    private documentService: DocumentService, 
+    private documentService: DocumentService,
+    private userService: UserService,
     private tokenStorage: TokenStorageService,
     private router: Router) { }
- 
-  ngOnInit() {
-    this.role = this.tokenStorage.getAuthorities()[0];
+
+  ngOnInit() {    
+    this.init();
     this.getAllDocs();   
-    this.sizes = [5, 10, 25, 50];   
-    this.isLogin =  this.tokenStorage.isLogin();
-    if(!this.tokenStorage.isLogin()){
+
+    if (this.role == 'ROLE_ADMIN') {
+      this.userService.getAll()
+        .subscribe(data => {
+          this.listUsers = data;
+        });
+    }
+    
+    if (!this.tokenStorage.isLogin()) {
       this.router.navigate(['/login']);
     }
   }
 
-  setSize(s: number){  
-    this.size = s; 
-    this.getAllDocs();
-    this.setPage(0)  ; 
-    console.log("page "+this.page)
+init(){
+  this.role = this.tokenStorage.getAuthorities()[0];
+  this.username = this.tokenStorage.getUsername();
+  this.isLogin = this.tokenStorage.isLogin();
+  this.label = "All";
+  this.sizes = [5, 10, 25, 50];
+  this.form.username = "";
+  this.form.title = "";
+  this.form.customer = "";
+  this.form.expired = "";
+  this.form.fromDate = "";
+  this.form.toDate = "";
+  this.form.sortOrder = "ASC";
+  this.form.sortField = "title";
+}
+
+  setSize(s: number) {
+    this.size = s;    
+    this.setPage(0);
+    console.log("page " + this.page)
   }
 
-  setPage(i: number){    
+  setPage(i: number) {
     this.page = i;
     this.getAllDocs();
-    console.log("set page "+this.page)
+    console.log("set page " + this.page)
   }
 
-  nextPage(value: boolean){
-    if(value){
+  nextPage(value: boolean) {
+    if (value) {
       this.page = this.page + 1;
-    }else{
+    } else {
       this.page = this.page - 1;
     }
     this.getAllDocs();
@@ -66,30 +94,39 @@ export class DocumentComponent implements OnInit {
   }
 
   getAllDocs(): void {
-    this.documentService.getAll(this.page, this.size)
-    .subscribe( data => {
-      this.listDocs = data['content'];
-      this.pages = new Array(data['totalPages']);
-      this.length = this.pages.length;
-      console.log(data)
-    });
+    if (this.role == 'ROLE_USER') {
+      this.form.username = this.username;
+    }    
+    console.log(this.form.sortField + " " +this.form.sortOrder);
+    this.documentService.getDocsByFilter(this.form.title, this.form.customer, this.form.username, 
+      this.form.fromDate, this.form.toDate, this.form.expired, this.page, this.size, 
+      this.form.sortField, this.form.sortOrder)
+      .subscribe(data => {
+        this.listDocs = data['content'];
+        this.pages = new Array(data['totalPages']);
+        this.length = this.pages.length;
+        this.totalElements = data['totalElements'];
+      },
+        error => {
+          console.log(error);
+        });
   }
 
   deleteDocument(doc: Document): void {
-    this.documentService.deleteDocument(doc.id).subscribe(data=> {
+    this.documentService.deleteDocument(doc.id).subscribe(data => {
       this.getAllDocs();
     });
     console.log(doc.id);
   }
 
   deleteAll(): void {
-    this.documentService.deleteAll().subscribe(data=> {
+    this.documentService.deleteAll().subscribe(data => {
       this.getAllDocs();
     });
   }
 
-  docEdit(doc: Document){
-    window.sessionStorage.setItem("docId", doc.id.toString());    
+  docEdit(doc: Document) {
+    window.sessionStorage.setItem("docId", doc.id.toString());
   }
-  
+
 }

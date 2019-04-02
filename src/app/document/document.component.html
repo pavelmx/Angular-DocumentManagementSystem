@@ -1,36 +1,108 @@
-<!--<div class="input-group input-group-lg">
-  <div class="input-group-prepend">
-    <button class="btn btn-outline-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
-      aria-expanded="false">{{searchOption}}</button>
-    <div class="dropdown-menu">
-      <a class="dropdown-item" (click)=setSearchTitle()>Search by title</a>
-      <a class="dropdown-item" (click)=setSearchUser()>Search by user</a>
-      <a class="dropdown-item" (click)=setSearchCustomer()>Search by customer</a>
-    </div>
-  </div>
-  <input type="text" class="form-control" [(ngModel)]="searchStr">
-</div>
-<br>
-
-<div class="custom-control custom-checkbox">
-  <input class="custom-control-input" type="checkbox" id="customCheck1" #checkbox1 [(ngModel)]="bool">
-  <label class="custom-control-label" for="customCheck1">
-    Hide expired documents
-  </label>
-</div>-->
 <div *ngIf="isLogin; else notLogin">
   <div class=" text-center">
     <button class="btn btn-success btn-lg " routerLink="/document-add">Create document!</button>
   </div>
   <br>
 
+  <div class=" text-center">
+    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
+      aria-expanded="false" aria-controls="collapseExample">Filter</button>
+  </div><br>
+  <div class="collapse" id="collapseExample">
+    <form (change)="setPage(0)">
+      <div class="row">
+        <div class="col">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">Filter by title</span>
+            </div>
+            <input type="text" class="form-control" name="title" [(ngModel)]="form.title" #title="ngModel">
+          </div>
+        </div>
+        <div class="col">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">Filter between date</span>
+            </div>
+            <div class="btn-group">
+              <input type="date" class="form-control" name="fromDate" [(ngModel)]="form.fromDate" #fromDate="ngModel" />
+              <input type="date" class="form-control" name="toDate" [(ngModel)]="form.toDate" #toDate="ngModel" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row ">
+        <div class="col">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">Filter by customer</span>
+            </div>
+            <input type="text" class="form-control" name="customer" [(ngModel)]="form.customer" #customer="ngModel">
+          </div>
+        </div>
 
-  <div class="row">
+        <div class="col ">
+          <div class="input-group mb-3 ">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">Filter by status</span>
+            </div>
+            <div class="btn-group " (click)="setPage(0)">
+              <button type="button" class="btn btn-primary" (click)="form.expired=''"
+                [ngClass]="{'active':form.expired==''}">All</button>
+              <button type="button" class="btn btn-primary" (click)="form.expired='true'"
+                [ngClass]="{'active':form.expired=='true'}">Expired</button>
+              <button type="button" class="btn btn-primary" (click)="form.expired='false'"
+                [ngClass]="{'active':form.expired=='false'}">Active</button>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="role === 'ROLE_ADMIN'" class="col">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">Filter by user</span>
+            </div>
+            <div class="btn-group" role="group">
+              <button id="btn1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                {{label}}</button>
+              <div class="dropdown-menu" aria-labelledby="btn1" (click)="setPage(0)">
+                <a class="dropdown-item" (click)="form.username=''" (click)="label='All'">All</a>
+                <a *ngFor="let user of listUsers" class="dropdown-item"
+                  (click)="form.username=user.username && label=user.username ">{{user.username}}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="row align-items-end mb-1">
     <div class="col">
-      <h1 class="display-4">List of documents</h1>
+      <h1 class="display-4">List of documents ({{totalElements}})</h1>
     </div>
     <div class="col ">
       <button *ngIf="role === 'ROLE_ADMIN'" (click)="deleteAll()" class="btn btn-danger float-right">DeleteAll</button>
+
+      <div class="btn-group float-right mr-5 " role="group">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1">Sort by:</span>
+        </div>
+        <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+          style="width: 200px">{{form.sortField}} : {{form.sortOrder}}</button>
+        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1" (click)="getAllDocs()">
+          <a class="dropdown-item" (click)="form.sortField='title'" (click)=" form.sortOrder='ASC'">Title: a -> z</a>
+          <a class="dropdown-item" (click)="form.sortField='title'" (click)="form.sortOrder='DESC'">Title: z -> a</a>
+          <a class="dropdown-item" (click)="form.sortField='customer' " (click)=" form.sortOrder='ASC'">Customer: a ->
+            z</a>
+          <a class="dropdown-item" (click)="form.sortField='customer' " (click)=" form.sortOrder='DESC'">Customer: z ->
+            a</a>
+          <a class="dropdown-item" (click)="form.sortField='dateOfCreation' " (click)=" form.sortOrder='DESC'">Date:
+            newest -> eldest</a>
+          <a class="dropdown-item" (click)="form.sortField='dateOfCreation' " (click)=" form.sortOrder='ASC'">Date:
+            eldest -> newest</a>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -66,7 +138,6 @@
         </tr>
       </tbody>
     </table>
-
     <div class="row">
       <div class="col">
         <nav aria-label="Page navigation example">
@@ -96,10 +167,9 @@
         </nav>
       </div>
     </div>
+
   </div>
   <br>
-
-
 
 </div>
 

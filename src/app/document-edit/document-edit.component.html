@@ -31,13 +31,17 @@
       </div>
       <div class="input-group-append">
         <button class="btn btn-warning" [disabled]="!selectedFile" id="inputGroupFileAddon04" type="button"
-          (click)="uploadFile()">Upload
-          file</button>
+          (click)="uploadFile()">Upload file</button>
         <button class="btn btn-danger" type="button" (click)=showUploadPanel()>Cancel</button>
       </div>
     </div>
-  </div>
-</div>
+  </div></div><br>
+  <div class="row">
+      <small *ngIf="isFailedDownload" class="form-text alert alert-danger">
+        File not found, maybe it was deleted from storage. Error: {{errorMessage}}
+      </small>
+    </div>
+
 <br>
 <form (change)="change()" (ngSubmit)="f.form.valid && updateDoc()" #f="ngForm" novalidate>
   <div class="row">
@@ -105,15 +109,16 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="col">
+  <div class="form-group">
       <hr>
-      <button [disabled]="title.invalid || documentDescription.invalid || customer.invalid || contractTerm.invalid" 
-       class="btn btn-success" (click)="updateDoc()">Update file</button>
-      
-    </div>
-  </div>
-
+      <button *ngIf="isEdit" [disabled]="title.invalid || documentDescription.invalid || customer.invalid || contractTerm.invalid" 
+       class="btn btn-success" (click)="updateDoc()">Update document</button>
+    
+  <div><br></div>
+  <small *ngIf="f.submitted && isFailed" class="form-text alert alert-danger">
+    {{errorMessageUpdate}}
+  </small>
+</div>
 </form>
 </div>
 
