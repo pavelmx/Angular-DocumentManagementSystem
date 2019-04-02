@@ -59,6 +59,7 @@ export class DocumentEditComponent implements OnInit {
 
   showUploadPanel() {
     this.show = !this.show;
+    this.isFailedDownload = false;
   }
 
   initDoc() {
@@ -100,6 +101,7 @@ export class DocumentEditComponent implements OnInit {
   }
 
   change() {
+    this.isFailedDownload = false;
     this.isEdit = true;
   }
 
@@ -118,6 +120,7 @@ export class DocumentEditComponent implements OnInit {
       });
     this.selectedFile = undefined;
     this.show = false;
+    
   }
 
   downloadFile() {
@@ -130,6 +133,7 @@ export class DocumentEditComponent implements OnInit {
           this.errorMessage = error.message;
           this.isFailedDownload = true;
           console.log(error);
+          this.initDoc();
         });
   }
 
@@ -138,5 +142,14 @@ export class DocumentEditComponent implements OnInit {
     fileSaver.saveAs(blob, this.form.filename);
   }
 
+  deleteFile(data: any) {
+    this.fileService.deleteFile(data).subscribe(()=>{
+      console.log("succes delete");
+      this.initDoc();
+    },
+    error=>{
+      console.log("unsucces delete");
+    });
+  }
 
 } 

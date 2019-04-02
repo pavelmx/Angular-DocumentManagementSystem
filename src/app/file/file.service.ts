@@ -23,8 +23,11 @@ export class FileService {
   }
 
  
-  downloadFile(filename: string) {
-    const url = this.fileUrl + "download/" + filename;      
-    return this.http.get(url, {responseType: 'blob' as 'json' });
+  downloadFile(filename: string) {      
+    return this.http.get(this.fileUrl + "download/" + filename, {responseType: 'blob' as 'json' });
+  }
+
+  deleteFile(filename: string) {     
+    return this.http.delete(this.fileUrl + "delete/" + filename);
   }
 }
