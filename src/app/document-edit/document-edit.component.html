@@ -13,7 +13,7 @@
     *</a>
   <div class="collapse" id="collapseAtt">
     <small class="form-text alert alert-info">
-      File size can't be more <strong>200MB</strong>
+      File size can't be more <strong>50MB</strong>
     </small>
   </div>
   
@@ -48,14 +48,10 @@
     </div>
   </div>
   <div *ngIf="uploadResponse.status === 'progress'">
-    <div class="progress" style="height: 5px;">
-      <div class="progress-bar" [style.width.%]="uploadResponse.message" role="progressbar" style="width: 25%;"
-        aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{uploadResponse.message}}%
+    <div class="progress" style="height: 1px;">
+      <div class="progress-bar" [style.width.%]="uploadResponse.message" role="progressbar" aria-valuemin="0" aria-valuemax="100">
       </div>
-    </div>
-    <div *ngIf="uploadResponse.status === 'error'">
-      {{ uploadResponse.message }}
-    </div>
+    </div>    
   </div>
   <br><br>
   <form (change)="change()" (ngSubmit)="f.form.valid && updateDoc()" #f="ngForm" novalidate>
@@ -86,7 +82,7 @@
               Default date value is <strong>today</strong>
             </small>
           </div>
-          <input type="date" class="form-control" name="dateOfCreation" [(ngModel)]="form.dateOfCreation"
+          <input type="date" max={{today}} class="form-control" name="dateOfCreation" [(ngModel)]="form.dateOfCreation"
             #dateOfCreation="ngModel"
             [ngClass]="{'is-valid':dateOfCreation.valid ,'is-invalid':dateOfCreation.invalid }" />
           <div *ngIf="f.submitted && dateOfCreation.invalid ||  dateOfCreation.invalid">

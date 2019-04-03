@@ -23,5 +23,9 @@ export class ToastService {
   showWarning(head :string, body:string) {
     this.toastrService.warning(body, head);
   }
+
+  deleteToast(toastId: number) {
+    this.toastrService.clear(toastId);
+  }
 }
 

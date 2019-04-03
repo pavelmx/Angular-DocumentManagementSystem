@@ -18,6 +18,10 @@ export class DocumentAddComponent implements OnInit {
   errorMessage = '';
   isFailed = false;
   isLogin = false;
+  today = "";
+  day;
+  month;
+  year;
 
   constructor(
     private docService: DocumentService,
@@ -28,7 +32,7 @@ export class DocumentAddComponent implements OnInit {
 
   ngOnInit() {
     this.addNewDoc();
-
+    this.initToday();
     this.isLogin = this.tokenStorage.isLogin();
     if (!this.tokenStorage.isLogin()) {
       this.router.navigate(['/login']);
@@ -37,6 +41,19 @@ export class DocumentAddComponent implements OnInit {
       .subscribe((data: any) => {
         this.curUser = data;
       });
+  }
+
+  initToday() {
+    this.day = new Date().getDay();
+    this.month = new Date().getMonth() + 1;
+    this.year = new Date().getFullYear();
+    if (this.day < 10) {
+      this.day = '0' + this.day
+    }
+    if (this.month < 10) {
+      this.month = '0' + this.month
+    }
+    this.today = this.year + "-" + this.month + "-" + this.day;
   }
 
   addDoc() {

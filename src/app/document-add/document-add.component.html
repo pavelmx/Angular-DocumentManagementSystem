@@ -47,7 +47,7 @@
               Default date value is <strong>today</strong>
             </small>
           </div>
-          <input type="date" class="form-control" name="dateOfCreation" [(ngModel)]="form.dateOfCreation"
+          <input type="date" max={{today}} class="form-control" name="dateOfCreation" [(ngModel)]="form.dateOfCreation"
             #dateOfCreation="ngModel"
             [ngClass]="{'is-valid':dateOfCreation.valid && dateOfCreation.touched,'is-invalid':dateOfCreation.invalid && dateOfCreation.touched}" />
           <div *ngIf="f.submitted && dateOfCreation.invalid || dateOfCreation.touched && dateOfCreation.invalid">

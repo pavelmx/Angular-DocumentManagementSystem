@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
  
 import { AuthService } from '../auth/auth.service';
 import { SignUp} from '../auth/signup';
+import { ToastService } from '../services/toast.service';
  
 @Component({
   selector: 'app-register',
@@ -12,16 +13,21 @@ export class RegisterComponent implements OnInit {
   form: any = {};
   signupInfo: SignUp;
   isSignedUp = false;
-  isSignUpFailed = false;
   errorMessage = '';
- 
-  constructor(private authService: AuthService) { }
+  load = false;
+
+  constructor(
+    private authService: AuthService,
+    private toast: ToastService) { }
  
   ngOnInit() { }
  
   onSubmit() {
-    console.log(this.form);
- 
+    this.load = true;
+
+    var openedToast = null;
+    openedToast = this.toast.showInfo("", "Registration process...");
+     
     this.signupInfo = new SignUp(
       this.form.name,
       this.form.username,
@@ -32,12 +38,15 @@ export class RegisterComponent implements OnInit {
       data => {
         console.log(data);
         this.isSignedUp = true;
-        this.isSignUpFailed = false;
-      },
+        this.load = false;
+     },
       error => {
         console.log(error);
         this.errorMessage = error.error.message;
-        this.isSignUpFailed = true;
+        this.isSignedUp = false;
+        this.load = false;
+        this.toast.deleteToast(openedToast);
+        this.toast.showError("", "Error registration");
       }
     );
   }

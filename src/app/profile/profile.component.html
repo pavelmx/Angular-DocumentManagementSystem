@@ -1,6 +1,6 @@
 <div *ngIf="isLogin; else notLogin" class="" style="max-width:500px;">
   <h1 class="display-4">User: '{{form.username}}'</h1>
-  <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+  
 
     <div class="form-group">
       <label for="id">Id</label>
@@ -8,15 +8,8 @@
     </div>
 
     <div class="form-group">
-      <label for="activationCode">Account status</label>
-      <input  type="text" class="form-control" name="activationCode" placeholder="activated" [(ngModel)]="form.activationCode"
-        #activationCode="ngModel" disabled />        
-    </div>
-
-    <div class="form-group">
         <label for="name">Full name</label>
       <input type="text" class="form-control" disabled name="name" [(ngModel)]="form.name" #name="ngModel" />
-      
     </div>
 
     <div class="form-group">
@@ -26,37 +19,48 @@
 
     <div class="form-group">
         <label for="email">Email</label>
-      <input type="text" class="form-control" disabled name="email" [(ngModel)]="form.email" #email="ngModel" required email
-        [ngClass]="{'is-valid':email.valid && email.touched,'is-invalid':email.invalid && email.touched}" />
-      <div *ngIf="f.submitted && email.invalid || email.touched && email.invalid">
-        <small class="form-text alert alert-warning" *ngIf="email.errors.required">Email is required</small>
-        <small class="form-text alert alert-warning" *ngIf="email.errors.email">Email must be a valid email
-          address</small>
-      </div>
+      <input type="text" class="form-control" disabled name="email" [(ngModel)]="form.email" #email="ngModel"  />
+      
     </div>
 
     <div class="form-group">
-        <label for="password">Password</label>
-      <input type="text" class="form-control" disabled name="password" [(ngModel)]="form.password" #password="ngModel" required
-        minlength="6"
-        [ngClass]="{'is-valid':password.valid && password.touched,'is-invalid':password.invalid && password.touched}" />
-      <div *ngIf="f.submitted && password.invalid || password.touched && password.invalid">
-        <small class="form-text alert alert-warning" *ngIf="password.errors.required">Password is required</small>
-        <small class="form-text alert alert-warning" *ngIf="password.errors.minlength">Password must be at least 6
+        <label for="newpassword">New password</label>
+      <input type="text" class="form-control"  name="newpassword" [(ngModel)]="form.newpassword" #newpassword="ngModel" 
+        minlength="6" required
+        [ngClass]="{'is-invalid':newpassword.invalid && newpassword.errors.minlength}" />
+      <div *ngIf=" newpassword.invalid">
+        <small class="form-text alert alert-warning" *ngIf="newpassword.errors.minlength">Password must be at least 6
           characters
         </small>
       </div>
     </div>
-    <!--[disabled]="email.invalid || password.invalid"-->
+ 
     <div class="form-group">
-      <button disabled 
-        class="btn btn-primary">Update account</button>
-      <div><br></div>
-      <div *ngIf="f.submitted" class="alert alert-danger">
-        {{errorMessage}}
-      </div>
+      <button  [disabled]="newpassword.invalid || load" data-toggle="modal" data-target="#exampleModalCenter"
+        class="btn btn-primary">Change password</button>   
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalCenterTitle">Confirm the action</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <h6>Are you sure you want to change password?
+                  Old password can't be restore
+                </h6> 
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="form.newpassword = null" data-dismiss="modal">Cancel</button>
+                <button type="button" data-dismiss="modal" (click)="updatePassword()" class="btn btn-success">Confirm change</button>
+              </div>
+            </div>
+          </div>
+        </div>
     </div>
-  </form>
+  
 </div>
 
 

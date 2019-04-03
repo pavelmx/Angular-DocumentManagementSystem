@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { TokenStorageService } from '../auth/token-storage.service';
-import { tokenKey } from '@angular/core/src/view';
 import { User } from '../models/user.model';
+import { Filter } from '../models/filter.model';
  
 @Injectable({
   providedIn: 'root'
@@ -28,15 +28,12 @@ export class UserService {
     return this.http.get<User[]>(this.userUrl + "getall");
   }
 
-  public getUsersByFilter(page: number, size: number, sortField: string, sortOrder: string,
-    name: string, username: string, email: string, activationCode: string): Observable<User[]>{
-    return this.http.get<User[]>(this.filterUrl + "users-all?" + "page=" + page + "&size=" + size
-    + "&name=" + name + "&username=" + username + "&email=" + email + "&sortField=" + sortField 
-    +  "&sortOrder=" + sortOrder + "&activationCode=" + activationCode);
+  public getUsersByFilter(page: number, size: number, filter: Filter): Observable<User[]>{
+    return this.http.post<User[]>(this.filterUrl + "users-all?" + "page=" + page + "&size=" + size, filter);
   }
 
-  public updateUser(user: User){
-    return this.http.put<User>(this.userUrl + "update", user);
+  public updatePass(user: User, pass: string){
+    return this.http.put(this.userUrl + "update?pass=" + pass, user);
   }
 
   public deleteUser(id: number) {

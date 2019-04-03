@@ -4,7 +4,7 @@ import { Document } from '../models/document.model';
 import { TokenStorageService } from '../auth/token-storage.service';
 
 import { User } from '../models/user.model';
-
+import { Filter } from '../models/filter.model';
 import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { ToastService } from '../services/toast.service';
@@ -17,6 +17,7 @@ import { ToastService } from '../services/toast.service';
 export class DocumentComponent implements OnInit {
 
   form: any = {}
+  filter: Filter = new Filter();
   listDocs: Document[] = [];
   listUsers: User[] = [];
   totalElements: number;
@@ -95,14 +96,25 @@ init(){
     console.log(this.page)
   }
 
+  initFilter(){
+    this.filter.customer = this.form.customer;
+    this.filter.expired = this.form.expired;
+    this.filter.username = this.form.username;
+    this.filter.title = this.form.title;
+    this.filter.fromDate = this.form.fromDate;
+    this.filter.toDate = this.form.toDate;
+    this.filter.sortOrder = this.form.sortOrder;
+    this.filter.sortField = this.form.sortField;
+  }
+
   getAllDocs(): void {
     if (this.role == 'ROLE_USER') {
       this.form.username = this.username;
-    }    
-    console.log(this.form.sortField + " " +this.form.sortOrder);
-    this.documentService.getDocsByFilter(this.form.title, this.form.customer, this.form.username, 
-      this.form.fromDate, this.form.toDate, this.form.expired, this.page, this.size, 
-      this.form.sortField, this.form.sortOrder)
+    }  
+    this.initFilter();
+   
+    console.log(this.filter);
+    this.documentService.getDocsByFilter(this.filter, this.page, this.size)
       .subscribe(data => {
         this.listDocs = data['content'];
         this.pages = new Array(data['totalPages']);

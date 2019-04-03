@@ -60,8 +60,6 @@ export class LoginComponent implements OnInit {
     );
   }
  
-  clc(){
-    console.log("gggggg")
-  }
+  
   
 }

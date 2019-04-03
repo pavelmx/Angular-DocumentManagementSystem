@@ -5,6 +5,7 @@ import { TokenStorageService } from '../auth/token-storage.service';
 
 import { Document } from '../models/document.model';
 import { HttpClient } from '@angular/common/http';
+import { Filter } from '../models/filter.model';
 
 
 
@@ -31,11 +32,8 @@ export class DocumentService {
   }
 
 
-  public getDocsByFilter(title: string, customer: string, username: string, fromDate: string, toDate: string, 
-    exp: string, page: number, size: number, sortField: string, sortOrder: string): Observable<Document[]> {
-    return this.http.get<Document[]>(this.docFilterUrl + "documents-all?" + "page=" + page + "&size=" + size
-    + "&title=" + title + "&customer=" + customer + "&fromDate=" + fromDate + "&toDate=" + toDate
-    + "&username=" + username + "&exp=" + exp + "&sortField=" + sortField + "&sortOrder=" + sortOrder);
+  public getDocsByFilter(filter: Filter, page: number, size: number): Observable<Document[]> {
+    return this.http.post<Document[]>(this.docFilterUrl + "documents-all?" + "page=" + page + "&size=" + size, filter);
   }
 
   public getAll(page: number, size: number): Observable<Document[]> {

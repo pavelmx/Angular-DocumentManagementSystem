@@ -4,6 +4,7 @@ import { User } from '../models/user.model';
 import { TokenStorageService } from '../auth/token-storage.service';
 import { Router } from '@angular/router';
 import { ToastService } from '../services/toast.service';
+import { Filter } from '../models/filter.model';
 
 @Component({
   selector: 'app-user',
@@ -23,7 +24,7 @@ export class UserComponent implements OnInit {
   pages: Array<number>;
   length: number;
   totalElements: number;
-  
+  filter: Filter = new Filter();
 
   constructor(
     private userService: UserService,
@@ -75,9 +76,20 @@ export class UserComponent implements OnInit {
     console.log(this.page)
   }
 
+
+  initFilter(){
+    this.filter.name = this.form.name;
+    this.filter.email = this.form.email;
+    this.filter.username = this.form.username;
+    this.filter.activationCode = this.form.activationCode;
+    this.filter.sortOrder = this.form.sortOrder;
+    this.filter.sortField = this.form.sortField;
+  }
+
   getAllUsers() {
-    this.userService.getUsersByFilter(this.page, this.size, this.form.sortField, 
-      this.form.sortOrder, this.form.name, this.form.username, this.form.email, this.form.activationCode)
+    this.initFilter();
+    console.log(this.filter);
+    this.userService.getUsersByFilter(this.page, this.size, this.filter)
            .subscribe((data: any) => {
         this.listUsers = data['content'];        
         this.pages = new Array(data['totalPages']);

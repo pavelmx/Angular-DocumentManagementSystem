@@ -8,6 +8,8 @@ import { FileService } from '../services/file.service';
 import * as fileSaver from 'file-saver';
 import { Router } from '@angular/router';
 import { ToastService } from '../services/toast.service';
+import { Toast, ToastrService } from 'ngx-toastr';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-document-edit',
@@ -33,7 +35,10 @@ export class DocumentEditComponent implements OnInit {
   isFailedDownload: boolean = false;
   isFailed = false;
   uploadResponse = { status: '', message: '', filePath: '' };
-  
+  today = "";
+  day;
+  month;
+  year;
 
   constructor(
     private docService: DocumentService,
@@ -45,6 +50,8 @@ export class DocumentEditComponent implements OnInit {
 
 
   ngOnInit() {
+    this.initToday();
+
     this.userService.getByUsername(this.tokenStorage.getUsername())
       .subscribe((data: any) => {
         this.curUser = data;
@@ -63,6 +70,20 @@ export class DocumentEditComponent implements OnInit {
   showUploadPanel() {
     this.show = !this.show;
     this.isFailedDownload = false;
+  }
+
+
+  initToday() {
+    this.day = new Date().getDay();
+    this.month = new Date().getMonth() + 1;
+    this.year = new Date().getFullYear();
+    if (this.day < 10) {
+      this.day = '0' + this.day
+    }
+    if (this.month < 10) {
+      this.month = '0' + this.month
+    }
+    this.today = this.year + "-" + this.month + "-" + this.day;
   }
 
   initDoc() {
@@ -89,8 +110,8 @@ export class DocumentEditComponent implements OnInit {
       });
   }
 
-  updateDoc() { 
-    if (this.form.dateOfCreation === '') 
+  updateDoc() {
+    if (this.form.dateOfCreation === '')
       this.form.dateOfCreation = new Date();
     this.docService.updateDocument(this.curUser.id, this.form)
       .subscribe(() => {
@@ -117,37 +138,49 @@ export class DocumentEditComponent implements OnInit {
   }
 
   uploadFile() {
-    this.fileService.uploadFile(this.selectedFile, this.document.id)
-      .subscribe(data => {
-        this.form.filename = data.fileName;
-        this.form.size = data.size;
-        this.form.fileType = data.fileType;
-        this.form.fileOriginalName = data.fileOriginalName;
-        this.uploadResponse = data;
-        console.log(data)
-        this.initDoc();
-        if(this.uploadResponse.message == '100')
-        this.toast.showSuccess("", "File uploaded successfully");        
-      },
-      error => {
-        console.log(error)
-      this.errorMessage = error.message;
-      this.toast.showError("", "File wasn't uploaded");
-      });
-    this.selectedFile = undefined;
-    this.show = false;  
-     
+
+    if (this.selectedFile.size > 51200000) {// 50 MB
+      this.toast.showError("", "File wasn't uploaded, because file size exceeded the limit of 50mb");
+    } else {
+
+      this.fileService.uploadFile(this.selectedFile, this.document.id)
+        .subscribe(data => {
+          this.form.filename = data.fileName;
+          this.form.size = data.size;
+          this.form.fileType = data.fileType;
+          this.form.fileOriginalName = data.fileOriginalName;
+          this.uploadResponse = data;
+          this.initDoc();
+          if (this.uploadResponse.message == '100') {
+            this.toast.showSuccess("", "File uploaded successfully");
+            console.log("status " + this.uploadResponse.status)
+            console.log("message " + this.uploadResponse.message)
+            console.log("filePath " + this.uploadResponse.filePath)
+          }
+        },
+          error => {
+            console.log(error)
+            this.errorMessage = error.message;
+            this.toast.showError("", error.message);
+          });
+      this.selectedFile = undefined;
+    }
+    this.show = false;
   }
 
   downloadFile() {
-    this.toast.showInfo("", "File is downloading...");
+    var openedToast = null;
+    openedToast = this.toast.showInfo("", "File is downloading...");
     this.fileService.downloadFile(this.form.filename)
       .subscribe(response => {
-        this.saveFile(response);        
+        this.saveFile(response);
+        this.toast.deleteToast(openedToast);
+        this.toast.showSuccess("", "File downloaded");
       },
         error => {
-          this.errorMessage = error.message;          
-          this.toast.showError("","File can't be download, maybe it was deleted from storage");
+          this.errorMessage = error.message;
+          this.toast.deleteToast(openedToast);
+          this.toast.showError("", "File can't be download, maybe it was deleted from storage");
           console.log(error);
           this.initDoc();
         });
@@ -159,14 +192,14 @@ export class DocumentEditComponent implements OnInit {
   }
 
   deleteFile(data: any) {
-    this.fileService.deleteFile(data).subscribe(()=>{
+    this.fileService.deleteFile(data).subscribe(() => {
       console.log("succes delete");
       this.initDoc();
       this.toast.showSuccess("", "File deleted successfully");
     },
-    error=>{
-      console.log("unsucces delete");
-    });
+      error => {
+        console.log("unsucces delete");
+      });
   }
 
 } 
