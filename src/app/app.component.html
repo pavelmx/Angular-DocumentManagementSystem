@@ -1,32 +1,68 @@
 <nav class="navbar navbar-dark bg-dark ">
   <a class="navbar-brand mb-0 h1" style="color: white">Document Managament System</a>
   <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex" routerLinkActive="active">
-      <li *ngIf="authority === 'admin'" class="nav-item mr-4">
-          <a class="nav-link" routerLink="user">Show users</a>
-        </li>
-        <li *ngIf="authority === 'admin'" class="nav-item mr-4">
-          <a class="nav-link" routerLink="document">Show documents</a>
-        </li>
-        <li *ngIf="authority === 'user'" class="nav-item mr-4">
-          <a class="nav-link" routerLink="document">Show my documents</a>
-        </li>
-        
-    <li *ngIf="!authority" class="nav-item">
-      <a class="nav-link" routerLink="login">Login</a>
+    <li *ngIf="authority === 'admin'" class="nav-item mr-4">
+      <a class="nav-link" routerLink="user">Show users</a>
     </li>
+    <li *ngIf="authority === 'admin'" class="nav-item mr-4">
+      <a class="nav-link" routerLink="document">Show documents</a>
+    </li>
+    <li *ngIf="authority === 'user'" class="nav-item mr-4">
+      <a class="nav-link" routerLink="document">Show my documents</a>
+    </li>
+
     <li *ngIf="authority === 'user'" class="nav-item mr-2">
       <a class="nav-link" routerLink="profile">{{username}}</a>
     </li>
     <li *ngIf="authority === 'admin'" class="nav-item mr-2">
       <a class="nav-link" routerLink="profile">{{username}} (Admin)</a>
     </li>
-    
+    <button *ngIf="authority" class="btn btn-danger" (click)="logout()">Logout</button>
   </ul>
-  <button *ngIf="authority" class="btn btn-danger"  (click)="logout()">Logout</button>
+
 </nav>
 
 <br><br>
 
 <div class="container">
-  <router-outlet></router-outlet>
+  <div *ngIf=!authority class="container text-center" style="max-width:400px;">
+    <h1 class="display-4 text-center">Login, please...</h1>
+
+    <hr>
+    <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+      <div class="form-group">
+
+        <input type="text" class="form-control" name="username" placeholder="Username" [(ngModel)]="form.username"
+          #username="ngModel" required minlength="5"
+          [ngClass]="{'is-valid':username.valid && username.touched,'is-invalid':username.invalid && username.touched}" />
+        <div *ngIf="username.touched && username.invalid">
+          <small class="form-text alert alert-danger" *ngIf="username.errors.required">Username is required</small>
+          <small class="form-text alert alert-danger" *ngIf="username.errors.minlength">Username must be at least 5
+            characters</small>
+        </div>
+
+      </div>
+      <div class="form-group ">
+        <input type="password" class="form-control" name="password" placeholder="Password" [(ngModel)]="form.password"
+          #password="ngModel" required minlength="6"
+          [ngClass]="{'is-valid':password.valid && password.touched,'is-invalid':password.invalid && password.touched}" />
+        <div *ngIf="password.touched && password.invalid">
+          <small class="form-text alert alert-danger" *ngIf="password.errors.required">Password is required</small>
+          <small class="form-text alert alert-danger" *ngIf="password.errors.minlength">Password must be at least 6
+            characters</small>
+        </div>
+      </div>
+      <div class="form-group">
+        <button class="btn btn-primary" routerLink="/profile" style="width:300px;" [disabled]="f.form.invalid">Login</button>
+
+      </div>
+    </form>
+    <hr />
+    <p>Don't have an account?
+      <a routerLink="/signup" class="btn btn-outline-success">Sign Up</a>
+    </p>
+  </div>
+  <div *ngIf=authority>
+    <router-outlet></router-outlet>
+  </div>
 </div>

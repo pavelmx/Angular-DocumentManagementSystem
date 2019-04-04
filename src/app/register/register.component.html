@@ -40,8 +40,8 @@
           <small class="form-text alert alert-warning" *ngIf="email.errors.minlength">Email must be at least 6 characters</small>
         </div>
       </div>
-      <div class="form-group">
 
+      <div class="form-group">
         <input type="password" class="form-control" placeholder="Password" name="password" [(ngModel)]="form.password"
           #password="ngModel" required minlength="6"
           [ngClass]="{'is-valid':password.valid && password.touched,'is-invalid':password.invalid && password.touched}"/> 
@@ -51,8 +51,18 @@
           </small>
         </div>
       </div>
+
       <div class="form-group">
-        <button [disabled]="f.form.invalid || load" class="btn btn-primary">Register</button>
+        <input type="password" class="form-control" placeholder="Confirm password" name="cpassword" [(ngModel)]="form.cpassword"
+          #cpassword="ngModel" 
+          [ngClass]="{'is-valid':form.password==form.cpassword && cpassword.touched,'is-invalid':form.password!=form.cpassword && cpassword.touched}"/> 
+        <div *ngIf="form.password!=form.cpassword && cpassword.touched" >
+          <small class="form-text alert alert-warning">Passwords don't match</small>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <button [disabled]="f.form.invalid || load || form.password!=form.cpassword" class="btn btn-primary">Register</button>
         <div><br></div>
         <div *ngIf="f.submitted && !isSignedUp" class="alert alert-danger">
           {{errorMessage}}

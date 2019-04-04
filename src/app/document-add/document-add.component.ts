@@ -31,16 +31,18 @@ export class DocumentAddComponent implements OnInit {
     private toast: ToastService) { }
 
   ngOnInit() {
+    if (!this.tokenStorage.isLogin()) {
+      this.router.navigate(['/login']);
+    }else{
     this.addNewDoc();
     this.initToday();
     this.isLogin = this.tokenStorage.isLogin();
-    if (!this.tokenStorage.isLogin()) {
-      this.router.navigate(['/login']);
-    }
+    
     this.userService.getByUsername(this.tokenStorage.getUsername())
       .subscribe((data: any) => {
         this.curUser = data;
       });
+    }
   }
 
   initToday() {

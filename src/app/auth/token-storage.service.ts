@@ -12,7 +12,8 @@ export class TokenStorageService {
   constructor() { }
  
   signOut() {
-    window.sessionStorage.clear();
+    sessionStorage.clear();
+    console.log(sessionStorage.getItem(USERNAME_KEY));
   }
  
   public saveToken(token: string) {

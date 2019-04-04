@@ -14,28 +14,31 @@ import { ToastService } from '../services/toast.service';
 export class LoginComponent implements OnInit {
   form: any = {};
   username: string;
-  isLoggedIn = false;
-  isLoginFailed = false;
-  errorMessage = '';
+  isAuthenticated = false;
+
+  
   roles: string[] = [];
   private loginInfo: Login;
  
   constructor(
     private authService: AuthService,
     private tokenStorage: TokenStorageService, 
-    private router: Router) { }
+    private router: Router,
+    private toast: ToastService) { }
  
-  ngOnInit() {   
-    this.username = this.tokenStorage.getUsername();
+    ngOnInit() {   
+    
     if (this.tokenStorage.getToken()) {
-      this.isLoggedIn = true;
       this.roles = this.tokenStorage.getAuthorities();
+      this.username = this.tokenStorage.getUsername();
+      this.isAuthenticated = true;
     }
+    
   }
  
-  onSubmit() {
-    console.log(this.form);
- 
+  
+
+  onSubmit() { 
     this.loginInfo = new Login(
       this.form.username,
       this.form.password);
@@ -45,21 +48,19 @@ export class LoginComponent implements OnInit {
         this.tokenStorage.saveToken(data.accessToken);
         this.tokenStorage.saveUsername(data.username);
         this.tokenStorage.saveAuthorities(data.authorities);
- 
-        this.isLoginFailed = false;
-        this.isLoggedIn = true;
+        this.isAuthenticated = true;
         this.roles = this.tokenStorage.getAuthorities();
-        window.location.reload();
+        console.log(this.isAuthenticated);
         
         },
       error => {
         console.log(error);
-        this.errorMessage = error.error.message;
-        this.isLoginFailed = true;
+        this.toast.showError("", error.error.message)        
+        this.isAuthenticated = false;
       }
     );
   }
  
-  
+
   
 }

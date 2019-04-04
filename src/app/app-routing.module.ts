@@ -44,7 +44,7 @@ const routes: Routes = [
     
     {
         path: '',
-        redirectTo: 'profile',
+        redirectTo: '',
         pathMatch: 'full'
     }
 ];

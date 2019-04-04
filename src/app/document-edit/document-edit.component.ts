@@ -50,6 +50,9 @@ export class DocumentEditComponent implements OnInit {
 
 
   ngOnInit() {
+    if (!this.tokenStorage.isLogin()) {
+      this.router.navigate(['/login']);
+    }else{
     this.initToday();
 
     this.userService.getByUsername(this.tokenStorage.getUsername())
@@ -62,8 +65,6 @@ export class DocumentEditComponent implements OnInit {
     this.initDoc();
 
     this.isLogin = this.tokenStorage.isLogin();
-    if (!this.tokenStorage.isLogin()) {
-      this.router.navigate(['/login']);
     }
   }
 
@@ -114,8 +115,7 @@ export class DocumentEditComponent implements OnInit {
     if (this.form.dateOfCreation === '')
       this.form.dateOfCreation = new Date();
     this.docService.updateDocument(this.curUser.id, this.form)
-      .subscribe(() => {
-        this.router.navigate(['/document']);
+      .subscribe(() => {        
         this.isFailed = false;
         this.toast.showSuccess("", "File updated successfully");
       },

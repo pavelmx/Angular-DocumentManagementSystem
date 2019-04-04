@@ -42,40 +42,42 @@ export class DocumentComponent implements OnInit {
     private router: Router,
     private toast: ToastService) { }
 
-  ngOnInit() {    
-    this.init();
-    this.getAllDocs();  
-    
-    if (this.role == 'ROLE_ADMIN') {
-      this.userService.getAll()
-        .subscribe(data => {
-          this.listUsers = data;
-        });
-    }
+  ngOnInit() {
     
     if (!this.tokenStorage.isLogin()) {
       this.router.navigate(['/login']);
+    }else{
+      this.init();
+      this.getAllDocs();
+
+      if (this.role == 'ROLE_ADMIN') {
+        this.userService.getAll()
+          .subscribe(data => {
+            this.listUsers = data;
+          });
+      }
     }
+    
   }
 
-init(){
-  this.role = this.tokenStorage.getAuthorities()[0];
-  this.username = this.tokenStorage.getUsername();
-  this.isLogin = this.tokenStorage.isLogin();
-  this.label = "All";
-  this.sizes = [5, 10, 25, 50];
-  this.form.username = "";
-  this.form.title = "";
-  this.form.customer = "";
-  this.form.expired = "";
-  this.form.fromDate = "";
-  this.form.toDate = "";
-  this.form.sortOrder = "ASC";
-  this.form.sortField = "title";
-}
+  init() {
+    this.role = this.tokenStorage.getAuthorities()[0];
+    this.username = this.tokenStorage.getUsername();
+    this.isLogin = this.tokenStorage.isLogin();
+    this.label = "All";
+    this.sizes = [5, 10, 25, 50];
+    this.form.username = "";
+    this.form.title = "";
+    this.form.customer = "";
+    this.form.expired = "";
+    this.form.fromDate = "";
+    this.form.toDate = "";
+    this.form.sortOrder = "ASC";
+    this.form.sortField = "title";
+  }
 
   setSize(s: number) {
-    this.size = s;    
+    this.size = s;
     this.setPage(0);
     console.log("page " + this.page)
   }
@@ -96,7 +98,7 @@ init(){
     console.log(this.page)
   }
 
-  initFilter(){
+  initFilter() {
     this.filter.customer = this.form.customer;
     this.filter.expired = this.form.expired;
     this.filter.username = this.form.username;
@@ -110,9 +112,9 @@ init(){
   getAllDocs(): void {
     if (this.role == 'ROLE_USER') {
       this.form.username = this.username;
-    }  
+    }
     this.initFilter();
-   
+
     console.log(this.filter);
     this.documentService.getDocsByFilter(this.filter, this.page, this.size)
       .subscribe(data => {
@@ -129,7 +131,7 @@ init(){
   deleteDocument(doc: Document): void {
     this.documentService.deleteDocument(doc.id).subscribe(data => {
       this.getAllDocs();
-      this.toast.showSuccess('', 'Document deleted successfully'); 
+      this.toast.showSuccess('', 'Document deleted successfully');
     });
     console.log(doc.id);
   }
@@ -137,7 +139,7 @@ init(){
   deleteAll(): void {
     this.documentService.deleteAll().subscribe(data => {
       this.getAllDocs();
-      this.toast.showSuccess('', 'All documents deleted successfully'); 
+      this.toast.showSuccess('', 'All documents deleted successfully');
     });
   }
 
@@ -145,9 +147,9 @@ init(){
     window.sessionStorage.setItem("docId", doc.id.toString());
   }
 
-  
-    
-  
+
+
+
 
 
 

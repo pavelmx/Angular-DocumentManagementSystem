@@ -144,10 +144,12 @@
 
     <div class="form-group">
       <hr>
-      <button *ngIf="isEdit"
-        [disabled]="title.invalid || documentDescription.invalid || customer.invalid || contractTerm.invalid"
-        class="btn btn-success" (click)="updateDoc()">Update document</button>
-
+      <button class="btn btn-secondary mr-3" routerLink="/document">Cancel</button>
+      <button 
+      [disabled]="isEdit===false  || documentDescription.invalid || customer.invalid || contractTerm.invalid"
+        
+       class="btn btn-success" (click)="updateDoc()">Update document</button>
+        
       <div><br></div>
       <small *ngIf="f.submitted && isFailed" class="form-text alert alert-danger">
         {{errorMessageUpdate}}

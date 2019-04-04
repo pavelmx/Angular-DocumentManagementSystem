@@ -33,18 +33,19 @@ export class UserComponent implements OnInit {
     private toast: ToastService) { }
 
   ngOnInit() {
-    this.role = this.tokenStorage.getAuthorities()[0];
-    this.init();
-    this.getAllUsers();
-    this.isLogin = this.tokenStorage.isLogin();
     if (!this.tokenStorage.isLogin()) {
       this.router.navigate(['/login']);
+    } else {
+      this.role = this.tokenStorage.getAuthorities()[0];
+      this.init();
+      this.getAllUsers();
+      this.isLogin = this.tokenStorage.isLogin();
     }
   }
 
-  init(){
+  init() {
     this.role = this.tokenStorage.getAuthorities()[0];
-    this.isLogin = this.tokenStorage.isLogin();    
+    this.isLogin = this.tokenStorage.isLogin();
     this.sizes = [5, 10, 25, 50];
     this.form.username = "";
     this.form.name = "";
@@ -53,9 +54,9 @@ export class UserComponent implements OnInit {
     this.form.sortField = "username";
     this.form.activationCode = "";
   }
-    
+
   setSize(s: number) {
-    this.size = s;    
+    this.size = s;
     this.setPage(0);
     console.log("page " + this.page)
   }
@@ -77,7 +78,7 @@ export class UserComponent implements OnInit {
   }
 
 
-  initFilter(){
+  initFilter() {
     this.filter.name = this.form.name;
     this.filter.email = this.form.email;
     this.filter.username = this.form.username;
@@ -90,15 +91,15 @@ export class UserComponent implements OnInit {
     this.initFilter();
     console.log(this.filter);
     this.userService.getUsersByFilter(this.page, this.size, this.filter)
-           .subscribe((data: any) => {
-        this.listUsers = data['content'];        
+      .subscribe((data: any) => {
+        this.listUsers = data['content'];
         this.pages = new Array(data['totalPages']);
         this.length = this.pages.length;
         this.totalElements = data['totalElements'];
       },
-      error =>{
-        this.errorMessage = error.error.message;
-      });
+        error => {
+          this.errorMessage = error.error.message;
+        });
   }
 
   deleteUser(user: User): void {
