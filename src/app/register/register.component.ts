@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { SignUp } from '../auth/signup';
 import { ToastService } from '../services/toast.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -20,7 +21,8 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private toast: ToastService) { }
+    private toast: ToastService,
+    private router: Router) { }
 
   ngOnInit() { }
 
@@ -41,7 +43,10 @@ export class RegisterComponent implements OnInit {
         data => {
           console.log(data);
           this.isSignedUp = true;
-          this.load = false;
+          this.load = false;          
+          this.toast.deleteToast(openedToast);
+          this.toast.showSuccess("","Successful registration!");
+          this.toast.showWarning("", "Please check your email and confirm account");
         },
         error => {
           console.log(error.error.message);
@@ -49,7 +54,7 @@ export class RegisterComponent implements OnInit {
           this.isSignedUp = false;
           this.load = false;
           this.toast.deleteToast(openedToast);
-          this.toast.showError("", "Error registration");
+          this.toast.showError("", error.error.message);
         }
       );
     

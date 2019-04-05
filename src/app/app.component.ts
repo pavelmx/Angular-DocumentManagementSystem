@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Login } from './auth/login';
 import { AuthService } from './auth/auth.service';
 import { ToastService } from './services/toast.service';
+import { SignUp } from './auth/signup';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,13 @@ export class AppComponent implements OnInit {
   username: string;
   token: any;
   form: any = {};
-  private loginInfo: Login;
+  loginInfo: Login;
+  isLogin = true;
+ 
+  signupInfo: SignUp;
+  isSignedUp = false;
+  errorMessage = '';
+  load = false;
 
   constructor(
     private authService: AuthService,
@@ -42,7 +49,7 @@ export class AppComponent implements OnInit {
     console.log(this.authority);
   }
 
-  onSubmit() {
+  onSubmitl() {
     this.loginInfo = new Login(
       this.form.username,
       this.form.password);
@@ -53,6 +60,7 @@ export class AppComponent implements OnInit {
         this.tokenStorage.saveUsername(data.username);
         this.tokenStorage.saveAuthorities(data.authorities);
         this.init();
+        
         console.log("ok");
         console.log(this.authority);
       },
@@ -63,6 +71,40 @@ export class AppComponent implements OnInit {
       }
     );
   }
+
+  onSubmitr() {
+    
+    this.load = true;
+    
+    var openedToast = null;
+    openedToast = this.toast.showInfo("", "Registration process...");
+
+    this.signupInfo = new SignUp(
+      this.form.name,
+      this.form.username,
+      this.form.email,
+      this.form.password);
+      console.log(this.signupInfo);
+    this.authService.signUp(this.signupInfo).subscribe(
+      data => {
+        console.log(data);
+        
+        this.load = false;   
+        this.isLogin = true;       
+        this.toast.deleteToast(openedToast);
+        this.toast.showSuccess("","Successful registration!");
+        this.toast.showWarning("", "Please check your email and confirm account");
+      },
+      error => {
+        console.log(error.error.message);
+        this.errorMessage = error.error.message;        
+        this.load = false;       
+        this.toast.deleteToast(openedToast);
+        this.toast.showError("", error.error.message);
+      }
+    );
+  
+}
 
   logout() {
     this.authority = null;
