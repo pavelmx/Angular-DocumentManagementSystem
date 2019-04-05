@@ -133,7 +133,7 @@ export class DocumentComponent implements OnInit {
       this.getAllDocs();
       this.toast.showSuccess('', 'Document deleted successfully');
     });
-    console.log(doc.id);
+    console.log(doc.title);
   }
 
   deleteAll(): void {
@@ -141,6 +141,7 @@ export class DocumentComponent implements OnInit {
       this.getAllDocs();
       this.toast.showSuccess('', 'All documents deleted successfully');
     });
+    console.log("all");
   }
 
   docEdit(doc: Document) {

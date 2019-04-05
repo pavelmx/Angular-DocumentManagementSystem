@@ -42,7 +42,7 @@ export class ProfileComponent implements OnInit {
         this.form.username = this.curUser.username;
         this.form.activationCode = this.curUser.activationCode;
         this.form.password = this.curUser.password;
-        this.form.newpassword = null;
+        this.form.newpassword = '';
       });
   }
 

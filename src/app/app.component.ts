@@ -53,7 +53,7 @@ export class AppComponent implements OnInit {
     this.loginInfo = new Login(
       this.form.username,
       this.form.password);
-
+      console.log(this.loginInfo);
     this.authService.signIn(this.loginInfo).subscribe(
       data => {
         this.tokenStorage.saveToken(data.accessToken);

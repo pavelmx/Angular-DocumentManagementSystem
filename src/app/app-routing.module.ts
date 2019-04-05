@@ -1,8 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
- 
-import { RegisterComponent } from './register/register.component';
-
 import { UserComponent } from './user/user.component';
 import { DocumentComponent } from './document/document.component';
 import { DocumentEditComponent } from './document-edit/document-edit.component';
@@ -31,13 +28,7 @@ const routes: Routes = [
     {
         path: 'profile',
         component: ProfileComponent
-    },
-    
-    {
-        path: 'signup',
-        component: RegisterComponent
-    },
-    
+    },    
     {
         path: '',
         redirectTo: '',

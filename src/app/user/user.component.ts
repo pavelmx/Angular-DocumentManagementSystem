@@ -105,16 +105,17 @@ export class UserComponent implements OnInit {
   deleteUser(user: User): void {
     this.userService.deleteUser(user.id).subscribe(data => {
       this.getAllUsers();
-      this.toast.showSuccess('Delete all', 'User deleted successfully');
+      this.toast.showSuccess('', 'User '+ user.username +' deleted successfully');
     });
-    console.log(user.id);
+    console.log(user.username);
   }
 
   deleteAll(): void {
     this.userService.deleteAll().subscribe(data => {
       this.getAllUsers();
-      this.toast.showSuccess('Delete all', 'All users deleted successfully');
+      this.toast.showSuccess('', 'All users deleted successfully');
     });
+    console.log("all");
   }
 
 

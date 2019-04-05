@@ -141,6 +141,7 @@ export class DocumentEditComponent implements OnInit {
 
     if (this.selectedFile.size > 51200000) {// 50 MB
       this.toast.showError("", "File wasn't uploaded, because file size exceeded the limit of 50mb");
+      this.selectedFile = undefined;
     } else {
 
       this.fileService.uploadFile(this.selectedFile, this.document.id)
@@ -164,8 +165,9 @@ export class DocumentEditComponent implements OnInit {
             this.toast.showError("", error.message);
           });
       this.selectedFile = undefined;
+      this.show = false;
     }
-    this.show = false;
+    
   }
 
   downloadFile() {
