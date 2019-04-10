@@ -7,7 +7,7 @@
     <div class="collapse navbar-collapse" id="navres">
       <ul class="navbar-nav ml-auto " routerLinkActive="active">
         <li *ngIf="authority" class="nav-item ">
-          <a class="nav-link" routerLink="document-add">Create document!</a>
+          <a class="btn btn-outline-success" routerLink="document-add">Create document!</a>
         </li>
         <li *ngIf="authority === 'admin'" class="nav-item ">
           <a class="nav-link" routerLink="user">Show users</a>
@@ -33,19 +33,20 @@
 
 
 
-<br><br>
 
 
+<div *ngIf="!authority" class="app full">
 <div *ngIf="isLogin">
-  <div *ngIf=!authority class="container text-center" style="max-width:400px;">
+
+  <div *ngIf=!authority class="container text-center form" style="max-width:400px;">
     <br>
-    <h1 class="display-4 text-center">Login form</h1>
+    <h1 class="display-4 text-center" >Login form</h1>
 
     <hr>
-    <form name="form" (ngSubmit)="f.form.valid && onSubmitl()" #f="ngForm" novalidate>
+    <form name="form1" (ngSubmit)="f.form.valid && onSubmitl()" #f="ngForm" novalidate>
       <div class="form-group">
 
-        <input type="text" class="form-control" name="username" placeholder="Username" [(ngModel)]="form.username"
+        <input type="text" class="form-control" name="username" placeholder="Username" [(ngModel)]="form1.username"
           #username="ngModel" required minlength="5"
           [ngClass]="{'is-valid':username.valid && username.touched,'is-invalid':username.invalid && username.touched}" />
         <div *ngIf="username.touched && username.invalid">
@@ -56,7 +57,7 @@
 
       </div>
       <div class="form-group ">
-        <input type="password" class="form-control" name="password" placeholder="Password" [(ngModel)]="form.password"
+        <input type="password" class="form-control" name="password" placeholder="Password" [(ngModel)]="form1.password"
           #password="ngModel" required minlength="6"
           [ngClass]="{'is-valid':password.valid && password.touched,'is-invalid':password.invalid && password.touched}" />
         <div *ngIf="password.touched && password.invalid">
@@ -73,17 +74,17 @@
     </form>
     <hr>
     <p>Don't have an account?
-      <a routerLink="" (click)="form=''" class="btn btn-outline-success" (click)="isLogin=false">Register</a>
+      <a routerLink=""  class="btn btn-outline-success" (click)="isLogin=false">Register</a>
     </p>
   </div>
 </div>
-<div *ngIf="!isLogin" class="container text-center" style="max-width:500px;">
+<div *ngIf="!isLogin" class="container text-center form" style="max-width:500px;">
   <br>
-  <h1 class="display-4">Registration form</h1>
+  <h1 class="display-4" >Registration form</h1>
   <hr>
-  <form name="form" (ngSubmit)="f.form.valid && onSubmitr()" #f="ngForm" novalidate>
+  <form name="form2" (ngSubmit)="f.form.valid && onSubmitr()" #f="ngForm" novalidate>
     <div class="form-group">
-      <input type="text" class="form-control" placeholder="Your full name" name="name" [(ngModel)]="form.name"
+      <input type="text" class="form-control" placeholder="Your full name" name="name" [(ngModel)]="form2.name"
         #name="ngModel" required maxlength="50" minlength="5"
         [ngClass]="{'is-valid':name.valid && name.touched,'is-invalid':name.invalid && name.touched}" />
       <div *ngIf="f.submitted && name.invalid || name.touched && name.invalid">
@@ -95,7 +96,7 @@
       </div>
     </div>
     <div class="form-group">
-      <input type="text" class="form-control" placeholder="Username" name="username" [(ngModel)]="form.username"
+      <input type="text" class="form-control" placeholder="Username" name="username" [(ngModel)]="form2.username"
         #username="ngModel" required minlength="5" maxlength="20"
         [ngClass]="{'is-valid':username.valid && username.touched,'is-invalid':username.invalid && username.touched}" />
       <div *ngIf="f.submitted && username.invalid || username.touched && username.invalid">
@@ -108,7 +109,7 @@
     </div>
     <div class="form-group">
 
-      <input type="text" class="form-control" placeholder="Email" name="email" [(ngModel)]="form.email" #email="ngModel"
+      <input type="text" class="form-control" placeholder="Email" name="email" [(ngModel)]="form2.email" #email="ngModel"
         required email minlength="6" maxlength="50"
         [ngClass]="{'is-valid':email.valid && email.touched,'is-invalid':email.invalid && email.touched}" />
       <div *ngIf="f.submitted && email.invalid || email.touched && email.invalid">
@@ -123,7 +124,7 @@
     </div>
 
     <div class="form-group">
-      <input type="password" class="form-control" placeholder="Password" name="password" [(ngModel)]="form.password"
+      <input type="password" class="form-control" placeholder="Password" name="password" [(ngModel)]="form2.password"
         #password="ngModel" required minlength="6"
         [ngClass]="{'is-valid':password.valid && password.touched,'is-invalid':password.invalid && password.touched}" />
       <div *ngIf="f.submitted && password.invalid || password.touched && password.invalid">
@@ -136,25 +137,25 @@
 
     <div class="form-group">
       <input type="password" class="form-control" placeholder="Confirm password" name="cpassword"
-        [(ngModel)]="form.cpassword" #cpassword="ngModel" required
-        [ngClass]="{'is-valid':form.password==form.cpassword && cpassword.touched,'is-invalid':form.password!=form.cpassword && cpassword.touched || cpassword.invalid && cpassword.touched}" />
-      <div *ngIf="form.password!=form.cpassword ">
+        [(ngModel)]="form2.cpassword" #cpassword="ngModel" required
+        [ngClass]="{'is-valid':form2.password==form2.cpassword && cpassword.touched,'is-invalid':form2.password!=form2.cpassword && cpassword.touched || cpassword.invalid && cpassword.touched}" />
+      <div *ngIf="form2.password!=form2.cpassword ">
         <small class="form-text alert alert-warning">Passwords don't match</small>
       </div>
     </div>
 
     <div class="form-group">
-      <button [disabled]="f.form.invalid || load || form.password!=form.cpassword" class="btn btn-primary"
+      <button [disabled]="f.form.invalid || load || form2.password!=form2.cpassword" class="btn btn-primary"
         style="width:400px;">Register account</button>
 
     </div>
   </form>
   <hr>
   Already have an account?
-  <a routerLink="" class="btn btn-outline-success" (click)="form=''" (click)="isLogin=true">Login</a>
+  <a routerLink="" class="btn btn-outline-success"  (click)="isLogin=true">Login</a>
 
 </div>
-
+</div>
 <div *ngIf="authority">
   <router-outlet></router-outlet>
 </div>

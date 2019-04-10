@@ -15,8 +15,9 @@ export class AppComponent implements OnInit {
   roles: string[];
   authority: string;
   username: string;
-  token: any;
-  form: any = {};
+  token: string;
+  form1: any = {};
+  form2: any = {};
   loginInfo: Login;
   isLogin = true;
  
@@ -51,8 +52,8 @@ export class AppComponent implements OnInit {
 
   onSubmitl() {
     this.loginInfo = new Login(
-      this.form.username,
-      this.form.password);
+      this.form1.username,
+      this.form1.password);
       console.log(this.loginInfo);
     this.authService.signIn(this.loginInfo).subscribe(
       data => {
@@ -80,10 +81,10 @@ export class AppComponent implements OnInit {
     openedToast = this.toast.showInfo("", "Registration process...");
 
     this.signupInfo = new SignUp(
-      this.form.name,
-      this.form.username,
-      this.form.email,
-      this.form.password);
+      this.form2.name,
+      this.form2.username,
+      this.form2.email,
+      this.form2.password);
       console.log(this.signupInfo);
     this.authService.signUp(this.signupInfo).subscribe(
       data => {
@@ -109,6 +110,13 @@ export class AppComponent implements OnInit {
   logout() {
     this.authority = null;
     this.tokenStorage.signOut();
+    this.form1.username = '';
+    this.form1.password = '';
+    this.form2.username = '';
+    this.form2.password = '';
+    this.form2.cpassword = '';
+    this.form2.name = '';
+    this.form2.email = '';
   }
 
 

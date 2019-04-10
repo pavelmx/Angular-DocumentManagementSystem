@@ -60,10 +60,11 @@ export class ProfileComponent implements OnInit {
       },
         error => {
           console.log(error);
-          this.form.newpassword = null;
+          this.form.newpassword = '';
           this.toast.deleteToast(openedToast);
           this.toast.showError("", error.error.message);
           this.load = false;
+          
         });
   }
 

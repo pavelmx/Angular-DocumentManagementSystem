@@ -1,3 +1,22 @@
-.navbar-nav li{
+.navbar-nav li {
     padding-right: 20px
+}
+
+.app {
+    background-image: url('https://www.ieronimakilawoffice.gr/wp-content/uploads/2015/07/blog_07.jpg'), 
+    linear-gradient( rgb(168, 168, 168), rgb(255, 255, 255));
+    background-position: center;
+    background-blend-mode: overlay;
+}
+
+.form {
+    margin-top: 10%
+}
+
+.full {
+    position: fixed;
+    margin: auto;
+    padding: 0;
+    width: 100%;
+    height: 100%;
 }

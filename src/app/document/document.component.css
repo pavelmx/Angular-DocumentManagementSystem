@@ -1,12 +1,20 @@
-.f{
+.back {
     position: fixed;
-    bottom: 0;    
-    background: white
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.356);
+    filter: blur(10px);
+   
+}
+
+.forward {
+    bottom: 0;
+    background: inherit;
+    position: fixed;
+}
+
+.filter {
+    max-width: 250px;
+   
 }
 
 
-    
-  
-
-  
- 

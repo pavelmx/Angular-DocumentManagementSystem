@@ -1,7 +1,7 @@
-<div *ngIf="isLogin; else notLogin">
+<div *ngIf="isLogin; else notLogin" class="mt-5 ml-2 mr-3 mb-5">
   <div *ngIf="role === 'ROLE_ADMIN';else notAdmin">
-    <div class="row ml-2 mr-1">
-      <div class="col" (change)="setPage(0)" style="max-width: 250px;">
+    <div class="row ">
+      <div class="col mr-3 mt-5 filter" (change)="setPage(0)" >
           <div style="position: fixed;max-width: 250px;">
           <div class="text-center">
             <h4>Filter</h4>
@@ -27,7 +27,7 @@
           </div>
         </div>
       </div>
-      <div class="col ml-2">
+      <div class="col ">
         <div class="row align-items-end mb-1">
           <div class="col">
             <h1 class="display-4">Users ({{totalElements}})</h1>
@@ -60,7 +60,7 @@
           </div>
         </div>
         <div *ngIf="listUsers.length > 0; else falseLength">
-          <table class="table table-sm">
+          <table class="table table-hover table-sm">
             <thead class="thead-dark">
               <tr>
                 <th scope="col">Full name</th>
@@ -83,7 +83,10 @@
               </tr>
             </tbody>
           </table>
-          <div class="row">
+          <div class="row container back"> 
+              <div class="col " style="height: 70px"></div>
+          </div>
+          <div class="row container forward">
             <div class="col">
               <nav aria-label="Page navigation example">
                 <ul class="pagination ">
