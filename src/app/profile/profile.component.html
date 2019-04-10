@@ -1,70 +1,76 @@
-<div *ngIf="isLogin; else notLogin" class="" style="max-width:500px;">
-  <h1 class="display-4">User: '{{form.username}}'</h1>
+<div class="container" *ngIf="isLogin; else notLogin" >
+  <div class="row">
+    <div class="col">
+      <h1 class="display-4">User: '{{form.username}}'</h1>
 
 
-  <div class="form-group">
-    <label for="id">Id</label>
-    <input type="text" class="form-control" name="id" [(ngModel)]="form.id" #id="ngModel" disabled />
-  </div>
-
-  <div class="form-group">
-    <label for="name">Full name</label>
-    <input type="text" class="form-control" disabled name="name" [(ngModel)]="form.name" #name="ngModel" />
-  </div>
-
-  <div class="form-group">
-    <label for="username">Username</label>
-    <input type="text" class="form-control" disabled name="username" [(ngModel)]="form.username" #username="ngModel" />
-  </div>
-
-  <div class="form-group">
-    <label for="email">Email</label>
-    <input type="text" class="form-control" disabled name="email" [(ngModel)]="form.email" #email="ngModel" />
-
-  </div>
-
-  <div class="form-group">
-    <label for="newpassword">New password</label>
-    <input type="password" class="form-control" name="newpassword" [(ngModel)]="form.newpassword" #newpassword="ngModel"
-      minlength="6" 
-      [ngClass]="{'is-invalid':newpassword.invalid && newpassword.touched}" />
-      <div *ngIf=" newpassword.touched && newpassword.invalid">
-             <small class="form-text alert alert-warning" *ngIf="newpassword.errors.minlength">Password must be at least 6
-          characters
-        </small>
+      <div class="form-group">
+        <label for="id">Id</label>
+        <input type="text" class="form-control" name="id" [(ngModel)]="form.id" #id="ngModel" disabled />
       </div>
-    
-  </div>
 
-  <div class="form-group">
-    <button [disabled]="form.newpassword=='' || newpassword.invalid || load"
-      data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-primary">Change password</button>
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-      aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title" id="exampleModalCenterTitle">Confirm the action</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <h6>Are you sure you want to change password?
-              Old password can't be restore
-            </h6>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" (click)="form.newpassword = null"
-              data-dismiss="modal">Cancel</button>
-            <button type="button" data-dismiss="modal" (click)="updatePassword()" class="btn btn-success">Confirm
-              change</button>
+      <div class="form-group">
+        <label for="name">Full name</label>
+        <input type="text" class="form-control" disabled name="name" [(ngModel)]="form.name" #name="ngModel" />
+      </div>
+
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" class="form-control" disabled name="username" [(ngModel)]="form.username"
+          #username="ngModel" />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="text" class="form-control" disabled name="email" [(ngModel)]="form.email" #email="ngModel" />
+
+      </div>
+
+      <div class="form-group">
+        <label for="newpassword">New password</label>
+        <input type="password" class="form-control" name="newpassword" [(ngModel)]="form.newpassword"
+          #newpassword="ngModel" minlength="6" [ngClass]="{'is-invalid':newpassword.invalid && newpassword.touched}" />
+        <div *ngIf=" newpassword.touched && newpassword.invalid">
+          <small class="form-text alert alert-warning" *ngIf="newpassword.errors.minlength">Password must be at least 6
+            characters
+          </small>
+        </div>
+
+      </div>
+
+      <div class="form-group">
+        <button [disabled]="form.newpassword=='' || newpassword.invalid || load" data-toggle="modal"
+          data-target="#exampleModalCenter" class="btn btn-primary">Change password</button>
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalCenterTitle">Confirm the action</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <h6>Are you sure you want to change password?
+                  Old password can't be restore
+                </h6>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="form.newpassword = null"
+                  data-dismiss="modal">Cancel</button>
+                <button type="button" data-dismiss="modal" (click)="updatePassword()" class="btn btn-success">Confirm
+                  change</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
+    <div class="col">
+<img src="https://www.sqlpower.ca/wp-content/uploads/2017/06/person-1824144_1280.png" class="img-fluid" alt="Responsive image">
+    </div>
   </div>
-
 </div>
 
 

@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { DocumentService } from '../services/document.service';
 import { Document } from '../models/document.model';
 import { TokenStorageService } from '../auth/token-storage.service';
-
+import 'jspdf-autotable';
+import * as jsPDF from 'jspdf';
 import { User } from '../models/user.model';
 import { Filter } from '../models/filter.model';
 import { Router } from '@angular/router';
@@ -43,10 +44,10 @@ export class DocumentComponent implements OnInit {
     private toast: ToastService) { }
 
   ngOnInit() {
-    
+
     if (!this.tokenStorage.isLogin()) {
       this.router.navigate(['/login']);
-    }else{
+    } else {
       this.init();
       this.getAllDocs();
 
@@ -57,7 +58,7 @@ export class DocumentComponent implements OnInit {
           });
       }
     }
-    
+
   }
 
   init() {
@@ -122,6 +123,8 @@ export class DocumentComponent implements OnInit {
         this.pages = new Array(data['totalPages']);
         this.length = this.pages.length;
         this.totalElements = data['totalElements'];
+        this.viewPages();
+        console.log(this.pages);
       },
         error => {
           console.log(error);
@@ -148,11 +151,27 @@ export class DocumentComponent implements OnInit {
     window.sessionStorage.setItem("docId", doc.id.toString());
   }
 
+  viewPages() {
+    if (this.length > 7) {
+      var totalPages = this.length;
+      var pageNumber = this.page + 1
+      console.log(totalPages)
+      var head = (pageNumber > 4) ? [1, -1] : [1, 2, 3];
+      var tail = (pageNumber < totalPages - 3) ? [-1, totalPages] : [totalPages - 2, totalPages - 1, totalPages];
+      var bodyBefore = (pageNumber > 4 && pageNumber < totalPages - 1) ? [pageNumber - 2, pageNumber - 1] : [];
+      var bodyAfter = (pageNumber > 2 && pageNumber < totalPages - 3) ? [pageNumber + 1, pageNumber + 2] : [];
 
-
-
-
-
-
+      var body = head.concat(bodyBefore).concat((pageNumber > 3 && pageNumber < totalPages - 2) ? [pageNumber] : []).concat(bodyAfter).concat(tail);
+      this.pages = body;
+    }
+    else {
+      var body2: number[] = [1];    
+      var i: number ;      
+      for (i = 2; i < this.length+1; i++) {
+        body2.push(i)
+      }
+      this.pages = body2;
+    }
+  }
 
 }

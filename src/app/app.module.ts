@@ -14,6 +14,7 @@ import { SearchPipe } from './pipes/search.pipe';
 import { FilterPipe } from './pipes/filter.pipe';
 import { DocumentAddComponent } from './document-add/document-add.component';
 import { ProfileComponent } from './profile/profile.component';
+import { HomeComponent } from './home/home.component';
 
 
  
@@ -27,6 +28,7 @@ import { ProfileComponent } from './profile/profile.component';
     FilterPipe,
     DocumentAddComponent,
     ProfileComponent,
+    HomeComponent,
     
   ],
   imports: [

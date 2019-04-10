@@ -1,4 +1,4 @@
-<div *ngIf="isLogin; else notLogin">
+<div class="container" *ngIf="isLogin; else notLogin">
   <h1 class="display-4 ">Add new document</h1>
 
   <hr>
@@ -58,7 +58,7 @@
       </div>
       <div class="col">
         <div class="form-group">
-          <label for="contractTerm">Contract term</label>
+          <label for="contractTerm">Document term</label>
           <a data-toggle="collapse" href="#collapseTerm" role="button" aria-expanded="false"
             aria-controls="collapseExample">
             *</a>
@@ -94,7 +94,7 @@
       <div class="col ">
         <div class="form-group">
           <label for="documentDescription">Document description</label>
-          <textarea required minlength="20" class="form-control" name="documentDescription" rows="3"
+          <textarea required minlength="20" maxlength="1000" class="form-control" name="documentDescription" rows="3"
             [(ngModel)]="form.documentDescription" #documentDescription="ngModel"
             [ngClass]="{'is-valid':documentDescription.valid && documentDescription.touched,'is-invalid':documentDescription.invalid && documentDescription.touched}"></textarea>
           <div

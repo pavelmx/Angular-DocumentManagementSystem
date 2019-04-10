@@ -1,4 +1,4 @@
-<div *ngIf="isLogin; else notLogin">
+<div class="container" *ngIf="isLogin; else notLogin">
   <div class="text-center">
     <h1 *ngIf=isEdit class="display-4 ">{{form.title}}*</h1>
     <h1 *ngIf=!isEdit class="display-4 ">{{form.title}}</h1>
@@ -23,11 +23,11 @@
         <input type="text" class="form-control" readonly [(ngModel)]="form.filename" #filename="ngModel"
           aria-describedby="button-addon4" placeholder="Attached file not found">
         <div class="input-group-append" id="button-addon4">
-          <button class="btn btn-danger" [disabled]="!form.filename" (click)="deleteFile(form.filename)"
+          <button class="btn btn-danger" [hidden]="!form.filename" (click)="deleteFile(form.filename)"
             type="button">Delete file</button>
-          <button class="btn btn-success" [disabled]="!form.filename" (click)="downloadFile()" type="button">Download
+          <button class="btn btn-success" [hidden]="!form.filename" (click)="downloadFile()" type="button">Download
           </button>
-          <button class="btn btn-warning" type="button" [disabled]="show" (click)=showUploadPanel()>Update</button>
+          <button class="btn btn-warning" type="button" [hidden]="show" (click)=showUploadPanel()>Update</button>
         </div>
       </div>
     </div>
@@ -93,7 +93,7 @@
       </div>
       <div class="col">
         <div class="form-group">
-          <label for="contractTerm">Contract term</label>
+          <label for="contractTerm">Document term</label>
           <a data-toggle="collapse" href="#collapseTerm" role="button" aria-expanded="false"
             aria-controls="collapseExample">
             *</a>
@@ -128,7 +128,7 @@
       <div class="col ">
         <div class="form-group">
           <label for="documentDescription">Document description</label>
-          <textarea required minlength="20" class="form-control" name="documentDescription" rows="4"
+          <textarea required minlength="20" maxlength="1000" class="form-control" name="documentDescription" rows="4"
             [(ngModel)]="form.documentDescription" #documentDescription="ngModel"
             [ngClass]="{'is-valid':documentDescription.valid,'is-invalid':documentDescription.invalid }"></textarea>
           <div *ngIf="f.submitted && documentDescription.invalid || documentDescription.invalid">
@@ -147,14 +147,16 @@
       <button class="btn btn-secondary mr-3" routerLink="/document">Cancel</button>
       <button 
       [disabled]="isEdit===false  || documentDescription.invalid || customer.invalid || contractTerm.invalid"
-        
        class="btn btn-success" (click)="updateDoc()">Update document</button>
         
+       <button class="btn btn-primary ml-3" (click)="saveAsPDF()">Save as PDF</button>
+
       <div><br></div>
       <small *ngIf="f.submitted && isFailed" class="form-text alert alert-danger">
         {{errorMessageUpdate}}
       </small>
     </div>
+   
   </form>
 </div>
 

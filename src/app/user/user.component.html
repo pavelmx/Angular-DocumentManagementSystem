@@ -1,8 +1,8 @@
 <div *ngIf="isLogin; else notLogin">
   <div *ngIf="role === 'ROLE_ADMIN';else notAdmin">
     <div class="row ml-2 mr-1">
-      <div class="col" (change)="setPage(0)" style="max-width: 250px">
-        <div class="">
+      <div class="col" (change)="setPage(0)" style="max-width: 250px;">
+          <div style="position: fixed;max-width: 250px;">
           <div class="text-center">
             <h4>Filter</h4>
           </div>
@@ -27,7 +27,7 @@
           </div>
         </div>
       </div>
-      <div class="col">
+      <div class="col ml-2">
         <div class="row align-items-end mb-1">
           <div class="col">
             <h1 class="display-4">Users ({{totalElements}})</h1>
@@ -36,7 +36,7 @@
             <button *ngIf="role === 'ROLE_ADMIN'" data-toggle="modal" data-target="#deleteall"
               class="btn btn-danger float-right">DeleteAll</button>
 
-            <div class="btn-group float-right mr-5 " role="group">
+            <div class="btn-group float-right mr-3" role="group">
               <div class="input-group-prepend">
                 <span class="input-group-text" id="basic-addon1">Sort by:</span>
               </div>

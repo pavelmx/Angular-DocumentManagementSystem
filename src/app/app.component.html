@@ -1,29 +1,37 @@
-<nav class="navbar navbar-dark bg-dark ">
-  <a class="navbar-brand mb-0 h1" style="color: white">Document Managament System</a>
-  <ul class="navbar-nav flex-row  " routerLinkActive="active">
-    <li *ngIf="authority" class="nav-item mr-4">
-      <a class="nav-link" routerLink="document-add">Create document!</a>
-    </li>
-    <li *ngIf="authority === 'admin'" class="nav-item mr-4">
-      <a class="nav-link" routerLink="user">Show users</a>
-    </li>
-    <li *ngIf="authority === 'admin'" class="nav-item mr-4">
-      <a class="nav-link" routerLink="document">Show documents</a>
-    </li>
-    <li *ngIf="authority === 'user'" class="nav-item mr-4">
-      <a class="nav-link" routerLink="document">Show my documents</a>
-    </li>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
+  <div class="container-fluid">
+    <a class="navbar-brand  h1" style="color: white">Document Managament System</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navres" >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navres">
+      <ul class="navbar-nav ml-auto " routerLinkActive="active">
+        <li *ngIf="authority" class="nav-item ">
+          <a class="nav-link" routerLink="document-add">Create document!</a>
+        </li>
+        <li *ngIf="authority === 'admin'" class="nav-item ">
+          <a class="nav-link" routerLink="user">Show users</a>
+        </li>
+        <li *ngIf="authority === 'admin'" class="nav-item ">
+          <a class="nav-link" routerLink="document">Show documents</a>
+        </li>
+        <li *ngIf="authority === 'user'" class="nav-item ">
+          <a class="nav-link" routerLink="document">Show my documents</a>
+        </li>
 
-    <li *ngIf="authority === 'user'" class="nav-item mr-2">
-      <a class="nav-link" routerLink="profile">{{username}}</a>
-    </li>
-    <li *ngIf="authority === 'admin'" class="nav-item mr-2">
-      <a class="nav-link" routerLink="profile">{{username}} (Admin)</a>
-    </li>
-    <button *ngIf="authority" class="btn btn-danger" (click)="logout()">Logout</button>
-  </ul>
-
+        <li *ngIf="authority === 'user'" class="nav-item ">
+          <a class="nav-link" routerLink="profile">{{username}}</a>
+        </li>
+        <li *ngIf="authority === 'admin'" class="nav-item ">
+          <a class="nav-link" routerLink="profile">{{username}} (Admin)</a>
+        </li>
+        <button *ngIf="authority" class="btn btn-danger" (click)="logout()">Logout</button>
+      </ul>
+    </div>
+  </div>
 </nav>
+
+
 
 <br><br>
 

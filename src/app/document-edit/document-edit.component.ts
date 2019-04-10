@@ -8,8 +8,7 @@ import { FileService } from '../services/file.service';
 import * as fileSaver from 'file-saver';
 import { Router } from '@angular/router';
 import { ToastService } from '../services/toast.service';
-import { Toast, ToastrService } from 'ngx-toastr';
-import { formatDate } from '@angular/common';
+import * as jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-document-edit',
@@ -52,19 +51,19 @@ export class DocumentEditComponent implements OnInit {
   ngOnInit() {
     if (!this.tokenStorage.isLogin()) {
       this.router.navigate(['/login']);
-    }else{
-    this.initToday();
+    } else {
+      this.initToday();
+      console.log(this.today)
+      this.userService.getByUsername(this.tokenStorage.getUsername())
+        .subscribe((data: any) => {
+          this.curUser = data;
+        });
 
-    this.userService.getByUsername(this.tokenStorage.getUsername())
-      .subscribe((data: any) => {
-        this.curUser = data;
-      });
+      this.curRole = this.tokenStorage.getAuthorities();
+      this.docId = window.sessionStorage.getItem("docId");
+      this.initDoc();
 
-    this.curRole = this.tokenStorage.getAuthorities();
-    this.docId = window.sessionStorage.getItem("docId");
-    this.initDoc();
-
-    this.isLogin = this.tokenStorage.isLogin();
+      this.isLogin = this.tokenStorage.isLogin();
     }
   }
 
@@ -75,7 +74,7 @@ export class DocumentEditComponent implements OnInit {
 
 
   initToday() {
-    this.day = new Date().getDay();
+    this.day = new Date().getDate();
     this.month = new Date().getMonth() + 1;
     this.year = new Date().getFullYear();
     if (this.day < 10) {
@@ -115,7 +114,8 @@ export class DocumentEditComponent implements OnInit {
     if (this.form.dateOfCreation === '')
       this.form.dateOfCreation = new Date();
     this.docService.updateDocument(this.curUser.id, this.form)
-      .subscribe(() => {        
+      .subscribe(() => {
+        this.initDoc();
         this.isFailed = false;
         this.toast.showSuccess("", "File updated successfully");
       },
@@ -167,7 +167,7 @@ export class DocumentEditComponent implements OnInit {
       this.selectedFile = undefined;
       this.show = false;
     }
-    
+
   }
 
   downloadFile() {
@@ -203,5 +203,40 @@ export class DocumentEditComponent implements OnInit {
         console.log("unsucces delete");
       });
   }
+
+  saveAsPDF() {
+
+    const doc = new jsPDF();
+    doc.setFont("Arial");
+    if (this.form.expired) {
+      doc.setTextColor(212, 3, 3);
+      doc.text("Document isn't valid!", 120, 20);
+    } else {
+      doc.setTextColor(2, 165, 2);
+      doc.text("Document valid", 120, 20);
+    }
+    doc.setTextColor(0, 0, 0);
+    doc.text(this.today, 120, 30);//now
+    doc.text("Owner: " + this.curUser.username, 120, 40);
+    doc.text(doc.splitTextToSize("Customer: " + this.form.customer, 70), 120, 50);
+    doc.setFontStyle("bold");
+    doc.text(doc.splitTextToSize(this.form.title, 100), 50, 70);
+    doc.setFontStyle("");
+    doc.text("ID: " + this.form.id, 20, 90);
+    doc.text("Document term: " + this.form.contractTerm + " days  (from  " + this.form.dateOfCreation +
+      "  to  " + 
+      this.addDays(new Date(this.form.dateOfCreation), this.form.contractTerm).toISOString().substr(0, 10) 
+      + ")", 20, 100);
+    doc.text("Description: ", 20, 130);
+    doc.text(doc.splitTextToSize(this.form.documentDescription, 160), 30, 140);
+
+    doc.save(this.form.title + ".pdf");
+    this.toast.showSuccess("", "Save as PDF succesfully");
+  }
+
+  addDays(date: Date, days: number): Date {
+    date.setDate(date.getDate() + days);
+    return date;
+}
 
 } 
