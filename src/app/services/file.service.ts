@@ -17,10 +17,10 @@ export class FileService {
   constructor(private http: HttpClient, private tokenStorage: TokenStorageService) { }
 
   
-  public uploadFile(file: File, id: number): Observable<any> {
+  public uploadFile(file: File, id: number, kindOfContract: string): Observable<any> {
     const formdata = new FormData();
     formdata.append('file', file, file.name);
-    return this.http.post<any>(this.fileUrl + "upload/" + id, formdata, {reportProgress: true, observe: 'events'})
+    return this.http.post<any>(this.fileUrl + "upload/" + id + "?kind=" + kindOfContract, formdata, {reportProgress: true, observe: 'events'})
     .pipe(
       map((event) => {
         switch (event.type) {  
@@ -37,15 +37,15 @@ export class FileService {
   }
 
  
-  downloadFile(filename: string) {      
-    return this.http.get(this.fileUrl + "download/" + filename, {responseType: 'blob' as 'json' });
+  downloadFile(filename: string, kindOfContract: string) {      
+    return this.http.get(this.fileUrl + "download/" + filename + "?kind=" + kindOfContract, {responseType: 'blob' as 'json' });
   }
 
-  deleteFile(filename: string) {     
-    return this.http.delete(this.fileUrl + "delete/" + filename);
+  deleteFile(filename: string, kindOfContract: string) {     
+    return this.http.delete(this.fileUrl + "delete/" + filename + "?kind=" + kindOfContract);
   }
 
-  private getEventMessage(event: HttpEvent<any>, file: File) {
+   getEventMessage(event: HttpEvent<any>, file: File) {
     switch (event.type) {
       case HttpEventType.Sent:
         return 'Uploading file "${file.name}" of size ${file.size}.';

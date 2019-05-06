@@ -4,19 +4,25 @@ import { UserService } from '../services/user.service';
 import { TokenStorageService } from '../auth/token-storage.service';
 import { Router } from '@angular/router';
 import { ToastService } from '../services/toast.service';
-import { load } from '@angular/core/src/render3';
+import { fadeFilter, fadeTableItem, fadePaginator, fadeTable, fadeNameTable } from '../animations/animation';
+
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  styleUrls: ['./profile.component.css'],
+  animations: [
+    fadeFilter, fadeNameTable 
+  ]
 })
 export class ProfileComponent implements OnInit {
 
   form: any = {};
   curUser: User;
-  isLogin = false;
-  load = false;
+  isLogin: boolean = false;
+  load: boolean = false;
+  showSpinner: boolean;
+  isEdit: boolean = false;
 
   constructor(
     private userService: UserService,
@@ -33,8 +39,10 @@ export class ProfileComponent implements OnInit {
   }
 
   initUser() {
+    this.showSpinner = true;
     this.userService.getByUsername(this.tokenStorage.getUsername())
       .subscribe((data: any) => {
+        this.showSpinner = false;
         this.curUser = data;
         this.form.id = this.curUser.id;
         this.form.email = this.curUser.email;
@@ -42,30 +50,35 @@ export class ProfileComponent implements OnInit {
         this.form.username = this.curUser.username;
         this.form.activationCode = this.curUser.activationCode;
         this.form.password = this.curUser.password;
+        this.form.adress = this.curUser.adress;
         this.form.newpassword = '';
       });
   }
 
-  updatePassword() {
-    this.load = true;
-    var openedToast = null;
-    openedToast = this.toast.showInfo("", "Check password...");
-    this.userService.updatePass(this.curUser, this.form.newpassword)
+  update() {
+    this.load = true;   
+    this.form.password = this.form.newpassword;
+    console.log(this.form);
+    this.userService.updateUser(this.form)
       .subscribe(() => {
         this.initUser();
-        this.form.newpassword = null;
-        this.toast.deleteToast(openedToast);
-        this.toast.showSuccess("", "Password changed successfully. Check your email");
+        this.form.newpassword = null;        
+        this.toast.showSuccess("", "Account changed successfully.");
         this.load = false;
+        this.isEdit = false;
       },
         error => {
           console.log(error);
-          this.form.newpassword = '';
-          this.toast.deleteToast(openedToast);
+          this.form.newpassword = '';          
           this.toast.showError("", error.error.message);
           this.load = false;
-          
+          this.isEdit = false;
+          this.initUser();
         });
+  }
+
+  change() {   
+    this.isEdit = true;
   }
 
 }

@@ -1,0 +1,230 @@
+<div class="container" *ngIf="isLogin; else notLogin">
+  <div class="text-center" >
+    <h1 *ngIf=isEdit class="display-4 ">{{form.title}}*</h1>
+    <h1 *ngIf=!isEdit class="display-4 ">{{form.title}}</h1>
+  </div>
+
+  <div @fadeFilter>
+    <h3 *ngIf="form.active == true" style="color:green">Active document</h3>
+    <h3 *ngIf="form.active == false" style="color:red">Expired document</h3>
+  <hr>
+  <label>Attached file</label>
+  <a data-toggle="collapse" href="#collapseAtt" role="button" aria-expanded="false" aria-controls="collapseExample">
+    *</a>
+  <div class="collapse" id="collapseAtt">
+    <small class="form-text alert alert-info">
+      File size can't be more <strong>50MB</strong>
+    </small>
+  </div>
+  
+  <div class="row">
+    <div class="col">
+      <div class="input-group">
+        <input type="text" class="form-control" readonly [(ngModel)]="form.filename" #filename="ngModel"
+          aria-describedby="button-addon4" placeholder="Attached file not found">
+        <div class="input-group-append" id="button-addon4">
+          <button class="btn btn-danger" [hidden]="!form.filename" (click)="deleteFile(form.filename)"
+            type="button">Delete file</button>
+          <button class="btn btn-success" [hidden]="!form.filename" (click)="downloadFile()" type="button">Download
+          </button>
+          <button class="btn btn-warning" type="button" [hidden]="show || form.filename" (click)=showUploadPanel()>Update</button>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div *ngIf="show" class="col" style="max-width: 280px">
+      <div class="input-group">
+        <div class="custom-file">
+          <input type="file"  class="form-control" aria-describedby="inputGroupFileAddon04" id="inputGroupFile04"
+            (change)="selectFile($event)">
+          <label class="custom-file-label" for="inputGroupFile04"></label>
+        </div>
+        <div class="input-group-append">
+          <button class="btn btn-warning" [disabled]="!selectedFile" id="inputGroupFileAddon04" type="button"
+            (click)="uploadFile()">Upload file</button>
+          <button class="btn btn-danger" type="button" (click)=showUploadPanel()>Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="uploadResponse.status === 'progress'">
+    <div class="progress" style="height: 1px;">
+      <div class="progress-bar" [style.width.%]="uploadResponse.message" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+      </div>
+    </div>    
+  </div>
+  
+  <br><hr><br>
+  <form @fadeFilter (change)="change()"  #f="ngForm" novalidate>
+    <div class="row">
+      <div class="col-2">
+        <label for="id">Id</label>
+        <input type="text" class="form-control" placeholder="auto complete" name="id" [(ngModel)]="form.id"
+          #id="ngModel" disabled />
+      </div>
+      <div class="col-3">
+        <label for="dateOfCreation">Date of creation</label>
+        <input type="text" class="form-control" placeholder="auto complete" name="dateOfCreation" [(ngModel)]="form.dateOfCreation"
+          #dateOfCreation="ngModel" disabled />
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="title">Title</label>
+          <a data-toggle="collapse" href="#collapseTitle" role="button" aria-expanded="false"
+            aria-controls="collapseExample">
+            *</a>
+          <div class="collapse" id="collapseTitle">
+            <small class="form-text alert alert-info">
+              Be careful, the title is set <strong>1 time</strong> and after successful creation of the document it
+              <strong>can't be changed</strong>
+            </small>
+          </div>
+          <input type="text" class="form-control" name="title" [(ngModel)]="form.title" #title="ngModel" required
+            minlength="10"
+            [ngClass]="{'is-valid':title.valid && title.touched,'is-invalid':title.invalid && title.touched}" />
+          <div *ngIf="f.submitted && title.invalid || title.touched && title.invalid">
+            <small class="form-text alert alert-warning" *ngIf="title.errors.required">Title is required</small>
+            <small class="form-text alert alert-warning" *ngIf="title.errors.minlength">Title must be at least 10
+              characters</small>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col-4">
+        <div class="form-group">
+          <label for="clientFullName">Client full name</label>
+          <input type="text" class="form-control" name="clientFullName" [(ngModel)]="form.clientFullName"
+            #clientFullName="ngModel" required
+            [ngClass]="{'is-valid':clientFullName.valid && clientFullName.touched,'is-invalid':clientFullName.invalid && clientFullName.touched}" />
+          <div *ngIf="f.submitted && clientFullName.invalid || clientFullName.touched && clientFullName.invalid">
+            <small class="form-text alert alert-warning" *ngIf="clientFullName.errors.required">Client full name is
+              required</small>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="clientAdress">Client adress</label>
+          <input type="text" class="form-control" name="clientAdress" [(ngModel)]="form.clientAdress"
+            #clientAdress="ngModel" required
+            [ngClass]="{'is-valid':clientAdress.valid && clientAdress.touched,'is-invalid':clientAdress.invalid && clientAdress.touched}" />
+          <div *ngIf="f.submitted && clientAdress.invalid || clientAdress.touched && clientAdress.invalid">
+            <small class="form-text alert alert-warning" *ngIf="clientAdress.errors.required">Client adress is
+              required</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- gggggggggggggggggggggg -->
+
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          <label for="saleObject">Sale object</label>
+          <input type="text" class="form-control" name="saleObject" [(ngModel)]="form.saleObject" #saleObject="ngModel"
+            required
+            [ngClass]="{'is-valid':saleObject.valid && saleObject.touched,'is-invalid':saleObject.invalid && saleObject.touched}" />
+          <div *ngIf="f.submitted && saleObject.invalid || saleObject.touched && saleObject.invalid">
+            <small class="form-text alert alert-warning" *ngIf="saleObject.errors.required">Sale object is
+              required</small>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="salingPrice">Sale price</label>
+          <div class="input-group">
+            <input type="number" class="form-control" name="salingPrice" [(ngModel)]="form.salingPrice"
+              #salingPrice="ngModel" required
+              [ngClass]="{'is-valid':salingPrice.valid && salingPrice.touched,'is-invalid':salingPrice.invalid && salingPrice.touched}" />
+            <div class="input-group-append">
+              <span class="input-group-text" id="basic-addon2">$</span>
+            </div>
+          </div>
+          <div *ngIf="f.submitted && salingPrice.invalid || salingPrice.touched && salingPrice.invalid">
+            <small class="form-text alert alert-warning" *ngIf="salingPrice.errors.required">Saling price is
+              required</small>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="warrantyPeriod">Warranty period</label>          
+          
+          <div class="input-group">
+          <input type="number" min="1" class="form-control" name="warrantyPeriod" [(ngModel)]="form.warrantyPeriod"
+            #warrantyPeriod="ngModel" required
+            [ngClass]="{'is-valid':warrantyPeriod.valid && warrantyPeriod.touched,'is-invalid':warrantyPeriod.invalid && warrantyPeriod.touched}" />
+            <div class="input-group-append">
+              <span class="input-group-text" id="basic-addon2">days</span>
+            </div>
+          </div>
+            <div *ngIf="f.submitted && warrantyPeriod.invalid || warrantyPeriod.touched && warrantyPeriod.invalid">
+            <small class="form-text alert alert-warning" *ngIf="warrantyPeriod.errors.required">Contract term is
+              required</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- gggggggggggggggggggggg -->
+
+    <div class="row ">
+      <div class="col">
+        <div class="form-group">
+          <label for="otherInfo">Other info</label>
+          <textarea maxlength="1000" class="form-control" name="otherInfo" rows="3" [(ngModel)]="form.otherInfo"
+            #otherInfo="ngModel"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <hr>
+      <button *ngIf="!isEdit" class="btn btn-secondary mr-3" routerLink="/document-pattern" 
+      (click)="cancel()">Cancel</button>
+      <button *ngIf="isEdit" class="btn btn-secondary mr-3" 
+      data-toggle="modal" data-target="#editsale">Cancel</button>
+      <button  [disabled]="isEdit===false  || f.form.invalid" (click)="updateDoc()" class="btn btn-success">Update document</button>
+      <div><br></div>
+      <small *ngIf="f.submitted && isFailed" class="form-text alert alert-danger">
+        {{errorMessage}}
+      </small>
+    </div>
+  </form>
+</div>
+</div>
+<div class="modal fade" id="editsale" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="exampleModalCenterTitle">Confirm the action</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h6>Are you sure you want to cancel changes?</h6>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+          <button type="button" data-dismiss="modal" routerLink="/document-pattern" (click)="cancel()"
+           class="btn btn-success">Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<ng-template #notLogin>
+  <div class="alert alert-danger" role="alert">
+    <h2 class="alert-heading">Oops...</h2>
+    <hr>
+    <h5 class="mb-0">Unauthorized users are denied access. Please <a routerLink="/login" class="alert-link">login</a>!
+    </h5>
+  </div>
+</ng-template>

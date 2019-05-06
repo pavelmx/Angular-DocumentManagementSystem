@@ -4,12 +4,17 @@ import { User } from '../models/user.model';
 import { TokenStorageService } from '../auth/token-storage.service';
 import { Router } from '@angular/router';
 import { ToastService } from '../services/toast.service';
-import { Filter } from '../models/filter.model';
+import { fadeFilter, fadeTableItem, fadePaginator, fadeTable, fadeNameTable } from '../animations/animation';
+import { FilterObject } from '../models/filterObj.model';
+
 
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
-  styleUrls: ['./user.component.css']
+  styleUrls: ['./user.component.css'],
+  animations: [
+    fadeFilter, fadeTableItem, fadePaginator, fadeTable, fadeNameTable
+  ]
 })
 export class UserComponent implements OnInit {
 
@@ -24,7 +29,10 @@ export class UserComponent implements OnInit {
   pages: Array<number>;
   length: number;
   totalElements: number;
-  filter: Filter = new Filter();
+  filter: FilterObject = new FilterObject();
+  showSpinner: boolean;
+  showData: boolean;
+
 
   constructor(
     private userService: UserService,
@@ -88,10 +96,14 @@ export class UserComponent implements OnInit {
   }
 
   getAllUsers() {
+    this.showSpinner = true;
+    this.showData = false;
     this.initFilter();
     console.log(this.filter);
     this.userService.getUsersByFilter(this.page, this.size, this.filter)
       .subscribe((data: any) => {
+        this.showSpinner = false;
+        this.showData = true;
         this.listUsers = data['content'];
         this.pages = new Array(data['totalPages']);
         this.length = this.pages.length;

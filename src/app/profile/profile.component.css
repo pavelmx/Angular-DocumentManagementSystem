@@ -1,6 +1,6 @@
 
 .app {
-    background-image: url('https://www.sqlpower.ca/wp-content/uploads/2017/06/person-1824144_1280.png'), 
+    background-image: url('/../assets/images/account.png'), 
     linear-gradient( rgb(168, 168, 168), rgb(255, 255, 255));
     background-position: center;
     background-blend-mode: overlay;

@@ -1,22 +1,22 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
   <div class="container-fluid">
     <a class="navbar-brand  h1" style="color: white">Document Managament System</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navres" >
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navres">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navres">
-      <ul class="navbar-nav ml-auto " routerLinkActive="active">
+      <ul class="navbar-nav ml-auto " routerLinkActive="active">        
         <li *ngIf="authority" class="nav-item ">
-          <a class="btn btn-outline-success" routerLink="document-add">Create document!</a>
+          <a class="btn btn-outline-success" routerLink="document-add-pattern">Create document!</a>
         </li>
         <li *ngIf="authority === 'admin'" class="nav-item ">
-          <a class="nav-link" routerLink="user">Show users</a>
+          <a class="nav-link" routerLink="user">Show all users</a>
         </li>
         <li *ngIf="authority === 'admin'" class="nav-item ">
-          <a class="nav-link" routerLink="document">Show documents</a>
+          <a class="nav-link" routerLink="document-pattern">Show documents</a>
         </li>
         <li *ngIf="authority === 'user'" class="nav-item ">
-          <a class="nav-link" routerLink="document">Show my documents</a>
+          <a class="nav-link" routerLink="document-pattern">Show my documents</a>
         </li>
 
         <li *ngIf="authority === 'user'" class="nav-item ">
@@ -25,137 +25,221 @@
         <li *ngIf="authority === 'admin'" class="nav-item ">
           <a class="nav-link" routerLink="profile">{{username}} (Admin)</a>
         </li>
-        <button *ngIf="authority" class="btn btn-danger" (click)="logout()">Logout</button>
+
+        <li *ngIf="!authority" class="nav-item ">
+          <a class="btn btn-outline-success" routerLink="" data-toggle="modal" data-target="#login">Login</a>
+        </li>
+        <li *ngIf="!authority" class="nav-item ">
+          <a class="btn btn-outline-primary" routerLink="" data-toggle="modal" data-target="#reg">Register</a>
+        </li>
+
+        <button *ngIf="authority" class="btn btn-danger" routerLink="/" (click)="logout()">Logout</button>
       </ul>
     </div>
   </div>
 </nav>
 
+<!-- home page -->
+<div @loginOut @fadeTableItem *ngIf="!authority" class="app ">
 
+  <div class="card bg-dark text-dark ">
+    <img src="../../assets/images/home0.jpg" class="d-block w-100 blur">
+    <div class="card-img-overlay ">
+      <h1 class="display-1 ">DMS</h1>
+      <h2>Document Management System</h2>
+    </div>
+  </div>
 
+  <div class="container text-center">
 
-
-<div *ngIf="!authority" class="app full">
-<div *ngIf="isLogin">
-
-  <div *ngIf=!authority class="container text-center form" style="max-width:400px;">
-    <br>
-    <h1 class="display-4 text-center" >Login form</h1>
-
+    <h1 class="display-4">Reduce document creation time</h1>
     <hr>
-    <form name="form1" (ngSubmit)="f.form.valid && onSubmitl()" #f="ngForm" novalidate>
-      <div class="form-group">
+    <h4>Sales teams spend about 40% of the time creating documents</h4>
 
-        <input type="text" class="form-control" name="username" placeholder="Username" [(ngModel)]="form1.username"
-          #username="ngModel" required minlength="5"
-          [ngClass]="{'is-valid':username.valid && username.touched,'is-invalid':username.invalid && username.touched}" />
-        <div *ngIf="username.touched && username.invalid">
-          <small class="form-text alert alert-danger" *ngIf="username.errors.required">Username is required</small>
-          <small class="form-text alert alert-danger" *ngIf="username.errors.minlength">Username must be at least 5
-            characters</small>
-        </div>
-
-      </div>
-      <div class="form-group ">
-        <input type="password" class="form-control" name="password" placeholder="Password" [(ngModel)]="form1.password"
-          #password="ngModel" required minlength="6"
-          [ngClass]="{'is-valid':password.valid && password.touched,'is-invalid':password.invalid && password.touched}" />
-        <div *ngIf="password.touched && password.invalid">
-          <small class="form-text alert alert-danger" *ngIf="password.errors.required">Password is required</small>
-          <small class="form-text alert alert-danger" *ngIf="password.errors.minlength">Password must be at least 6
-            characters</small>
-        </div>
-      </div>
-      <div class="form-group">
-        <button class="btn btn-primary" routerLink="/profile" style="width:300px;"
-          [disabled]="f.form.invalid">Login</button>
-
-      </div>
-    </form>
+    <br><br>
+    <h1 class="display-4">Document generation</h1>
     <hr>
-    <p>Don't have an account?
-      <a routerLink=""  class="btn btn-outline-success" (click)="isLogin=false">Register</a>
-    </p>
+    <h4>Generate custom, error-free documents with partners faster than ever</h4>
+    <br><br>
+
+    <h1 class="display-4">Who use DMS?</h1>
+    <hr>
+    <div class="row">
+      <div class="col ">
+        <div class="box">
+          <h4>Sales reps</h4>
+          <hr>
+          <h6>Sales teams without document generation software spend a quarter or more of their
+            working
+            hours creating documents. With DMS, that time is reduced by as much as 80%.</h6>
+        </div>
+      </div>
+      <div class="col">
+        <div class="box">
+          <h4>Contract managers</h4>
+          <h6>Assembling new contracts is a time-consuming process that can be drastically
+            improved.
+            DMS answers the challenge by making it painless to create, customize, review, and
+            collaborate on new contracts or renewals.</h6>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="footer text-center">
+<h4 class="footertext">Vitebsk 2019</h4>
   </div>
 </div>
-<div *ngIf="!isLogin" class="container text-center form" style="max-width:500px;">
-  <br>
-  <h1 class="display-4" >Registration form</h1>
-  <hr>
-  <form name="form2" (ngSubmit)="f.form.valid && onSubmitr()" #f="ngForm" novalidate>
-    <div class="form-group">
-      <input type="text" class="form-control" placeholder="Your full name" name="name" [(ngModel)]="form2.name"
-        #name="ngModel" required maxlength="50" minlength="5"
-        [ngClass]="{'is-valid':name.valid && name.touched,'is-invalid':name.invalid && name.touched}" />
-      <div *ngIf="f.submitted && name.invalid || name.touched && name.invalid">
-        <small class="form-text alert alert-warning" *ngIf="name.errors.required">Name is required</small>
-        <small class="form-text alert alert-warning" *ngIf="name.errors.minlength">Name must be at least 5
-          characters</small>
-        <small class="form-text alert alert-warning" *ngIf="name.errors.maxlength">Name must be less than 50
-          characters</small>
-      </div>
-    </div>
-    <div class="form-group">
-      <input type="text" class="form-control" placeholder="Username" name="username" [(ngModel)]="form2.username"
-        #username="ngModel" required minlength="5" maxlength="20"
-        [ngClass]="{'is-valid':username.valid && username.touched,'is-invalid':username.invalid && username.touched}" />
-      <div *ngIf="f.submitted && username.invalid || username.touched && username.invalid">
-        <small class="form-text alert alert-warning" *ngIf="username.errors.required">Username is required</small>
-        <small class="form-text alert alert-warning" *ngIf="username.errors.minlength">Username must be at least 5
-          characters</small>
-        <small class="form-text alert alert-warning" *ngIf="username.errors.maxlength">Username must be less than 20
-          characters</small>
-      </div>
-    </div>
-    <div class="form-group">
 
-      <input type="text" class="form-control" placeholder="Email" name="email" [(ngModel)]="form2.email" #email="ngModel"
-        required email minlength="6" maxlength="50"
-        [ngClass]="{'is-valid':email.valid && email.touched,'is-invalid':email.invalid && email.touched}" />
-      <div *ngIf="f.submitted && email.invalid || email.touched && email.invalid">
-        <small class="form-text alert alert-warning" *ngIf="email.errors.required">Email is required</small>
-        <small class="form-text alert alert-warning" *ngIf="email.errors.email">Email must be a valid email
-          address</small>
-        <small class="form-text alert alert-warning" *ngIf="email.errors.maxlength">Email must be less than 50
-          characters</small>
-        <small class="form-text alert alert-warning" *ngIf="email.errors.minlength">Email must be at least 6
-          characters</small>
-      </div>
-    </div>
 
-    <div class="form-group">
-      <input type="password" class="form-control" placeholder="Password" name="password" [(ngModel)]="form2.password"
-        #password="ngModel" required minlength="6"
-        [ngClass]="{'is-valid':password.valid && password.touched,'is-invalid':password.invalid && password.touched}" />
-      <div *ngIf="f.submitted && password.invalid || password.touched && password.invalid">
-        <small class="form-text alert alert-warning" *ngIf="password.errors.required">Password is required</small>
-        <small class="form-text alert alert-warning" *ngIf="password.errors.minlength">Password must be at least 6
-          characters
-        </small>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <input type="password" class="form-control" placeholder="Confirm password" name="cpassword"
-        [(ngModel)]="form2.cpassword" #cpassword="ngModel" required
-        [ngClass]="{'is-valid':form2.password==form2.cpassword && cpassword.touched,'is-invalid':form2.password!=form2.cpassword && cpassword.touched || cpassword.invalid && cpassword.touched}" />
-      <div *ngIf="form2.password!=form2.cpassword ">
-        <small class="form-text alert alert-warning">Passwords don't match</small>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <button [disabled]="f.form.invalid || load || form2.password!=form2.cpassword" class="btn btn-primary"
-        style="width:400px;">Register account</button>
-
-    </div>
-  </form>
-  <hr>
-  Already have an account?
-  <a routerLink="" class="btn btn-outline-success"  (click)="isLogin=true">Login</a>
-
-</div>
-</div>
-<div *ngIf="authority">
+<!-- content -->
+<div *ngIf="authority">  
   <router-outlet></router-outlet>
+</div>
+
+<!-- form login -->
+<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" #closeLog>
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <form name="form1" #fl="ngForm" novalidate>
+          <div class="form-group">
+
+            <input type="text" class="form-control" name="usernamel" placeholder="Username"
+              [(ngModel)]="form1.usernamel" #usernamel="ngModel" required minlength="5"
+              [ngClass]="{'is-valid':usernamel.valid && usernamel.touched,'is-invalid':usernamel.invalid && usernamel.touched}" />
+            <div *ngIf="usernamel.touched && usernamel.invalid">
+              <small class="form-text alert alert-danger" *ngIf="usernamel.errors.required">Username is
+                required</small>
+              <small class="form-text alert alert-danger" *ngIf="usernamel.errors.minlength">Username must be at least
+                5
+                characters</small>
+            </div>
+
+          </div>
+          <div class="form-group ">
+            <input type="password" class="form-control" name="passwordl" placeholder="Password"
+              [(ngModel)]="form1.passwordl" #passwordl="ngModel" required minlength="6"
+              [ngClass]="{'is-valid':passwordl.valid && passwordl.touched,'is-invalid':passwordl.invalid && passwordl.touched}" />
+            <div *ngIf="passwordl.touched && passwordl.invalid">
+              <small class="form-text alert alert-danger" *ngIf="passwordl.errors.required">Password is
+                required</small>
+              <small class="form-text alert alert-danger" *ngIf="passwordl.errors.minlength">Password must be at least
+                6
+                characters</small>
+            </div>
+          </div>
+          <div class="form-group">
+            <button class="btn btn-primary" routerLink="/profile" style="width:300px;" [disabled]="fl.form.invalid"
+              (click)="onSubmitl(fl)">Login</button>
+
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- register form -->
+<div class="modal fade" id="reg" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title display-4" id="exampleModalCenterTitle">Registration form</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" #closeReg>
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <form name="form2" #fr="ngForm" novalidate>
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="Your full name" name="namer" [(ngModel)]="form2.namer"
+              #namer="ngModel" required maxlength="50" minlength="5"
+              [ngClass]="{'is-valid':namer.valid && namer.touched,'is-invalid':namer.invalid && namer.touched}" />
+            <div *ngIf="fr.submitted && namer.invalid || namer.touched && namer.invalid">
+              <small class="form-text alert alert-warning" *ngIf="namer.errors.required">Name is required</small>
+              <small class="form-text alert alert-warning" *ngIf="namer.errors.minlength">Name must be at least 5
+                characters</small>
+              <small class="form-text alert alert-warning" *ngIf="namer.errors.maxlength">Name must be less than 50
+                characters</small>
+            </div>
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="Username" name="usernamer"
+              [(ngModel)]="form2.usernamer" #usernamer="ngModel" required minlength="5" maxlength="20"
+              [ngClass]="{'is-valid':usernamer.valid && usernamer.touched,'is-invalid':usernamer.invalid && usernamer.touched}" />
+            <div *ngIf="fr.submitted && usernamer.invalid || usernamer.touched && usernamer.invalid">
+              <small class="form-text alert alert-warning" *ngIf="usernamer.errors.required">Username is
+                required</small>
+              <small class="form-text alert alert-warning" *ngIf="usernamer.errors.minlength">Username must be at
+                least
+                5
+                characters</small>
+              <small class="form-text alert alert-warning" *ngIf="usernamer.errors.maxlength">Username must be less
+                than
+                20
+                characters</small>
+            </div>
+          </div>
+          <div class="form-group">
+
+            <input type="text" class="form-control" placeholder="Email" name="emailr" [(ngModel)]="form2.emailr"
+              #emailr="ngModel" required email minlength="6" maxlength="50"
+              [ngClass]="{'is-valid':emailr.valid && emailr.touched,'is-invalid':emailr.invalid && emailr.touched}" />
+            <div *ngIf="fr.submitted && emailr.invalid || emailr.touched && emailr.invalid">
+              <small class="form-text alert alert-warning" *ngIf="emailr.errors.required">Email is required</small>
+              <small class="form-text alert alert-warning" *ngIf="emailr.errors.email">Email must be a valid email
+                address</small>
+              <small class="form-text alert alert-warning" *ngIf="emailr.errors.maxlength">Email must be less than 50
+                characters</small>
+              <small class="form-text alert alert-warning" *ngIf="emailr.errors.minlength">Email must be at least 6
+                characters</small>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <input type="password" class="form-control" placeholder="Password" name="passwordr"
+              [(ngModel)]="form2.passwordr" #passwordr="ngModel" required minlength="6"
+              [ngClass]="{'is-valid':passwordr.valid && passwordr.touched,'is-invalid':passwordr.invalid && passwordr.touched}" />
+            <div *ngIf="fr.submitted && passwordr.invalid || passwordr.touched && passwordr.invalid">
+              <small class="form-text alert alert-warning" *ngIf="passwordr.errors.required">Password is
+                required</small>
+              <small class="form-text alert alert-warning" *ngIf="passwordr.errors.minlength">Password must be at
+                least
+                6
+                characters
+              </small>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <input type="password" class="form-control" placeholder="Confirm password" name="cpassword"
+              [(ngModel)]="form2.cpassword" #cpassword="ngModel" required
+              [ngClass]="{'is-valid':form2.passwordr==form2.cpassword && cpassword.touched,'is-invalid':form2.passwordr!=form2.cpassword && cpassword.touched || cpassword.invalid && cpassword.touched}" />
+            <div *ngIf="form2.passwordr!=form2.cpassword ">
+              <small class="form-text alert alert-warning">Passwords don't match</small>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <button type="button" [disabled]="fr.form.invalid || load || form2.passwordr!=form2.cpassword"
+              class="btn btn-primary" (click)="onSubmitr(fr)">Register account
+              <span *ngIf=load class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            </button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
 </div>

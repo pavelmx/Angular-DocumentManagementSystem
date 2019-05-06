@@ -1,7 +1,7 @@
 <div *ngIf="isLogin; else notLogin" class="mt-5 ml-2 mr-3 mb-5">
   <div *ngIf="role === 'ROLE_ADMIN';else notAdmin">
     <div class="row ">
-      <div class="col mr-3 mt-5 filter" (change)="setPage(0)" >
+      <div @fadeFilter class="col mr-3 mt-5 filter" (change)="setPage(0)" >
           <div style="position: fixed;max-width: 250px;">
           <div class="text-center">
             <h4>Filter</h4>
@@ -28,11 +28,16 @@
         </div>
       </div>
       <div class="col ">
-        <div class="row align-items-end mb-1">
-          <div class="col">
+        <div @fadeNameTable class="row align-items-end mb-1">
+          <div class="col-6">
             <h1 class="display-4">Users ({{totalElements}})</h1>
           </div>
-          <div class="col">
+          <div class="col-1">
+              <div *ngIf="showSpinner" class="spinner-grow " role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+          <div @fadeTable *ngIf="listUsers.length > 0" class="col">
             <button *ngIf="role === 'ROLE_ADMIN'" data-toggle="modal" data-target="#deleteall"
               class="btn btn-danger float-right">DeleteAll</button>
 
@@ -59,22 +64,24 @@
             </div>
           </div>
         </div>
-        <div *ngIf="listUsers.length > 0; else falseLength">
-          <table class="table table-hover table-sm">
+        <div @fadeTable *ngIf="listUsers.length > 0; else falseLength">
+          <table  class="table table-hover table-sm">
             <thead class="thead-dark">
               <tr>
                 <th scope="col">Full name</th>
                 <th scope="col">Username</th>
                 <th scope="col">Email</th>
+                <th scope="col">Adress</th>
                 <th scope="col">Account</th>
                 <th scope="col">Option</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let user of listUsers; let i = index">
+              <tr @fadeTableItem *ngFor="let user of listUsers; let i = index">
                 <td>{{user.name}}</td>
                 <td>{{user.username}}</td>
                 <td>{{user.email}}</td>
+                <td>{{user.adress}}</td>
                 <td *ngIf="user.activationCode" style="color: red">Not confirm</td>
                 <td *ngIf="!user.activationCode" style="color: green">Confirm</td>
                 <td style="width: 10%">
@@ -83,10 +90,11 @@
               </tr>
             </tbody>
           </table>
+        </div>
           <div class="row container back"> 
               <div class="col " style="height: 70px"></div>
           </div>
-          <div class="row container forward">
+          <div @fadePaginator *ngIf="listUsers.length > 0" class="row container forward">
             <div class="col">
               <nav aria-label="Page navigation example">
                 <ul class="pagination ">
@@ -115,13 +123,16 @@
               </nav>
             </div>
           </div>
-        </div>
+        
       </div>
     </div>
   </div>
 </div>
 <ng-template #falseLength>
-  Empty list of users
+    <div @fadeTable *ngIf="showData" class="text-center ">
+        <br><br><br>
+        <h3 >Empty list of users</h3>    
+      </div>
 </ng-template>
 
 <ng-template #notLogin>

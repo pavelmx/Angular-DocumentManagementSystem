@@ -2,9 +2,25 @@
     padding-right: 20px
 }
 
+.container{
+    padding-top: 10%
+}
+
+.blur{
+    filter: blur(5px)
+}
+
+.card{
+    text-align: end;    
+}
+
+.card-img-overlay{
+    padding-top: 12%;
+    padding-right: 10%
+}
+
 .app {
-    background-image: url('https://www.ieronimakilawoffice.gr/wp-content/uploads/2015/07/blog_07.jpg'), 
-    linear-gradient( rgb(168, 168, 168), rgb(255, 255, 255));
+    background-image: linear-gradient( rgb(129, 169, 206), rgb(255, 255, 255));
     background-position: center;
     background-blend-mode: overlay;
 }
@@ -13,10 +29,31 @@
     margin-top: 10%
 }
 
-.full {
-    position: fixed;
-    margin: auto;
-    padding: 0;
-    width: 100%;
-    height: 100%;
+
+.box {    
+    overflow: hidden;
+    width: 360px;
+    grid-row-end: 400px;
+    transition: 0.5s;   
+    box-sizing: border-box;
+    padding: 30px;
+    box-shadow: -10px 25px 50px rgb(0,0,0,.2);     
+    text-shadow: 1px 1px 1px #fff;       
 }
+
+.footer{
+    margin-top: 50px;
+    background: rgb(81, 94, 117);
+    height: 100px;
+    width: 100%
+}
+
+.footertext{
+    padding-top: 25px;
+    color: #fff;
+
+}
+
+
+
+
