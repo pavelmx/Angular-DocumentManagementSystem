@@ -1,34 +1,43 @@
 <div class="container pt-3">
-  <div class="row">
-    <div class="col">
-      <h3>Choose pattern of new document: </h3>
-    </div>
-    <div class="col">
-      <select class="custom-select" [(ngModel)]="patternItem">
-        
-        <option value="1">Work contract</option>
-        <option value="2">Credit contract</option>
-        <option value="3">Cooperation contract</option>
-        <option value="4">Contract of sale</option>
-        <option value="5">Rental contract</option>
-      </select>
-    </div>
-  </div>
-  <div *ngIf="patternItem=='0'"></div>
-  <div *ngIf="patternItem=='1'">
-    <app-work-contract></app-work-contract>
-  </div>
-  <div *ngIf="patternItem=='2'">
-    <app-credit-contract></app-credit-contract>
-  </div>
-  <div *ngIf="patternItem=='3'">
-    <app-cooperation-contract></app-cooperation-contract>
-  </div>
-  <div *ngIf="patternItem=='4'">
-    <app-contract-of-sale></app-contract-of-sale>
-  </div>
-  <div *ngIf="patternItem=='5'">
-    <app-rental-contract></app-rental-contract>
-  </div>
+ 
+  <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" id="home-tab" data-toggle="tab" href="#work" role="tab" aria-controls="home"
+        aria-selected="true"><strong>WORK CONTRACT</strong></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="profile-tab" data-toggle="tab" href="#credit" role="tab" aria-controls="profile"
+        aria-selected="false"><strong>LOAN CONTRACT</strong></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="contact-tab" data-toggle="tab" href="#cooperation" role="tab" aria-controls="contact"
+        aria-selected="false"><strong>COOPERATION CONTRACT</strong></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="contact-tab" data-toggle="tab" href="#sale" role="tab" aria-controls="contact"
+        aria-selected="false"><strong>CONTRACT OF SALE</strong></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="contact-tab" data-toggle="tab" href="#rental" role="tab" aria-controls="contact"
+        aria-selected="false"><strong>LEASE CONTRACT</strong></a>
+    </li>
+  </ul>
 
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="work" role="tabpanel" aria-labelledby="home-tab">
+      <app-work-contract></app-work-contract>
+    </div>
+    <div class="tab-pane fade" id="credit" role="tabpanel" aria-labelledby="profile-tab">
+      <app-credit-contract></app-credit-contract>
+    </div>
+    <div class="tab-pane fade" id="cooperation" role="tabpanel" aria-labelledby="contact-tab">
+      <app-cooperation-contract></app-cooperation-contract>
+    </div>
+    <div class="tab-pane fade" id="sale" role="tabpanel" aria-labelledby="contact-tab">
+      <app-contract-of-sale></app-contract-of-sale>
+    </div>
+    <div class="tab-pane fade" id="rental" role="tabpanel" aria-labelledby="contact-tab">
+      <app-rental-contract></app-rental-contract>
+    </div>
+  </div>
 </div>

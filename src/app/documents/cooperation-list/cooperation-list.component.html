@@ -1,24 +1,34 @@
 <div *ngIf="isLogin; else notLogin" class="mt-5 ml-2 mr-3 mb-5">
   <div class="row ">
-    <div @fadeFilter class="col mr-3 mt-5 filter" (change)="setPage(0)" >
-      <div style="position: fixed;max-width: 250px;">
+    <div @fadeFilter class="col mr-3  filter" (change)="setPage(0)">
+      <div style="position: fixed;width: 250px;">
         <div class="text-center">
           <h4>Filter</h4>
         </div>
         <hr>
-        <label for="title">Filter by title</label>
-        <input type="text" placeholder="Title" class="form-control" name="title" [(ngModel)]="form.title"
+        <input type="text" placeholder="Enter title" class="form-control" name="title" [(ngModel)]="form.title"
           #title="ngModel">
-          <hr>
-        <label for="clientFullname">Filter by client full name</label>
-        <input type="text" placeholder="Client full name" class="form-control" name="clientFullname" [(ngModel)]="form.clientFullname"
-          #clientFullname="ngModel">        
-        <hr>
-        <label for="date">Filter between dates</label><br>
-        from:<input type="date" class="form-control" name="fromDate" [(ngModel)]="form.fromDate" #fromDate="ngModel" />
-        to:<input type="date" class="form-control" name="toDate" [(ngModel)]="form.toDate" #toDate="ngModel" />
-        <hr>
-        <label for="date">Filter by status</label>
+        <br>
+        <input type="text" placeholder="Enter client full name" class="form-control" name="clientFullname"
+          [(ngModel)]="form.clientFullname" #clientFullname="ngModel">
+        <br>
+        From date of creation:<input type="date" class="form-control" name="fromDate" [(ngModel)]="form.fromDate"
+          #fromDate="ngModel" />
+        To date of creation:<input type="date" class="form-control" name="toDate" [(ngModel)]="form.toDate"
+          #toDate="ngModel" />
+        <br>
+        <input type="text" placeholder="Enter kind of activity" class="form-control" name="kindOfActivity"
+          [(ngModel)]="form.kindOfActivity" #kindOfActivity="ngModel">
+        <br>
+        <div class="input-group">
+          <input type="number" placeholder="min term" class="form-control" name="fromCooperationTerm"
+            [(ngModel)]="form.fromCooperationTerm" #fromCooperationTerm="ngModel" />
+
+          <input type="number" placeholder="max term" class="form-control" name="toCooperationTerm"
+            [(ngModel)]="form.toCooperationTerm" #toCooperationTerm="ngModel" />
+
+        </div>
+        <br>
         <div class="btn-group " style="width: 100%" (click)="setPage(0)">
           <button type="button" class="btn btn-primary" (click)="form.isActive=''"
             [ngClass]="{'active':form.isActive==''}">All</button>
@@ -27,34 +37,33 @@
           <button type="button" class="btn btn-primary" (click)="form.isActive='false'"
             [ngClass]="{'active':form.isActive=='false'}">Expired</button>
         </div>
-        <hr>
+        <br><br>
         <div *ngIf="role == 'ROLE_ADMIN'">
-        <label for="date">Filter by user</label><br>
-        <div class="btn-group dropup" role="group" style="width: 100%">
-          <button id="btn1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-            {{label}}</button>
-          <div class="dropdown-menu" style="width: 100%" aria-labelledby="btn1" (click)="setPage(0)">
-            <a class="dropdown-item" (click)="form.username=''" (click)="label='All'">All</a>
-            <a *ngFor="let user of listUsers" class="dropdown-item"
-              (click)="form.username=user.username && label=user.username ">{{user.username}}</a>
+          <div class="btn-group dropup" role="group" style="width: 100%">
+            <button id="btn1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+              {{label}}</button>
+            <div class="dropdown-menu" style="width: 100%" aria-labelledby="btn1" (click)="setPage(0)">
+              <a class="dropdown-item" (click)="form.username=''" (click)="label='All users'">All users</a>
+              <a *ngFor="let user of listUsers" class="dropdown-item"
+                (click)="form.username=user.username && label=user.username ">{{user.username}}</a>
+            </div>
           </div>
         </div>
       </div>
-      </div>
     </div>
     <div class="col">
-      <div @fadeNameTable class="row align-items-end mb-1">        
-          <h1 class="display-4">Cooperation contracts ({{totalElements}})</h1>        
-         </div>
-        <div class="row">
-            <div class="col" style="margin-left:30%">
-                <div *ngIf="showSpinner" class="spinner-grow " role="status">
-                    <span class="sr-only">Loading...</span>
-                  </div>
-              </div>
+      <div @fadeNameTable class="row align-items-end mb-1">
+        <h1 class="display-4">Cooperation contracts ({{totalElements}})</h1>
+      </div>
+      <div class="row">
+        <div class="col" style="margin-left:30%">
+          <div *ngIf="showSpinner" class="spinner-grow " role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
         <div @fadeTable *ngIf="listDocs.length > 0" class="col-6">
           <button *ngIf="role === 'ROLE_ADMIN'" data-toggle="modal" data-target="#deleteall"
-            class="btn btn-danger float-right">DeleteAll</button>
+            class="btn btn-danger float-right">Delete all</button>
 
           <div class="btn-group float-right mr-3" role="group">
             <div class="input-group-prepend">
@@ -66,41 +75,50 @@
               <a class="dropdown-item" (click)="form.sortField='title'" (click)=" form.sortOrder='ASC'">Title: a ->
                 z</a>
               <a class="dropdown-item" (click)="form.sortField='title'" (click)="form.sortOrder='DESC'">Title: z ->
-                a</a>              
+                a</a>
               <a class="dropdown-item" (click)="form.sortField='dateOfCreation'" (click)=" form.sortOrder='DESC'">Date:
                 newest -> eldest</a>
               <a class="dropdown-item" (click)="form.sortField='dateOfCreation'" (click)=" form.sortOrder='ASC'">Date:
                 eldest -> newest</a>
+              <a class="dropdown-item" (click)="form.sortField='term'" (click)=" form.sortOrder='DESC'">Term:
+                max -> min</a>
+              <a class="dropdown-item" (click)="form.sortField='term'" (click)=" form.sortOrder='ASC'">Term:
+                min -> max</a>
             </div>
           </div>
         </div>
       </div>
-      
+
       <div @fadeTable *ngIf="listDocs.length > 0; else falseLength">
         <table class="table table-hover  table-sm" #tabledocs>
           <thead class="thead-dark">
             <tr>
 
               <th *ngIf="role == 'ROLE_ADMIN'" scope="col">User</th>
-              <th scope="col">Date</th>
+              <th scope="col">Created</th>
+              <th scope="col">Updated</th>
               <th scope="col">Title</th>
-              <th scope="col">Client</th>
-              <th scope="col">Status</th>
+              <th scope="col">Client full name</th>
+              <th scope="col">Kind of activity</th>
+              <th scope="col">Term (days)</th>
               <th scope="col">Options</th>
             </tr>
           </thead>
           <tbody>
-            
-            <tr @fadeTableItem *ngFor="let doc of listDocs ">
+
+            <tr @fadeTableItem *ngFor="let doc of listDocs "
+              [ngClass]="{'activeString':doc.active==true, 'expiredString':doc.active==false}">
               <td *ngIf="role == 'ROLE_ADMIN'">{{doc.user.username}}</td>
-              <td>{{doc.dateOfCreation}}</td>
+              <td>{{doc.dateOfCreation | date :'mediumDate'}}</td>
+              <td *ngIf="doc.lastChange==null"><em>(never)</em></td>
+              <td *ngIf="doc.lastChange!=null">{{doc.lastChange | date :'medium'}} </td>
               <td>{{doc.title}}</td>
               <td>{{doc.clientFullName}}</td>
-              <td style="width: 10%;" *ngIf=doc.active style="color:green">Active</td>
-              <td style="width: 10%;" *ngIf=!doc.active style="color:red">Expired</td>
-              <td style="width: 20%;">
-                <button routerLink="/cooperation-edit" (click)="docEdit(doc)" class="btn btn-warning mr-2">View /
-                  Edit</button>
+              <td>{{doc.kindOfActivity}}</td>
+              <td>{{doc.term}}</td>
+              <td style="width: 200px;">
+                <button routerLink="/cooperation-edit" (click)="docEdit(doc)"
+                  class="btn btn-warning mr-2">View/Edit</button>
                 <button type="button" (click)="deleteDocument(doc)" class="btn btn-danger">Delete</button>
               </td>
             </tr>
@@ -161,7 +179,7 @@
   <div class="alert alert-danger" role="alert">
     <h2 class="alert-heading">Oops...</h2>
     <hr>
-    <h5 class="mb-0">Unauthorized users are denied access. Please <a routerLink="/login" class="alert-link">login</a>!
+    <h5 class="mb-0">Unauthorized users are denied access. Please <a routerLink="/" class="alert-link">login</a>!
     </h5>
   </div>
 </ng-template>

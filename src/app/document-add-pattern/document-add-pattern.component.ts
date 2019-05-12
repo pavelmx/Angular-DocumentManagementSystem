@@ -7,8 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DocumentAddPatternComponent implements OnInit {
 
-  patternItem: string = '1';
-
+  
   constructor() { }
 
   ngOnInit() {

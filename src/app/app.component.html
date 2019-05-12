@@ -7,16 +7,16 @@
     <div class="collapse navbar-collapse" id="navres">
       <ul class="navbar-nav ml-auto " routerLinkActive="active">        
         <li *ngIf="authority" class="nav-item ">
-          <a class="btn btn-outline-success" routerLink="document-add-pattern">Create document!</a>
+          <a class="btn btn-outline-success" routerLink="document-add">Create document!</a>
         </li>
         <li *ngIf="authority === 'admin'" class="nav-item ">
-          <a class="nav-link" routerLink="user">Show all users</a>
+          <a class="nav-link" routerLink="users-list">Show all users</a>
         </li>
         <li *ngIf="authority === 'admin'" class="nav-item ">
-          <a class="nav-link" routerLink="document-pattern">Show documents</a>
+          <a class="nav-link" routerLink="documents-list">Show documents</a>
         </li>
         <li *ngIf="authority === 'user'" class="nav-item ">
-          <a class="nav-link" routerLink="document-pattern">Show my documents</a>
+          <a class="nav-link" routerLink="documents-list">Show my documents</a>
         </li>
 
         <li *ngIf="authority === 'user'" class="nav-item ">
@@ -243,3 +243,4 @@
     </div>
   </div>
 </div>
+

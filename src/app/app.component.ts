@@ -6,10 +6,8 @@ import { AuthService } from './auth/auth.service';
 import { ToastService } from './services/toast.service';
 import { SignUp } from './auth/signup';
 import { loginOut, fadeTableItem } from './animations/animation';
-import { ViewChild, ElementRef} from '@angular/core';
+import { ViewChild, ElementRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { User } from './models/user.model';
-import { UserService } from './services/user.service';
 
 
 @Component({
@@ -26,7 +24,7 @@ export class AppComponent implements OnInit {
   authority: string;
   username: string;
   token: string;
-  form1: any = {};  
+  form1: any = {};
   form2: any = {};
   loginInfo: Login;
   isLogin = true;
@@ -41,7 +39,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private tokenStorage: TokenStorageService,    
+    private tokenStorage: TokenStorageService,
     private toast: ToastService) { }
 
 
@@ -53,12 +51,12 @@ export class AppComponent implements OnInit {
     if (this.tokenStorage.getToken()) {
       this.token = this.tokenStorage.getToken();
       this.username = this.tokenStorage.getUsername();
-      this.roles = this.tokenStorage.getAuthorities();      
+      this.roles = this.tokenStorage.getAuthorities();
       if (this.roles[0] === 'ROLE_ADMIN') {
         this.authority = 'admin';
       } else {
         this.authority = 'user';
-      }    
+      }
     }
     console.log(this.authority);
   }
@@ -71,14 +69,15 @@ export class AppComponent implements OnInit {
     console.log(this.loginInfo);
     this.authService.signIn(this.loginInfo).subscribe(
       data => {
-        this.closeLog.nativeElement.click(); 
-        this.tokenStorage.saveToken(data.accessToken);
+        this.closeLog.nativeElement.click();
+        this.tokenStorage.saveToken(data.token);
         this.tokenStorage.saveUsername(data.username);
         this.tokenStorage.saveAuthorities(data.authorities);
+        this.tokenStorage.saveExpriration(data.expiration);
         this.init();
         form.resetForm();
-        console.log("ok");
-        console.log(this.authority);
+        console.log(this.tokenStorage.getExpriration());
+        console.log(new Date());
       },
       error => {
         console.log(error);
@@ -99,28 +98,30 @@ export class AppComponent implements OnInit {
       this.form2.passwordr);
     console.log(this.signupInfo);
     this.authService.signUp(this.signupInfo).subscribe(
-      data => {        
-        this.closeReg.nativeElement.click();       
+      data => {
+        this.closeReg.nativeElement.click();
         console.log(data);
         this.load = false;
-        this.isLogin = true;        
+        this.isLogin = true;
         this.toast.showSuccess("", "Successful registration!");
         this.toast.showWarning("", "Please check your email and confirm account");
         form.resetForm();
       },
       error => {
         console.log(error.error.message);
-        this.errorMessage = error.error.message;
-        this.load = false;        
+        //this.errorMessage = error.error.message;
+        this.load = false;
         this.toast.showError("", error.error.message);
       }
     );
 
   }
 
+  
+
   logout() {
     this.authority = null;
-    this.tokenStorage.signOut();    
+    this.tokenStorage.signOut();
   }
- 
+
 }

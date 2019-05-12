@@ -22,7 +22,7 @@ import { WorkEditComponent } from './documents-edit/work-edit/work-edit.componen
 const routes: Routes = [    
     
     {
-        path: 'document-pattern',
+        path: 'documents-list',
         component: DocumentPatternComponent
     },
     {
@@ -30,7 +30,7 @@ const routes: Routes = [
         component: WorkContractComponent
     },
     {
-        path: 'credit-contract',
+        path: 'loan-contract',
         component: CreditContractComponent
     },
     {
@@ -42,7 +42,7 @@ const routes: Routes = [
         component: ContractOfSaleComponent
     },
     {
-        path: 'rental-contract',
+        path: 'lease-contract',
         component: RentalContractComponent
     },
     {
@@ -50,7 +50,7 @@ const routes: Routes = [
         component: WorkEditComponent
     },
     {
-        path: 'credit-edit',
+        path: 'loan-edit',
         component: CreditEditComponent
     },
     {
@@ -62,15 +62,15 @@ const routes: Routes = [
         component: SaleEditComponent
     },
     {
-        path: 'rental-edit',
+        path: 'lease-edit',
         component: RentalEditComponent
     },
     {
-        path: 'document-add-pattern',
+        path: 'document-add',
         component: DocumentAddPatternComponent
     },
     {
-        path: 'user',
+        path: 'users-list',
         component: UserComponent
     },
     {

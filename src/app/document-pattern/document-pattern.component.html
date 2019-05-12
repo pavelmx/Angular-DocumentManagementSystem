@@ -1,19 +1,26 @@
 <div class="container pt-3">
-  <div class="row">
-    <div class="col">
-      <h3>Choose category of documents: </h3>
-    </div>
-    <div class="col">
-      <select class="custom-select" [(ngModel)]="patternItem">
-        
-        <option value="1">Work list</option>
-        <option value="2">Credit list</option>
-        <option value="3">Cooperation list</option>
-        <option value="4">Sale list</option>
-        <option value="5">Rental list</option>
-      </select>
-    </div>
-  </div>
+    <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a [ngClass]="{'active':patternItem=='1'}" class="nav-link" id="home-tab" data-toggle="tab" href="#work" role="tab" aria-controls="home"
+            aria-selected="true" (click)="patternItem='1'"><strong>WORK CONTRACT</strong></a>
+        </li>
+        <li class="nav-item">
+          <a [ngClass]="{'active':patternItem=='2'}" class="nav-link" id="profile-tab" data-toggle="tab" href="#credit" role="tab" aria-controls="profile"
+            aria-selected="false" (click)="patternItem='2'"><strong>LOAN CONTRACT</strong></a>
+        </li>
+        <li class="nav-item">
+          <a [ngClass]="{'active':patternItem=='3'}" class="nav-link" id="contact-tab" data-toggle="tab" href="#cooperation" role="tab" aria-controls="contact"
+            aria-selected="false" (click)="patternItem='3'"><strong>COOPERATION CONTRACT</strong></a>
+        </li>
+        <li class="nav-item">
+          <a [ngClass]="{'active':patternItem=='4'}" class="nav-link" id="contact-tab" data-toggle="tab" href="#sale" role="tab" aria-controls="contact"
+            aria-selected="false" (click)="patternItem='4'"><strong>CONTRACT OF SALE</strong></a>
+        </li>
+        <li class="nav-item">
+          <a [ngClass]="{'active':patternItem=='5'}" class="nav-link" id="contact-tab" data-toggle="tab" href="#rental" role="tab" aria-controls="contact"
+            aria-selected="false" (click)="patternItem='5'"><strong>LEASE CONTRACT</strong></a>
+        </li>
+      </ul>
 </div>
   
   <div *ngIf="patternItem=='1'">

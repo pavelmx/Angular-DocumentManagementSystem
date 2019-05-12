@@ -24,7 +24,7 @@
             </small>
           </div>
           <input type="text" class="form-control" name="title" [(ngModel)]="form.title" #title="ngModel" required
-            minlength="10"
+            minlength="10" maxlength="100" 
             [ngClass]="{'is-valid':title.valid && title.touched,'is-invalid':title.invalid && title.touched}" />
           <div *ngIf="f.submitted && title.invalid || title.touched && title.invalid">
             <small class="form-text alert alert-warning" *ngIf="title.errors.required">Title is required</small>
@@ -41,7 +41,7 @@
         <div class="form-group">
           <label for="clientFullName">Client full name</label>
           <input type="text" class="form-control" name="clientFullName" [(ngModel)]="form.clientFullName"
-            #clientFullName="ngModel" required
+            #clientFullName="ngModel" required maxlength="100"
             [ngClass]="{'is-valid':clientFullName.valid && clientFullName.touched,'is-invalid':clientFullName.invalid && clientFullName.touched}" />
           <div *ngIf="f.submitted && clientFullName.invalid || clientFullName.touched && clientFullName.invalid">
             <small class="form-text alert alert-warning" *ngIf="clientFullName.errors.required">Client full name is
@@ -53,7 +53,7 @@
         <div class="form-group">
           <label for="clientAdress">Client adress</label>
           <input type="text" class="form-control" name="clientAdress" [(ngModel)]="form.clientAdress"
-            #clientAdress="ngModel" required
+            #clientAdress="ngModel" required maxlength="255"
             [ngClass]="{'is-valid':clientAdress.valid && clientAdress.touched,'is-invalid':clientAdress.invalid && clientAdress.touched}" />
           <div *ngIf="f.submitted && clientAdress.invalid || clientAdress.touched && clientAdress.invalid">
             <small class="form-text alert alert-warning" *ngIf="clientAdress.errors.required">Client adress is
@@ -70,10 +70,10 @@
         <div class="form-group">
           <label for="kindOfActivity">Kind of activity</label>
           <input type="text" class="form-control" name="kindOfActivity" [(ngModel)]="form.kindOfActivity"
-            #kindOfActivity="ngModel" required
+            #kindOfActivity="ngModel" required maxlength="100"
             [ngClass]="{'is-valid':kindOfActivity.valid && kindOfActivity.touched,'is-invalid':kindOfActivity.invalid && kindOfActivity.touched}" />
           <div *ngIf="f.submitted && kindOfActivity.invalid || kindOfActivity.touched && kindOfActivity.invalid">
-            <small class="form-text alert alert-warning" *ngIf="kindOfActivity.errors.required">Saling price is
+            <small class="form-text alert alert-warning" *ngIf="kindOfActivity.errors.required">Kind of activity is
               required</small>
           </div>
         </div>
@@ -104,7 +104,7 @@
             [ngClass]="{'is-valid':clientResponsibility.valid && clientResponsibility.touched,'is-invalid':clientResponsibility.invalid && clientResponsibility.touched}"></textarea>
           <div
             *ngIf="f.submitted && clientResponsibility.invalid || clientResponsibility.touched && clientResponsibility.invalid">
-            <small class="form-text alert alert-warning" *ngIf="clientResponsibility.errors.required">Other info is
+            <small class="form-text alert alert-warning" *ngIf="clientResponsibility.errors.required">Client responsibility is
               required</small>
           </div>
         </div>
@@ -118,7 +118,7 @@
             [ngClass]="{'is-valid':creatorResponsibility.valid && creatorResponsibility.touched,'is-invalid':creatorResponsibility.invalid && creatorResponsibility.touched}"></textarea>
           <div
             *ngIf="f.submitted && creatorResponsibility.invalid || creatorResponsibility.touched && creatorResponsibility.invalid">
-            <small class="form-text alert alert-warning" *ngIf="creatorResponsibility.errors.required">Other info is
+            <small class="form-text alert alert-warning" *ngIf="creatorResponsibility.errors.required">Creator responsibility is
               required</small>
           </div>
         </div>
@@ -133,7 +133,7 @@
             [ngClass]="{'is-valid':terminationConditions.valid && terminationConditions.touched,'is-invalid':terminationConditions.invalid && terminationConditions.touched}"></textarea>
           <div
             *ngIf="f.submitted && terminationConditions.invalid || terminationConditions.touched && terminationConditions.invalid">
-            <small class="form-text alert alert-warning" *ngIf="terminationConditions.errors.required">Other info is
+            <small class="form-text alert alert-warning" *ngIf="terminationConditions.errors.required">Termination conditions is
               required</small>
           </div>
         </div>
@@ -154,12 +154,8 @@
 
     <div class="form-group">
       <hr>
-      <button class="btn btn-secondary mr-3" routerLink="/document">Cancel</button>
-      <button [disabled]="f.form.invalid" class="btn btn-success">Add new file</button>
-      <div><br></div>
-      <small *ngIf="f.submitted && isFailed" class="form-text alert alert-danger">
-        {{errorMessage}}
-      </small>
+      <button [disabled]="f.form.invalid" class="btn btn-success">Add new contract</button>
+      
     </div>
   </form>
 </div>
@@ -168,7 +164,7 @@
   <div class="alert alert-danger" role="alert">
     <h2 class="alert-heading">Oops...</h2>
     <hr>
-    <h5 class="mb-0">Unauthorized users are denied access. Please <a routerLink="/login" class="alert-link">login</a>!
+    <h5 class="mb-0">Unauthorized users are denied access. Please <a routerLink="/" class="alert-link">login</a>!
     </h5>
   </div>
 </ng-template>

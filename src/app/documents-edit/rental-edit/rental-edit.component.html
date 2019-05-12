@@ -79,7 +79,7 @@
             </small>
           </div>
           <input type="text" class="form-control" name="title" [(ngModel)]="form.title" #title="ngModel" required
-            minlength="10"
+            minlength="10" maxlength="100"
             [ngClass]="{'is-valid':title.valid && title.touched,'is-invalid':title.invalid && title.touched}" />
           <div *ngIf="f.submitted && title.invalid || title.touched && title.invalid">
             <small class="form-text alert alert-warning" *ngIf="title.errors.required">Title is required</small>
@@ -94,24 +94,24 @@
     <div class="row">
       <div class="col-4">
         <div class="form-group">
-          <label for="clientFullName">Client full name</label>
+          <label for="clientFullName">Lessee full name</label>
           <input type="text" class="form-control" name="clientFullName" [(ngModel)]="form.clientFullName"
-            #clientFullName="ngModel" required
+            #clientFullName="ngModel" required maxlength="100"
             [ngClass]="{'is-valid':clientFullName.valid && clientFullName.touched,'is-invalid':clientFullName.invalid && clientFullName.touched}" />
           <div *ngIf="f.submitted && clientFullName.invalid || clientFullName.touched && clientFullName.invalid">
-            <small class="form-text alert alert-warning" *ngIf="clientFullName.errors.required">Client full name is
+            <small class="form-text alert alert-warning" *ngIf="clientFullName.errors.required">Lessee full name is
               required</small>
           </div>
         </div>
       </div>
       <div class="col">
         <div class="form-group">
-          <label for="clientAdress">Client adress</label>
+          <label for="clientAdress">Lessee adress</label>
           <input type="text" class="form-control" name="clientAdress" [(ngModel)]="form.clientAdress"
-            #clientAdress="ngModel" required
+            #clientAdress="ngModel" required maxlength="255"
             [ngClass]="{'is-valid':clientAdress.valid && clientAdress.touched,'is-invalid':clientAdress.invalid && clientAdress.touched}" />
           <div *ngIf="f.submitted && clientAdress.invalid || clientAdress.touched && clientAdress.invalid">
-            <small class="form-text alert alert-warning" *ngIf="clientAdress.errors.required">Client adress is
+            <small class="form-text alert alert-warning" *ngIf="clientAdress.errors.required">Lessee adress is
               required</small>
           </div>
         </div>
@@ -123,53 +123,53 @@
     <div class="row">
       <div class="col">
         <div class="form-group">
-          <label for="rentalObject">Rental object</label>
+          <label for="rentalObject">Lease object</label>
           <input type="text" class="form-control" name="rentalObject" [(ngModel)]="form.rentalObject"
-            #rentalObject="ngModel" required
+            #rentalObject="ngModel" required maxlength="100"
             [ngClass]="{'is-valid':rentalObject.valid && rentalObject.touched,'is-invalid':rentalObject.invalid && rentalObject.touched}" />
           <div *ngIf="f.submitted && rentalObject.invalid || rentalObject.touched && rentalObject.invalid">
-            <small class="form-text alert alert-warning" *ngIf="rentalObject.errors.required">Sale object is
+            <small class="form-text alert alert-warning" *ngIf="rentalObject.errors.required">Lease object is
               required</small>
           </div>
         </div>
       </div>
       <div class="col">
           <div class="form-group">
-            <label for="rentalPrice">Rental price</label>
+            <label for="rentalPrice">Lease price</label>
             <div class="input-group">
               <input type="number" class="form-control" name="rentalPrice" [(ngModel)]="form.rentalPrice"
                 #rentalPrice="ngModel" required
                 [ngClass]="{'is-valid':rentalPrice.valid && rentalPrice.touched,'is-invalid':rentalPrice.invalid && rentalPrice.touched}" />
               <div class="input-group-append">
-                <span class="input-group-text" id="basic-addon2">$</span>
+                <span class="input-group-text" id="basic-addon2">$/day</span>
               </div>
             </div>
             <div *ngIf="f.submitted && rentalPrice.invalid || rentalPrice.touched && rentalPrice.invalid">
-              <small class="form-text alert alert-warning" *ngIf="rentalPrice.errors.required">Rental price is
+              <small class="form-text alert alert-warning" *ngIf="rentalPrice.errors.required">Lease price is
                 required</small>
             </div>
           </div>
         </div>
       <div class="col">
           <div class="form-group">
-            <label for="startRental">Start rental</label>           
+            <label for="startRental">Start lease</label>           
             <input type="date" min={{today}} class="form-control" name="startRental" [(ngModel)]="form.startRental"
               #startRental="ngModel" required
               [ngClass]="{'is-valid':startRental.valid && startRental.touched,'is-invalid':startRental.invalid && startRental.touched}" />
             <div *ngIf="f.submitted && startRental.invalid || startRental.touched && startRental.invalid">
-              <small class="form-text alert alert-warning" *ngIf="startRental.errors.required">Date of creation is
+              <small class="form-text alert alert-warning" *ngIf="startRental.errors.required">Start lease is
                 required</small>
             </div>
           </div>
         </div>
         <div class="col">
             <div class="form-group">
-              <label for="endRental">End rental</label>              
+              <label for="endRental">End lease</label>              
               <input type="date" min={{today}} class="form-control" name="endRental" [(ngModel)]="form.endRental"
                 #endRental="ngModel" required
                 [ngClass]="{'is-valid':endRental.valid && endRental.touched,'is-invalid':endRental.invalid && endRental.touched}" />
               <div *ngIf="f.submitted && endRental.invalid || endRental.touched && endRental.invalid">
-                <small class="form-text alert alert-warning" *ngIf="endRental.errors.required">Date of creation is
+                <small class="form-text alert alert-warning" *ngIf="endRental.errors.required">End lease is
                   required</small>
               </div>
             </div>
@@ -190,14 +190,12 @@
 
     <div class="form-group">
       <hr>
-      <button *ngIf="!isEdit" class="btn btn-secondary mr-3" routerLink="/document-pattern" 
-      (click)="cancel()">Cancel</button>
+      <button *ngIf="!isEdit" class="btn btn-secondary mr-3" routerLink="/documents-list" 
+      >Cancel</button>
       <button *ngIf="isEdit" class="btn btn-secondary mr-3" 
       data-toggle="modal" data-target="#editsale">Cancel</button>
-      <button  [disabled]="isEdit===false  || f.form.invalid" (click)="updateDoc()" class="btn btn-success">Update document</button><div><br></div>
-      <small *ngIf="f.submitted && isFailed" class="form-text alert alert-danger">
-        {{errorMessage}}
-      </small>
+      <button  [disabled]="isEdit===false  || f.form.invalid" (click)="updateDoc()" class="btn btn-success">Update document</button>
+      <button  class="btn btn-primary ml-3" (click)="saveAsPDF()">Save as PDF</button>
     </div>
   </form>
 </div>
@@ -217,7 +215,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-          <button type="button" data-dismiss="modal" routerLink="/document-pattern" (click)="cancel()"
+          <button type="button" data-dismiss="modal" routerLink="/documents-list" 
            class="btn btn-success">Yes</button>
         </div>
       </div>
@@ -228,7 +226,7 @@
   <div class="alert alert-danger" role="alert">
     <h2 class="alert-heading">Oops...</h2>
     <hr>
-    <h5 class="mb-0">Unauthorized users are denied access. Please <a routerLink="/login" class="alert-link">login</a>!
+    <h5 class="mb-0">Unauthorized users are denied access. Please <a routerLink="/" class="alert-link">login</a>!
     </h5>
   </div>
 </ng-template>

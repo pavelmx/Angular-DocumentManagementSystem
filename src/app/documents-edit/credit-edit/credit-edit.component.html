@@ -80,7 +80,7 @@
             </small>
           </div>
           <input type="text" class="form-control" name="title" [(ngModel)]="form.title" #title="ngModel" required
-            minlength="10"
+            minlength="10" maxlength="100"
             [ngClass]="{'is-valid':title.valid && title.touched,'is-invalid':title.invalid && title.touched}" />
           <div *ngIf="f.submitted && title.invalid || title.touched && title.invalid">
             <small class="form-text alert alert-warning" *ngIf="title.errors.required">Title is required</small>
@@ -95,24 +95,24 @@
     <div class="row">
       <div class="col-4">
         <div class="form-group">
-          <label for="clientFullName">Client full name</label>
+          <label for="clientFullName">Borrower full name</label>
           <input type="text" class="form-control" name="clientFullName" [(ngModel)]="form.clientFullName"
-            #clientFullName="ngModel" required
+            #clientFullName="ngModel" required maxlength="100"
             [ngClass]="{'is-valid':clientFullName.valid && clientFullName.touched,'is-invalid':clientFullName.invalid && clientFullName.touched}" />
           <div *ngIf="f.submitted && clientFullName.invalid || clientFullName.touched && clientFullName.invalid">
-            <small class="form-text alert alert-warning" *ngIf="clientFullName.errors.required">Client full name is
+            <small class="form-text alert alert-warning" *ngIf="clientFullName.errors.required">Borrower full name is
               required</small>
           </div>
         </div>
       </div>
       <div class="col">
         <div class="form-group">
-          <label for="clientAdress">Client adress</label>
+          <label for="clientAdress">Borrower adress</label>
           <input type="text" class="form-control" name="clientAdress" [(ngModel)]="form.clientAdress"
-            #clientAdress="ngModel" required
+            #clientAdress="ngModel" required maxlength="255"
             [ngClass]="{'is-valid':clientAdress.valid && clientAdress.touched,'is-invalid':clientAdress.invalid && clientAdress.touched}" />
           <div *ngIf="f.submitted && clientAdress.invalid || clientAdress.touched && clientAdress.invalid">
-            <small class="form-text alert alert-warning" *ngIf="clientAdress.errors.required">Client adress is
+            <small class="form-text alert alert-warning" *ngIf="clientAdress.errors.required">Borrower adress is
               required</small>
           </div>
         </div>
@@ -124,7 +124,7 @@
     <div class="row">
       <div class="col">
         <div class="form-group">
-          <label for="creditAmount">Credit amount</label>
+          <label for="creditAmount">Loan amount</label>
           <div class="input-group">
             <input type="number" class="form-control" name="creditAmount" [(ngModel)]="form.creditAmount"
               #creditAmount="ngModel" required
@@ -134,7 +134,7 @@
             </div>
           </div>
           <div *ngIf="f.submitted && creditAmount.invalid || creditAmount.touched && creditAmount.invalid">
-            <small class="form-text alert alert-warning" *ngIf="creditAmount.errors.required">Credit amount is
+            <small class="form-text alert alert-warning" *ngIf="creditAmount.errors.required">Loan amount is
               required</small>
           </div>
         </div>
@@ -188,14 +188,12 @@
 
     <div class="form-group">
       <hr>
-      <button *ngIf="!isEdit" class="btn btn-secondary mr-3" routerLink="/document-pattern" 
-      (click)="cancel()">Cancel</button>
+      <button *ngIf="!isEdit" class="btn btn-secondary mr-3" routerLink="/documents-list" 
+      >Cancel</button>
       <button *ngIf="isEdit" class="btn btn-secondary mr-3" 
       data-toggle="modal" data-target="#editsale">Cancel</button>
-      <button  [disabled]="isEdit===false  || f.form.invalid" (click)="updateDoc()" class="btn btn-success">Update document</button><div><br></div>
-      <small *ngIf="f.submitted && isFailed" class="form-text alert alert-danger">
-        {{errorMessage}}
-      </small>
+      <button  [disabled]="isEdit===false  || f.form.invalid" (click)="updateDoc()" class="btn btn-success">Update document</button>
+      <button  class="btn btn-primary ml-3" (click)="saveAsPDF()">Save as PDF</button>
     </div>
   </form>
 </div>
@@ -215,8 +213,8 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-          <button type="button" data-dismiss="modal" routerLink="/document-pattern" (click)="cancel()"
-           class="btn btn-success">yes</button>
+          <button type="button" data-dismiss="modal" routerLink="/documents-list" 
+           class="btn btn-success">Yes</button>
         </div>
       </div>
     </div>
@@ -226,7 +224,7 @@
   <div class="alert alert-danger" role="alert">
     <h2 class="alert-heading">Oops...</h2>
     <hr>
-    <h5 class="mb-0">Unauthorized users are denied access. Please <a routerLink="/login" class="alert-link">login</a>!
+    <h5 class="mb-0">Unauthorized users are denied access. Please <a routerLink="/" class="alert-link">login</a>!
     </h5>
   </div>
 </ng-template>

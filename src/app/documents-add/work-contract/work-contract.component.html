@@ -24,7 +24,7 @@
             </small>
           </div>
           <input type="text" class="form-control" name="title" [(ngModel)]="form.title" #title="ngModel" required
-            minlength="10"
+            minlength="10" maxlength="100"
             [ngClass]="{'is-valid':title.valid && title.touched,'is-invalid':title.invalid && title.touched}" />
           <div *ngIf="f.submitted && title.invalid || title.touched && title.invalid">
             <small class="form-text alert alert-warning" *ngIf="title.errors.required">Title is required</small>
@@ -39,24 +39,24 @@
     <div class="row">
       <div class="col-4">
         <div class="form-group">
-          <label for="clientFullName">Client full name</label>
+          <label for="clientFullName">Employee full name</label>
           <input type="text" class="form-control" name="clientFullName" [(ngModel)]="form.clientFullName"
-            #clientFullName="ngModel" required
+            #clientFullName="ngModel" required maxlength="100"
             [ngClass]="{'is-valid':clientFullName.valid && clientFullName.touched,'is-invalid':clientFullName.invalid && clientFullName.touched}" />
           <div *ngIf="f.submitted && clientFullName.invalid || clientFullName.touched && clientFullName.invalid">
-            <small class="form-text alert alert-warning" *ngIf="clientFullName.errors.required">Client full name is
+            <small class="form-text alert alert-warning" *ngIf="clientFullName.errors.required">Employee full name is
               required</small>
           </div>
         </div>
       </div>
       <div class="col">
         <div class="form-group">
-          <label for="clientAdress">Client adress</label>
+          <label for="clientAdress">Employee adress</label>
           <input type="text" class="form-control" name="clientAdress" [(ngModel)]="form.clientAdress"
-            #clientAdress="ngModel" required
+            #clientAdress="ngModel" required maxlength="255"
             [ngClass]="{'is-valid':clientAdress.valid && clientAdress.touched,'is-invalid':clientAdress.invalid && clientAdress.touched}" />
           <div *ngIf="f.submitted && clientAdress.invalid || clientAdress.touched && clientAdress.invalid">
-            <small class="form-text alert alert-warning" *ngIf="clientAdress.errors.required">Client adress is
+            <small class="form-text alert alert-warning" *ngIf="clientAdress.errors.required">Employee adress is
               required</small>
           </div>
         </div>
@@ -66,11 +66,23 @@
     <!-- gggggggggggggggggggggg -->
 
     <div class="row">
-      <div class="col-6">
+        <div class="col">
+            <div class="form-group">
+              <label for="placeOfWork">Place of work</label>
+              <input type="text" class="form-control" name="placeOfWork" [(ngModel)]="form.placeOfWork" #placeOfWork="ngModel"
+                required maxlength="100"
+                [ngClass]="{'is-valid':placeOfWork.valid && placeOfWork.touched,'is-invalid':placeOfWork.invalid && placeOfWork.touched}" />
+              <div *ngIf="f.submitted && placeOfWork.invalid || placeOfWork.touched && placeOfWork.invalid">
+                <small class="form-text alert alert-warning" *ngIf="placeOfWork.errors.required">Place of work is
+                  required</small>
+              </div>
+            </div>
+          </div>
+      <div class="col">
         <div class="form-group">
           <label for="position">Position</label>
           <input type="text" class="form-control" name="position" [(ngModel)]="form.position" #position="ngModel"
-            required
+            required maxlength="100"
             [ngClass]="{'is-valid':position.valid && position.touched,'is-invalid':position.invalid && position.touched}" />
           <div *ngIf="f.submitted && position.invalid || position.touched && position.invalid">
             <small class="form-text alert alert-warning" *ngIf="position.errors.required">Position is
@@ -78,7 +90,7 @@
           </div>
         </div>
       </div>      
-      <div class="col">
+      <div class="col-2">
         <div class="form-group">
           <label for="operationMode">Operation mode</label>
           <select required  class="custom-select" name="operationMode" [(ngModel)]="form.operationMode"  #operationMode="ngModel"         
@@ -92,7 +104,7 @@
           </div>
         </div>
       </div>
-      <div class="col">
+      <div class="col-3">
         <div class="form-group">
           <label for="startWork">Start work</label>
           <input type="date" class="form-control" min="{{today}}" name="startWork" [(ngModel)]="form.startWork"
@@ -190,12 +202,8 @@
 
     <div class="form-group">
       <hr>
-      <button class="btn btn-secondary mr-3" routerLink="/document">Cancel</button>
-      <button [disabled]="f.form.invalid" class="btn btn-success">Add new file</button>
-      <div><br></div>
-      <small *ngIf="f.submitted && isFailed" class="form-text alert alert-danger">
-        {{errorMessage}}
-      </small>
+      <button [disabled]="f.form.invalid" class="btn btn-success">Add new contract</button>
+      
     </div>
   </form>
 </div>
@@ -204,7 +212,7 @@
   <div class="alert alert-danger" role="alert">
     <h2 class="alert-heading">Oops...</h2>
     <hr>
-    <h5 class="mb-0">Unauthorized users are denied access. Please <a routerLink="/login" class="alert-link">login</a>!
+    <h5 class="mb-0">Unauthorized users are denied access. Please <a routerLink="/" class="alert-link">login</a>!
     </h5>
   </div>
 </ng-template>

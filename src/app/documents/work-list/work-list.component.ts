@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { ToastService } from 'src/app/services/toast.service';
 import { CooperationContract } from 'src/app/models/contracts/cooperation-contract.model';
 import { WorkContractService } from 'src/app/services/contracts/work-contract.service';
+import { FilterService } from 'src/app/services/filter.service';
 
 @Component({
   selector: 'app-work-list',
@@ -47,12 +48,13 @@ export class WorkListComponent implements OnInit {
     private userService: UserService,
     private tokenStorage: TokenStorageService,
     private router: Router,
-    private toast: ToastService) { }
+    private toast: ToastService,
+    private filterService: FilterService) { }
 
   ngOnInit() {
     this.userService.saveKindOfContract("1");
     if (!this.tokenStorage.isLogin()) {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/']);
     } else {
       this.init();
       this.getAllDocs();
@@ -70,8 +72,9 @@ export class WorkListComponent implements OnInit {
   init() {
     this.role = this.tokenStorage.getAuthorities()[0];
     this.username = this.tokenStorage.getUsername();
+    console.log(this.username + " " + this.role)
     this.isLogin = this.tokenStorage.isLogin();
-    this.label = "All";
+    this.label = "All users";
     this.sizes = [5, 10, 25, 50];
     this.form.username = "";
     this.form.title = "";   
@@ -83,6 +86,10 @@ export class WorkListComponent implements OnInit {
     this.form.clientFullname = '';
     this.form.clientAdress = '';      
     this.form.lastChange = ''; 
+    this.form.fromSalary= null;
+    this.form.toSalary= null;
+    this.form.position= '';
+    this.form.placeOfWork= '';
   }
 
   setSize(s: number) {
@@ -119,19 +126,22 @@ export class WorkListComponent implements OnInit {
     this.filter.toDate= this.form.toDate;
 
     this.filter.username= this.form.username;
-    /*this.filter.name= this.form.name;
-    this.filter.email= this.form.email;
-    this.filter.activationCode= this.form.activationCode;*/
+    this.filter.toSalary= this.form.toSalary;
+    this.filter.fromSalary= this.form.fromSalary;
+    this.filter.position= this.form.position;
+    this.filter.placeOfWork= this.form.placeOfWork;
   }
 
   getAllDocs(): void {
 
     this.showSpinner = true;
     this.showData = false;
-    if (this.role == 'ROLE_USER') {
-      this.form.username = this.username;
-    }
     this.initFilter();
+    
+    if (this.role == 'ROLE_USER') {
+      this.filter.username = this.username;
+    }
+    
     console.log(this.filter);
          
       this.workService.getByFilter(this.filter, this.page, this.size)
@@ -142,7 +152,7 @@ export class WorkListComponent implements OnInit {
         this.pages = new Array(data['totalPages']);
         this.length = this.pages.length;
         this.totalElements = data['totalElements'];
-        this.viewPages();        
+        this.pages = this.filterService.viewPages(this.length, this.page, this.pages);   
         console.log(this.listDocs);
       },
         error => {
@@ -154,7 +164,7 @@ export class WorkListComponent implements OnInit {
   deleteDocument(doc: WorkContract): void {
       this.workService.deleteById(doc.id).subscribe(data => {
         this.setPage(0);      
-        this.toast.showSuccess('', 'Cooperation contracts deleted successfully');
+        this.toast.showSuccess('', 'Work contracts deleted successfully');
       });
       
     console.log(doc.title);
@@ -163,7 +173,7 @@ export class WorkListComponent implements OnInit {
   deleteAll(): void {    
       this.workService.deleteAll().subscribe(data => {
         this.getAllDocs();
-        this.toast.showSuccess('', 'All cooperation contracts deleted successfully');
+        this.toast.showSuccess('', 'All work contracts deleted successfully');
       });
        
     console.log("all");
@@ -173,27 +183,8 @@ export class WorkListComponent implements OnInit {
     window.sessionStorage.setItem("docId", doc.id.toString());
   }
 
-  viewPages() {
-    if (this.length > 7) {
-      var totalPages = this.length;
-      var pageNumber = this.page + 1
-      console.log(totalPages)
-      var head = (pageNumber > 4) ? [1, -1] : [1, 2, 3];
-      var tail = (pageNumber < totalPages - 3) ? [-1, totalPages] : [totalPages - 2, totalPages - 1, totalPages];
-      var bodyBefore = (pageNumber > 4 && pageNumber < totalPages - 1) ? [pageNumber - 2, pageNumber - 1] : [];
-      var bodyAfter = (pageNumber > 2 && pageNumber < totalPages - 3) ? [pageNumber + 1, pageNumber + 2] : [];
-
-      var body = head.concat(bodyBefore).concat((pageNumber > 3 && pageNumber < totalPages - 2) ? [pageNumber] : []).concat(bodyAfter).concat(tail);
-      this.pages = body;
-    }
-    else {
-      var body2: number[] = [1];    
-      var i: number ;      
-      for (i = 2; i < this.length+1; i++) {
-        body2.push(i)
-      }
-      this.pages = body2;
-    }
-  }
+  
+    
+  
 
 }

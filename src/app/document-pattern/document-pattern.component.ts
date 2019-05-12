@@ -14,7 +14,9 @@ export class DocumentPatternComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    
     this.patternItem = this.userService.getKindOfContract();
+    console.log(this.patternItem)
   }
 
 }

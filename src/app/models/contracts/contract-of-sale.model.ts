@@ -12,7 +12,7 @@ export class ContractOfSale {
     lastChange: string;
     title: string;
     otherInfo: string;
-    kind: string;
+    
     user: User;
     filename: string;
 

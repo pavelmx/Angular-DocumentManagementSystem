@@ -47,9 +47,10 @@ export class ContractOfSaleComponent implements OnInit {
     console.log(this.form)
     this.docService.add(this.tokenStorage.getUsername(), this.form)
       .subscribe(data => {
+        this.userService.saveKindOfContract("4");
         this.isFailed = false;
-        this.router.navigate(['/document']);
-        this.toast.showSuccess("", "Document '" + data.title + "' created successfully");
+        this.router.navigate(['/documents-list']);
+        this.toast.showSuccess("", "Contract of sale '" + data.title + "' created successfully");
       },
         error => {
           console.log(error);

@@ -16,3 +16,13 @@
     max-width: 250px;
    
 }
+
+.expiredString{
+    color:rgb(241, 38, 38);
+    /* background-image: linear-gradient(to right, rgb(255, 117, 117), rgb(255, 255, 255)) */
+}
+
+.activeString{
+    color: rgb(21, 206, 21);
+    /* background-image: linear-gradient(to right, rgb(115, 247, 103), rgb(255, 255, 255)) */
+}

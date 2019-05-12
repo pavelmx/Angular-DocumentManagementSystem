@@ -49,14 +49,14 @@ export class RentalContractComponent implements OnInit {
     console.log(this.form)
     this.docService.add(this.tokenStorage.getUsername(), this.form)
       .subscribe(data => {
+        this.userService.saveKindOfContract("5");
         this.isFailed = false;
-        this.router.navigate(['/document']);
-        this.toast.showSuccess("", "Rental contract '" + data.title + "' created successfully");
+        this.router.navigate(['/documents-list']);
+        this.toast.showSuccess("", "Lease contract '" + data.title + "' created successfully");
       },
         error => {
           console.log(error);
           this.toast.showError("", error.error.message)
-          //this.errorMessage = error.error.message;
           this.isFailed = true;
           console.log(this.errorMessage)
         });

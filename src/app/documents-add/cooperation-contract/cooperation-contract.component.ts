@@ -48,13 +48,14 @@ export class CooperationContractComponent implements OnInit {
     console.log(this.form)
     this.docService.add(this.tokenStorage.getUsername(), this.form)
       .subscribe(data => {
+        this.userService.saveKindOfContract("3");
         this.isFailed = false;
-        this.router.navigate(['/document']);
-        this.toast.showSuccess("", "Document '" + data.title + "' created successfully");
+        this.router.navigate(['/documents-list']);        
+        this.toast.showSuccess("", "Cooperation contract '" + data.title + "' created successfully");
       },
         error => {
           console.log(error);
-          this.errorMessage = error.error.message;
+          this.toast.showError("", error.error.message)
           this.isFailed = true;
           console.log(this.errorMessage)
         });

@@ -110,7 +110,7 @@ export class UserComponent implements OnInit {
         this.totalElements = data['totalElements'];
       },
         error => {
-          this.errorMessage = error.error.message;
+          console.log(error.error.message);
         });
   }
 

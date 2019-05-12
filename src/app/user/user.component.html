@@ -7,16 +7,12 @@
             <h4>Filter</h4>
           </div>
           <hr>
-          <label for="title">Filter by username</label>
-          <input type="text" class="form-control" name="username" [(ngModel)]="form.username" #username="ngModel">
-          <hr>
-          <label for="title">Filter by name</label>
-          <input type="text" class="form-control" name="name" [(ngModel)]="form.name" #name="ngModel">
-          <hr>
-          <label for="title">Filter by email</label>
-          <input type="text" class="form-control" name="email" [(ngModel)]="form.email" #email="ngModel">
-          <hr>
-          <label for="title">Filter by account</label>
+          <input type="text" placeholder="Filter by username" class="form-control" name="username" [(ngModel)]="form.username" #username="ngModel">
+          <br>
+          <input type="text" placeholder="Filter by name" class="form-control" name="name" [(ngModel)]="form.name" #name="ngModel">
+          <br>
+          <input type="text" placeholder="Filter by email" class="form-control" name="email" [(ngModel)]="form.email" #email="ngModel">
+          <br>
           <div class="btn-group " style="width: 100%" (click)="setPage(0)">
             <button type="button" class="btn btn-primary" (click)="form.activationCode=''"
               [ngClass]="{'active':form.activationCode==''}">All</button>
@@ -28,18 +24,18 @@
         </div>
       </div>
       <div class="col ">
-        <div @fadeNameTable class="row align-items-end mb-1">
-          <div class="col-6">
+        <div @fadeNameTable class="row align-items-end mb-1">          
             <h1 class="display-4">Users ({{totalElements}})</h1>
           </div>
-          <div class="col-1">
+          <div class="row">
+          <div class="col" style="margin-left:30%">
               <div *ngIf="showSpinner" class="spinner-grow " role="status">
                   <span class="sr-only">Loading...</span>
                 </div>
             </div>
-          <div @fadeTable *ngIf="listUsers.length > 0" class="col">
+          <div @fadeTable *ngIf="listUsers.length > 0" class="col-6">
             <button *ngIf="role === 'ROLE_ADMIN'" data-toggle="modal" data-target="#deleteall"
-              class="btn btn-danger float-right">DeleteAll</button>
+              class="btn btn-danger float-right">Delete all</button>
 
             <div class="btn-group float-right mr-3" role="group">
               <div class="input-group-prepend">
@@ -64,6 +60,8 @@
             </div>
           </div>
         </div>
+      
+      
         <div @fadeTable *ngIf="listUsers.length > 0; else falseLength">
           <table  class="table table-hover table-sm">
             <thead class="thead-dark">
@@ -139,7 +137,7 @@
   <div class="alert alert-danger" role="alert">
     <h2 class="alert-heading">Oops...</h2>
     <hr>
-    <h5 class="mb-0">Unauthorized users are denied access. Please <a routerLink="/login" class="alert-link">login</a>!
+    <h5 class="mb-0">Unauthorized users are denied access. Please <a routerLink="/" class="alert-link">login</a>!
     </h5>
   </div>
 </ng-template>

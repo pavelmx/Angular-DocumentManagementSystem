@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, Output, EventEmitter } from '@angular/core';
 import { User } from '../models/user.model';
 import { UserService } from '../services/user.service';
 import { TokenStorageService } from '../auth/token-storage.service';
 import { Router } from '@angular/router';
 import { ToastService } from '../services/toast.service';
 import { fadeFilter, fadeTableItem, fadePaginator, fadeTable, fadeNameTable } from '../animations/animation';
+import { AppComponent } from '../app.component';
 
 
 @Component({
@@ -12,7 +13,7 @@ import { fadeFilter, fadeTableItem, fadePaginator, fadeTable, fadeNameTable } fr
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css'],
   animations: [
-    fadeFilter, fadeNameTable 
+    fadeFilter, fadeNameTable
   ]
 })
 export class ProfileComponent implements OnInit {
@@ -28,13 +29,17 @@ export class ProfileComponent implements OnInit {
     private userService: UserService,
     private tokenStorage: TokenStorageService,
     private router: Router,
-    private toast: ToastService) { }
+    private toast: ToastService,
+    ) { }
+
+
+
 
   ngOnInit() {
     this.initUser();
     this.isLogin = this.tokenStorage.isLogin();
     if (!this.tokenStorage.isLogin()) {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/']);
     }
   }
 
@@ -56,20 +61,25 @@ export class ProfileComponent implements OnInit {
   }
 
   update() {
-    this.load = true;   
+    this.load = true;
     this.form.password = this.form.newpassword;
-    console.log(this.form);
+    console.log(this.form.newpassword);
     this.userService.updateUser(this.form)
       .subscribe(() => {
         this.initUser();
-        this.form.newpassword = null;        
-        this.toast.showSuccess("", "Account changed successfully.");
+        if (this.form.newpassword === '') {
+          this.toast.showSuccess("", "Account changed successfully.");
+        } else {
+          this.toast.showSuccess("", "Account changed successfully.");
+          this.toast.showWarning("", "Check your email.");
+        }
         this.load = false;
         this.isEdit = false;
+        this.form.newpassword = null;
       },
         error => {
           console.log(error);
-          this.form.newpassword = '';          
+          this.form.newpassword = '';
           this.toast.showError("", error.error.message);
           this.load = false;
           this.isEdit = false;
@@ -77,7 +87,7 @@ export class ProfileComponent implements OnInit {
         });
   }
 
-  change() {   
+  change() {
     this.isEdit = true;
   }
 

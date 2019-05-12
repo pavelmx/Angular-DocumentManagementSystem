@@ -8,6 +8,7 @@ import { CreditContract } from 'src/app/models/contracts/credit-contract.model';
 import { FilterObject } from 'src/app/models/filterObj.model';
 import { User } from 'src/app/models/user.model';
 import { fadeFilter, fadeTableItem, fadePaginator, fadeTable, fadeNameTable } from '../../animations/animation';
+import { FilterService } from 'src/app/services/filter.service';
 
 
 @Component({
@@ -45,12 +46,13 @@ export class CreditListComponent implements OnInit {
     private userService: UserService,
     private tokenStorage: TokenStorageService,
     private router: Router,
-    private toast: ToastService) { }
+    private toast: ToastService,
+    private filterService: FilterService) { }
 
   ngOnInit() {
     this.userService.saveKindOfContract("2");
     if (!this.tokenStorage.isLogin()) {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/']);
     } else {
       this.init();
       this.getAllDocs();
@@ -69,7 +71,7 @@ export class CreditListComponent implements OnInit {
     this.role = this.tokenStorage.getAuthorities()[0];
     this.username = this.tokenStorage.getUsername();
     this.isLogin = this.tokenStorage.isLogin();
-    this.label = "All";
+    this.label = "All users";
     this.sizes = [5, 10, 25, 50];
     this.form.username = "";
     this.form.title = "";   
@@ -81,6 +83,12 @@ export class CreditListComponent implements OnInit {
     this.form.clientFullname = '';
     this.form.clientAdress = '';      
     this.form.lastChange = ''; 
+    this.form.toCreditAmount =null;
+    this.form.toAnnualInterest =null;
+    this.form.toTerm =null;
+    this.form.fromCreditAmount =null;
+    this.form.fromAnnualInterest =null;
+    this.form.fromTerm =null;
   }
 
   setSize(s: number) {
@@ -117,9 +125,12 @@ export class CreditListComponent implements OnInit {
     this.filter.toDate= this.form.toDate;
 
     this.filter.username= this.form.username;
-    /*this.filter.name= this.form.name;
-    this.filter.email= this.form.email;
-    this.filter.activationCode= this.form.activationCode;*/
+    this.filter.toCreditAmount =this.form.toCreditAmount;
+    this.filter.toAnnualInterest =this.form.toAnnualInterest;
+    this.filter.toTerm =this.form.toTerm;
+    this.filter.fromCreditAmount =this.form.fromCreditAmount;
+    this.filter.fromAnnualInterest =this.form.fromAnnualInterest;
+    this.filter.fromTerm =this.form.fromTerm;
   }
 
   getAllDocs(): void {
@@ -127,7 +138,7 @@ export class CreditListComponent implements OnInit {
     this.showSpinner = true;
     this.showData = false;
     if (this.role == 'ROLE_USER') {
-      this.form.username = this.username;
+      this.filter.username = this.username;
     }
     this.initFilter();
     console.log(this.filter);
@@ -140,7 +151,7 @@ export class CreditListComponent implements OnInit {
         this.pages = new Array(data['totalPages']);
         this.length = this.pages.length;
         this.totalElements = data['totalElements'];
-        this.viewPages();        
+        this.pages = this.filterService.viewPages(this.length, this.page, this.pages);         
         console.log(this.pages);
       },
         error => {
@@ -152,7 +163,7 @@ export class CreditListComponent implements OnInit {
   deleteDocument(doc: CreditContract): void {
       this.creditService.deleteById(doc.id).subscribe(data => {
         this.setPage(0);      
-        this.toast.showSuccess('', 'Credit contracts deleted successfully');
+        this.toast.showSuccess('', 'Loan contracts deleted successfully');
       });
       
     console.log(doc.title);
@@ -161,7 +172,7 @@ export class CreditListComponent implements OnInit {
   deleteAll(): void {    
       this.creditService.deleteAll().subscribe(data => {
         this.getAllDocs();
-        this.toast.showSuccess('', 'All credit contracts deleted successfully');
+        this.toast.showSuccess('', 'All loan contracts deleted successfully');
       });
        
     console.log("all");
@@ -171,27 +182,6 @@ export class CreditListComponent implements OnInit {
     window.sessionStorage.setItem("docId", doc.id.toString());
   }
 
-  viewPages() {
-    if (this.length > 7) {
-      var totalPages = this.length;
-      var pageNumber = this.page + 1
-      console.log(totalPages)
-      var head = (pageNumber > 4) ? [1, -1] : [1, 2, 3];
-      var tail = (pageNumber < totalPages - 3) ? [-1, totalPages] : [totalPages - 2, totalPages - 1, totalPages];
-      var bodyBefore = (pageNumber > 4 && pageNumber < totalPages - 1) ? [pageNumber - 2, pageNumber - 1] : [];
-      var bodyAfter = (pageNumber > 2 && pageNumber < totalPages - 3) ? [pageNumber + 1, pageNumber + 2] : [];
-
-      var body = head.concat(bodyBefore).concat((pageNumber > 3 && pageNumber < totalPages - 2) ? [pageNumber] : []).concat(bodyAfter).concat(tail);
-      this.pages = body;
-    }
-    else {
-      var body2: number[] = [1];    
-      var i: number ;      
-      for (i = 2; i < this.length+1; i++) {
-        body2.push(i)
-      }
-      this.pages = body2;
-    }
-  }
+  
 
 }

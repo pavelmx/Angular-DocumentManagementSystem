@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { CooperationContractService } from 'src/app/services/contracts/cooperation-contract.service';
 
-
 import * as fileSaver from 'file-saver';
 import { Router } from '@angular/router';
 import { fadeFilter, fadeTableItem, fadePaginator, fadeTable, fadeNameTable } from '../../animations/animation';
 
-import * as jsPDF from 'jspdf';
 import { User } from 'src/app/models/user.model';
 import { UserService } from 'src/app/services/user.service';
 import { TokenStorageService } from 'src/app/auth/token-storage.service';
 import { FileService } from 'src/app/services/file.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { CooperationContract } from 'src/app/models/contracts/cooperation-contract.model';
+import { PDFService } from 'src/app/services/pdf.service';
+import { formArrayNameProvider } from '@angular/forms/src/directives/reactive_directives/form_group_name';
 
 
 @Component({
@@ -51,7 +51,8 @@ export class CooperationEditComponent implements OnInit {
     private tokenStorage: TokenStorageService,
     private fileService: FileService,
     private router: Router,
-    private toast: ToastService) { }
+    private toast: ToastService,
+    private pdfService: PDFService) { }
 
 
   ngOnInit() {
@@ -64,7 +65,7 @@ export class CooperationEditComponent implements OnInit {
       this.userService.getByUsername(this.tokenStorage.getUsername())
         .subscribe((data: any) => {
           this.curUser = data;
-          
+
         });
 
       this.curRole = this.tokenStorage.getAuthorities();
@@ -99,7 +100,6 @@ export class CooperationEditComponent implements OnInit {
           this.form.lastChange = this.document.lastChange;
           this.form.title = this.document.title;
           this.form.otherInfo = this.document.otherInfo;
-          this.form.kind = this.document.kind;
           this.form.user = this.curUser;
           this.form.filename = this.document.filename;
           this.form.clientResponsibility = this.document.clientResponsibility;
@@ -143,34 +143,34 @@ export class CooperationEditComponent implements OnInit {
     if (this.form.filename != null) {
       this.deleteFile(this.form.filename);
     }
-    
-      if (this.selectedFile.size > 51200000) {// 50 MB
-        this.toast.showError("", "File wasn't uploaded, because file size exceeded the limit of 50mb");
-        this.selectedFile = undefined;
-      } else {
 
-        this.fileService.uploadFile(this.selectedFile, this.document.id, "cooperation")
-          .subscribe(data => {
-            this.form.filename = data.filename;            
-            this.uploadResponse = data;
-            this.initDoc();
-            if (this.uploadResponse.message == '100') {
-              this.toast.showSuccess("", "File uploaded successfully");
-              console.log("status " + this.uploadResponse.status)
-              console.log("message " + this.uploadResponse.message)
-              console.log("filePath " + this.uploadResponse.filePath)
-            }
-          },
-            error => {
-              console.log(error)
-              //this.errorMessage = error.message;
-              this.toast.showError("", error.message);
-            });
-        this.selectedFile = undefined;
-        this.show = false;
-      }
+    if (this.selectedFile.size > 51200000) {// 50 MB
+      this.toast.showError("", "File wasn't uploaded, because file size exceeded the limit of 50mb");
+      this.selectedFile = undefined;
+    } else {
+
+      this.fileService.uploadFile(this.selectedFile, this.document.id, "cooperation")
+        .subscribe(data => {
+          this.form.filename = data.filename;
+          this.uploadResponse = data;
+          this.initDoc();
+          if (this.uploadResponse.message == '100') {
+            this.toast.showSuccess("", "File uploaded successfully");
+            console.log("status " + this.uploadResponse.status)
+            console.log("message " + this.uploadResponse.message)
+            console.log("filePath " + this.uploadResponse.filePath)
+          }
+        },
+          error => {
+            console.log(error)
+            //this.errorMessage = error.message;
+            this.toast.showError("", error.message);
+          });
+      this.selectedFile = undefined;
+      this.show = false;
     }
-  
+  }
+
   downloadFile() {
     var openedToast = null;
     openedToast = this.toast.showInfo("", "File is downloading...");
@@ -181,7 +181,7 @@ export class CooperationEditComponent implements OnInit {
         this.toast.showSuccess("", "File downloaded");
       },
         error => {
-          this.errorMessage = error.message;
+          //this.errorMessage = error.message;
           this.toast.deleteToast(openedToast);
           this.toast.showError("", "File can't be download, maybe it was deleted from storage");
           console.log(error);
@@ -207,42 +207,18 @@ export class CooperationEditComponent implements OnInit {
   }
 
   saveAsPDF() {
-    console.log("save as pdf");
-    /*const doc = new jsPDF();
-    doc.setFont("Arial");
-    if (this.form.expired) {
-      doc.setTextColor(212, 3, 3);
-      doc.text("Document isn't valid!", 120, 20);
-    } else {
-      doc.setTextColor(2, 165, 2);
-      doc.text("Document valid", 120, 20);
+    console.log("88 " + this.curUser.adress)
+    if (this.curUser.adress == null || this.curUser.adress == '') {
+      this.toast.showWarning("", "To generate a PDF document, please go to your account and fill in the address");
     }
-    doc.setTextColor(0, 0, 0);
-    doc.text(this.today, 120, 30);//now
-    doc.text("Owner: " + this.curUser.username, 120, 40);
-    doc.text(doc.splitTextToSize("Customer: " + this.form.customer, 70), 120, 50);
-    doc.setFontStyle("bold");
-    doc.text(doc.splitTextToSize(this.form.title, 100), 50, 70);
-    doc.setFontStyle("");
-    doc.text("ID: " + this.form.id, 20, 90);
-    doc.text("Document term: " + this.form.contractTerm + " days  (from  " + this.form.dateOfCreation +
-      "  to  " +
-      this.addDays(new Date(this.form.dateOfCreation), this.form.contractTerm).toISOString().substr(0, 10)
-      + ")", 20, 100);
-    doc.text("Description: ", 20, 130);
-    doc.text(doc.splitTextToSize(this.form.documentDescription, 160), 30, 140);
-
-    doc.save(this.form.title + ".pdf");
-    this.toast.showSuccess("", "Save as PDF succesfully");*/
+    else {
+      this.pdfService.saveAsPDFCooperation(this.form.kindOfActivity, this.form.dateOfCreation,
+        this.form.clientResponsibility, this.form.creatorResponsibility, this.form.term,
+        this.form.terminationConditions, this.form.title, this.form.clientFullName, this.form.clientAdress,
+        this.curUser.name, this.curUser.adress, this.form.otherInfo);
+      this.toast.showSuccess("", "Save as PDF succesfully");
+    }
   }
 
-  addDays(date: Date, days: number): Date {
-    date.setDate(date.getDate() + days);
-    return date;
-  }
-
-  cancel() {
-   
-  }
 
 }

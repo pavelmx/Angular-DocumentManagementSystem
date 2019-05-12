@@ -28,7 +28,7 @@ export class WorkContractComponent implements OnInit {
   isLogin = false;
   today = "";
   listOfMode: CatalogOfOperationMode[] = [];
-  modeItem: number;  
+  
 
   constructor(
     private catalogService: CatalogOfOperationModeService,
@@ -59,30 +59,22 @@ export class WorkContractComponent implements OnInit {
   }
 
   addDoc() {
-    //this.form.operationMode = this.modeItem;   
-    console.log(this.form)
-    console.log(this.form.operationMode.id)
-   
-    
     this.docService.add(this.tokenStorage.getUsername(), this.form)
       .subscribe(data => {
+        this.userService.saveKindOfContract("1");
         this.isFailed = false;
         this.toast.showSuccess("", "Work contract '" + data.title + "' created successfully");
+        this.router.navigate(['/documents-list']);
       },
         error => {
           console.log(error);
           this.toast.showError("", error.error.message)
-          //this.errorMessage = error.error.message;
           this.isFailed = true;
           console.log(this.errorMessage)
         });
   }
 
-  setMode(mode: CatalogOfOperationMode){
-    this.form.operationMode = mode;
-    console.log(mode)
-    console.log(this.form.operationMode)
-  }
+  
 
   addNewDoc() {
     this.form.id = null;
@@ -100,6 +92,7 @@ export class WorkContractComponent implements OnInit {
     this.form.salary = null;   
     this.form.operationMode = null; 
     this.form.term = null;
+    this.form.placeOfWork = null;
   }
 
 }
