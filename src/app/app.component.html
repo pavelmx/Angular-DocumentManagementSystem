@@ -13,10 +13,10 @@
           <a class="nav-link" routerLink="users-list">Show all users</a>
         </li>
         <li *ngIf="authority === 'admin'" class="nav-item ">
-          <a class="nav-link" routerLink="documents-list">Show documents</a>
+          <a class="nav-link" id="docs" routerLink="documents-list">Show documents</a>
         </li>
         <li *ngIf="authority === 'user'" class="nav-item ">
-          <a class="nav-link" routerLink="documents-list">Show my documents</a>
+          <a class="nav-link" id="docs" routerLink="documents-list">Show my documents</a>
         </li>
 
         <li *ngIf="authority === 'user'" class="nav-item ">
@@ -27,10 +27,10 @@
         </li>
 
         <li *ngIf="!authority" class="nav-item ">
-          <a class="btn btn-outline-success" routerLink="" data-toggle="modal" data-target="#login">Login</a>
+          <a class="btn btn-outline-success" id="show_login" routerLink="" data-toggle="modal" data-target="#login">Login</a>
         </li>
         <li *ngIf="!authority" class="nav-item ">
-          <a class="btn btn-outline-primary" routerLink="" data-toggle="modal" data-target="#reg">Register</a>
+          <a class="btn btn-outline-primary" id="show_register" routerLink="" data-toggle="modal" data-target="#reg">Register</a>
         </li>
 
         <button *ngIf="authority" class="btn btn-danger" routerLink="/" (click)="logout()">Logout</button>
@@ -112,7 +112,7 @@
         <form name="form1" #fl="ngForm" novalidate>
           <div class="form-group">
 
-            <input type="text" class="form-control" name="usernamel" placeholder="Username"
+            <input id="username" type="text" class="form-control" name="usernamel" placeholder="Username"
               [(ngModel)]="form1.usernamel" #usernamel="ngModel" required minlength="5"
               [ngClass]="{'is-valid':usernamel.valid && usernamel.touched,'is-invalid':usernamel.invalid && usernamel.touched}" />
             <div *ngIf="usernamel.touched && usernamel.invalid">
@@ -125,7 +125,7 @@
 
           </div>
           <div class="form-group ">
-            <input type="password" class="form-control" name="passwordl" placeholder="Password"
+            <input id="password" type="password" class="form-control" name="passwordl" placeholder="Password"
               [(ngModel)]="form1.passwordl" #passwordl="ngModel" required minlength="6"
               [ngClass]="{'is-valid':passwordl.valid && passwordl.touched,'is-invalid':passwordl.invalid && passwordl.touched}" />
             <div *ngIf="passwordl.touched && passwordl.invalid">
@@ -137,7 +137,7 @@
             </div>
           </div>
           <div class="form-group">
-            <button class="btn btn-primary" routerLink="/profile" style="width:300px;" [disabled]="fl.form.invalid"
+            <button id="login" class="btn btn-primary" routerLink="/profile" style="width:300px;" [disabled]="fl.form.invalid"
               (click)="onSubmitl(fl)">Login</button>
 
           </div>
@@ -163,7 +163,7 @@
 
         <form name="form2" #fr="ngForm" novalidate>
           <div class="form-group">
-            <input type="text" class="form-control" placeholder="Your full name" name="namer" [(ngModel)]="form2.namer"
+            <input id="rname" type="text" class="form-control" placeholder="Your full name" name="namer" [(ngModel)]="form2.namer"
               #namer="ngModel" required maxlength="50" minlength="5"
               [ngClass]="{'is-valid':namer.valid && namer.touched,'is-invalid':namer.invalid && namer.touched}" />
             <div *ngIf="fr.submitted && namer.invalid || namer.touched && namer.invalid">
@@ -175,7 +175,7 @@
             </div>
           </div>
           <div class="form-group">
-            <input type="text" class="form-control" placeholder="Username" name="usernamer"
+            <input id="rusername" type="text" class="form-control" placeholder="Username" name="usernamer"
               [(ngModel)]="form2.usernamer" #usernamer="ngModel" required minlength="5" maxlength="20"
               [ngClass]="{'is-valid':usernamer.valid && usernamer.touched,'is-invalid':usernamer.invalid && usernamer.touched}" />
             <div *ngIf="fr.submitted && usernamer.invalid || usernamer.touched && usernamer.invalid">
@@ -193,7 +193,7 @@
           </div>
           <div class="form-group">
 
-            <input type="text" class="form-control" placeholder="Email" name="emailr" [(ngModel)]="form2.emailr"
+            <input id="email" type="text" class="form-control" placeholder="Email" name="emailr" [(ngModel)]="form2.emailr"
               #emailr="ngModel" required email minlength="6" maxlength="50"
               [ngClass]="{'is-valid':emailr.valid && emailr.touched,'is-invalid':emailr.invalid && emailr.touched}" />
             <div *ngIf="fr.submitted && emailr.invalid || emailr.touched && emailr.invalid">
@@ -208,7 +208,7 @@
           </div>
 
           <div class="form-group">
-            <input type="password" class="form-control" placeholder="Password" name="passwordr"
+            <input id="rpassword" type="password" class="form-control" placeholder="Password" name="passwordr"
               [(ngModel)]="form2.passwordr" #passwordr="ngModel" required minlength="6"
               [ngClass]="{'is-valid':passwordr.valid && passwordr.touched,'is-invalid':passwordr.invalid && passwordr.touched}" />
             <div *ngIf="fr.submitted && passwordr.invalid || passwordr.touched && passwordr.invalid">
@@ -223,7 +223,7 @@
           </div>
 
           <div class="form-group">
-            <input type="password" class="form-control" placeholder="Confirm password" name="cpassword"
+            <input id="cpass" type="password" class="form-control" placeholder="Confirm password" name="cpassword"
               [(ngModel)]="form2.cpassword" #cpassword="ngModel" required
               [ngClass]="{'is-valid':form2.passwordr==form2.cpassword && cpassword.touched,'is-invalid':form2.passwordr!=form2.cpassword && cpassword.touched || cpassword.invalid && cpassword.touched}" />
             <div *ngIf="form2.passwordr!=form2.cpassword ">
@@ -232,7 +232,7 @@
           </div>
 
           <div class="form-group">
-            <button type="button" [disabled]="fr.form.invalid || load || form2.passwordr!=form2.cpassword"
+            <button type="button" id="register" [disabled]="fr.form.invalid || load || form2.passwordr!=form2.cpassword"
               class="btn btn-primary" (click)="onSubmitr(fr)">Register account
               <span *ngIf=load class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             </button>

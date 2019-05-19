@@ -24,7 +24,7 @@
 
       <div class="form-group">
         <label for="name">Full name</label>
-        <input type="text" class="form-control"  name="name" [(ngModel)]="form.name" #name="ngModel" />
+        <input id="name" type="text" class="form-control"  name="name" [(ngModel)]="form.name" #name="ngModel" />
       </div>
 
       <div class="form-group">
@@ -34,12 +34,12 @@
 
       <div class="form-group">
         <label for="adress">Adress</label>
-        <input type="text" class="form-control"  name="adress" [(ngModel)]="form.adress" #adress="ngModel" />
+        <input id="adress" type="text" class="form-control"  name="adress" [(ngModel)]="form.adress" #adress="ngModel" />
       </div>
 
       <div class="form-group">
         <label for="newpassword">New password</label>
-        <input type="password" class="form-control" name="newpassword" [(ngModel)]="form.newpassword"
+        <input id="pass" type="password" class="form-control" name="newpassword" [(ngModel)]="form.newpassword"
           #newpassword="ngModel" minlength="6" [ngClass]="{'is-invalid':newpassword.invalid && newpassword.touched}" />
         <div *ngIf=" newpassword.touched && newpassword.invalid">
           <small class="form-text alert alert-warning" *ngIf="newpassword.errors.minlength">Password must be at least 6
@@ -50,7 +50,7 @@
       </div>
 
       <div class="form-group">
-        <button [disabled]="isEdit==false || newpassword.invalid || load" data-toggle="modal"
+        <button id="update" [disabled]="isEdit==false || newpassword.invalid || load" data-toggle="modal"
           data-target="#exampleModalCenter" class="btn btn-primary" >Update account
           <span *ngIf=load class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>          
         </button>        

@@ -23,7 +23,7 @@
               <strong>can't be changed</strong>
             </small>
           </div>
-          <input type="text" class="form-control" name="title" [(ngModel)]="form.title" #title="ngModel" required
+          <input id="title" type="text" class="form-control" name="title" [(ngModel)]="form.title" #title="ngModel" required
             minlength="10" maxlength="100"
             [ngClass]="{'is-valid':title.valid && title.touched,'is-invalid':title.invalid && title.touched}" />
           <div *ngIf="f.submitted && title.invalid || title.touched && title.invalid">
@@ -40,7 +40,7 @@
       <div class="col-4">
         <div class="form-group">
           <label for="clientFullName">Lessee full name</label>
-          <input type="text" class="form-control" name="clientFullName" [(ngModel)]="form.clientFullName"
+          <input id="name" type="text" class="form-control" name="clientFullName" [(ngModel)]="form.clientFullName"
             #clientFullName="ngModel" required maxlength="100"
             [ngClass]="{'is-valid':clientFullName.valid && clientFullName.touched,'is-invalid':clientFullName.invalid && clientFullName.touched}" />
           <div *ngIf="f.submitted && clientFullName.invalid || clientFullName.touched && clientFullName.invalid">
@@ -52,7 +52,7 @@
       <div class="col">
         <div class="form-group">
           <label for="clientAdress">Lessee adress</label>
-          <input type="text" class="form-control" name="clientAdress" [(ngModel)]="form.clientAdress"
+          <input id="adress" type="text" class="form-control" name="clientAdress" [(ngModel)]="form.clientAdress"
             #clientAdress="ngModel" required maxlength="255"
             [ngClass]="{'is-valid':clientAdress.valid && clientAdress.touched,'is-invalid':clientAdress.invalid && clientAdress.touched}" />
           <div *ngIf="f.submitted && clientAdress.invalid || clientAdress.touched && clientAdress.invalid">
@@ -69,7 +69,7 @@
       <div class="col">
         <div class="form-group">
           <label for="rentalObject">Lease object</label>
-          <input type="text" class="form-control" name="rentalObject" [(ngModel)]="form.rentalObject"
+          <input id="object" type="text" class="form-control" name="rentalObject" [(ngModel)]="form.rentalObject"
             #rentalObject="ngModel" required maxlength="100"
             [ngClass]="{'is-valid':rentalObject.valid && rentalObject.touched,'is-invalid':rentalObject.invalid && rentalObject.touched}" />
           <div *ngIf="f.submitted && rentalObject.invalid || rentalObject.touched && rentalObject.invalid">
@@ -82,7 +82,7 @@
           <div class="form-group">
             <label for="rentalPrice">Lease price</label>
             <div class="input-group">
-              <input type="number" class="form-control" name="rentalPrice" [(ngModel)]="form.rentalPrice"
+              <input id="price" type="number" class="form-control" name="rentalPrice" [(ngModel)]="form.rentalPrice"
                 #rentalPrice="ngModel" required
                 [ngClass]="{'is-valid':rentalPrice.valid && rentalPrice.touched,'is-invalid':rentalPrice.invalid && rentalPrice.touched}" />
               <div class="input-group-append">
@@ -98,7 +98,7 @@
       <div class="col">
           <div class="form-group">
             <label for="startRental">Start lease</label>           
-            <input type="date" min={{today}} class="form-control" name="startRental" [(ngModel)]="form.startRental"
+            <input id="start" type="date" min={{today}} class="form-control" name="startRental" [(ngModel)]="form.startRental"
               #startRental="ngModel" required 
               [ngClass]="{'is-valid':startRental.valid && startRental.touched,'is-invalid':startRental.invalid && startRental.touched}" />
             <div *ngIf="f.submitted && startRental.invalid || startRental.touched && startRental.invalid">
@@ -110,7 +110,7 @@
         <div class="col">
             <div class="form-group">
               <label for="endRental">End lease</label>           
-              <input  type="date" min={{form.startRental}} class="form-control" name="endRental" [(ngModel)]="form.endRental"
+              <input id="end" type="date" min={{form.startRental}} class="form-control" name="endRental" [(ngModel)]="form.endRental"
                 #endRental="ngModel" required
                 [ngClass]="{'is-valid':endRental.valid && endRental.touched,'is-invalid':endRental.invalid && endRental.touched}" />
               <div *ngIf="f.submitted && endRental.invalid || endRental.touched && endRental.invalid">
@@ -127,7 +127,7 @@
       <div class="col">
         <div class="form-group">
           <label for="otherInfo">Other info</label>
-          <textarea maxlength="1000" class="form-control" name="otherInfo" rows="3" [(ngModel)]="form.otherInfo"
+          <textarea id="other" maxlength="1000" class="form-control" name="otherInfo" rows="3" [(ngModel)]="form.otherInfo"
             #otherInfo="ngModel"></textarea>          
         </div>
       </div>
@@ -135,7 +135,7 @@
 
     <div class="form-group">
       <hr>
-      <button [disabled]="f.form.invalid" class="btn btn-success">Add new contract</button>
+      <button id="add" [disabled]="f.form.invalid" class="btn btn-success">Add new contract</button>
       
     </div>
   </form>

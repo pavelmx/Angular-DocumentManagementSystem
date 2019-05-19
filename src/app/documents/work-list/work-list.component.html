@@ -6,7 +6,7 @@
           <h4>Filter</h4>
         </div>
         <hr>
-        <input type="text" placeholder="Enter title" class="form-control" name="title" [(ngModel)]="form.title"
+        <input type="text" id="title" placeholder="Enter title" class="form-control" name="title" [(ngModel)]="form.title"
           #title="ngModel">
         <br>
         <input type="text" placeholder="Enter Employee full name" class="form-control" name="clientFullname"
@@ -23,17 +23,17 @@
           #position="ngModel">
         <br>
         <div class="input-group">
-        <input type="number" placeholder="min salary" class="form-control" name="fromSalary"
+        <input type="number" id="min_salary" placeholder="min salary" class="form-control" name="fromSalary"
           [(ngModel)]="form.fromSalary" #fromSalary="ngModel" />
         
-        <input type="number" placeholder="max salary" class="form-control" name="toSalary"
+        <input type="number" id="max_salary" placeholder="max salary" class="form-control" name="toSalary"
           [(ngModel)]="form.toSalary" #toSalary="ngModel" />
         </div>
         <br>
         <div class="btn-group " style="width: 100%" (click)="setPage(0)">
           <button type="button" class="btn btn-primary" (click)="form.isActive=''"
             [ngClass]="{'active':form.isActive==''}">All</button>
-          <button type="button" class="btn btn-primary" (click)="form.isActive='true'"
+          <button id="active_id" type="button" class="btn btn-primary" (click)="form.isActive='true'"
             [ngClass]="{'active':form.isActive=='true'}">Active</button>
           <button type="button" class="btn btn-primary" (click)="form.isActive='false'"
             [ngClass]="{'active':form.isActive=='false'}">Expired</button>
@@ -124,9 +124,9 @@
               <td>{{doc.position}}</td>
               <td>{{doc.salary}}$</td>
               <td style="width: 200px;">
-                <button routerLink="/work-edit" (click)="docEdit(doc)" class="btn btn-warning mr-2">View /
+                <button id="edit" routerLink="/work-edit" (click)="docEdit(doc)" class="btn btn-warning mr-2">View /
                   Edit</button>
-                <button type="button" (click)="deleteDocument(doc)" class="btn btn-danger">Delete</button>
+                <button id="delete" type="button" (click)="deleteDocument(doc)" class="btn btn-danger">Delete</button>
               </td>
             </tr>
           </tbody>
@@ -140,7 +140,7 @@
 
           <ul class="pagination ">
             <li class="page-item" [ngClass]="{'disabled':page==0}">
-              <a class="page-link " aria-disabled="true" (click)=nextPage(false)>Previous</a>
+              <a id="previous_page" class="page-link " aria-disabled="true" (click)=nextPage(false)>Previous</a>
             </li>
 
             <li class="page-item" *ngFor="let p of pages" [ngClass]="{'active':page==p-1}">
@@ -149,7 +149,7 @@
             </li>
 
             <li class="page-item" [ngClass]="{'disabled':page==length-1}">
-              <a class="page-link" (click)=nextPage(true)>Next</a>
+              <a id="next_page" class="page-link" (click)=nextPage(true)>Next</a>
             </li>
           </ul>
 
@@ -161,7 +161,7 @@
                 <a class="page-link " aria-disabled="true">Show by </a>
               </li>
               <li class="page-item" *ngFor="let s of sizes" [ngClass]="{'active':size==s}">
-                <a class="page-link" (click)=setSize(s)>{{s}}</a>
+                <a id="item" class="page-link" (click)=setSize(s)>{{s}}</a>
               </li>
             </ul>
           </nav>

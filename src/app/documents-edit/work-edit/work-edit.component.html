@@ -27,7 +27,7 @@
             type="button">Delete file</button>
           <button class="btn btn-success" [hidden]="!form.filename" (click)="downloadFile()" type="button">Download
           </button>
-          <button class="btn btn-warning" type="button" [hidden]="show  || form.filename" (click)=showUploadPanel()>Update</button>
+          <button id="show_upload" class="btn btn-warning" type="button" [hidden]="show  || form.filename" (click)=showUploadPanel()>Update</button>
         </div>
       </div>
     </div>
@@ -35,12 +35,12 @@
     <div *ngIf="show" class="col" style="max-width: 280px">
       <div class="input-group">
         <div class="custom-file">
-          <input type="file"  class="form-control" aria-describedby="inputGroupFileAddon04" id="inputGroupFile04"
+          <input id="selector" type="file"  class="form-control" aria-describedby="inputGroupFileAddon04" 
             (change)="selectFile($event)">
-          <label class="custom-file-label" for="inputGroupFile04"></label>
+          <label class="custom-file-label" for="selector"></label>
         </div>
         <div class="input-group-append">
-          <button class="btn btn-warning" [disabled]="!selectedFile" id="inputGroupFileAddon04" type="button"
+          <button id="upload" class="btn btn-warning" [disabled]="!selectedFile"  type="button"
             (click)="uploadFile()">Upload file</button>
           <button class="btn btn-danger" type="button" (click)=showUploadPanel()>Cancel</button>
         </div>
@@ -252,7 +252,7 @@
       <div class="col">
         <div class="form-group">
           <label for="otherInfo">Other info</label>
-          <textarea maxlength="1000" class="form-control" name="otherInfo" rows="3" [(ngModel)]="form.otherInfo"
+          <textarea id="other" maxlength="1000" class="form-control" name="otherInfo" rows="3" [(ngModel)]="form.otherInfo"
             #otherInfo="ngModel"></textarea>
         </div>
       </div>
@@ -264,7 +264,7 @@
       >Cancel</button>
       <button *ngIf="isEdit" class="btn btn-secondary mr-3" 
       data-toggle="modal" data-target="#editsale">Cancel</button>
-      <button  [disabled]="isEdit===false  || f.form.invalid" (click)="updateDoc()" class="btn btn-success">Update document</button>
+      <button id="update" [disabled]="isEdit===false  || f.form.invalid" (click)="updateDoc()" class="btn btn-success">Update document</button>
       <button  class="btn btn-primary ml-3" (click)="saveAsPDF()">Save as PDF</button>
     </div>
   </form>
