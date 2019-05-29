@@ -57,6 +57,11 @@ export class WorkEditComponent implements OnInit {
     private pdfService: PDFService) { }
 
 
+    compareFn(x: any, y:any): boolean{      
+      return x && y ? x.operationMode == y.operationMode: x == y;
+    }
+
+
   ngOnInit() {
     this.isLogin = this.tokenStorage.isLogin();
     if (!this.isLogin) {
@@ -65,7 +70,7 @@ export class WorkEditComponent implements OnInit {
       this.catalogService.getListOfMode()
         .subscribe(data => {
           this.listOfMode = data;
-          console.log("list modes" + this.listOfMode.toString());
+          console.log("list modes" + this.listOfMode);
         },
           error => {
             console.log(error);
@@ -114,7 +119,7 @@ export class WorkEditComponent implements OnInit {
 
           this.form.startWork = this.document.startWork;
           this.form.position = this.document.position;
-          this.form.operationMode = this.document.operationMode.operationMode;
+          this.form.operationMode = this.document.operationMode;
           console.log(this.document.operationMode.operationMode)
           console.log(this.form.operationMode)
           this.form.workingHours = this.document.workingHours;

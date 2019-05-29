@@ -7,16 +7,16 @@
     <div class="collapse navbar-collapse" id="navres">
       <ul class="navbar-nav ml-auto " routerLinkActive="active">        
         <li *ngIf="authority" class="nav-item ">
-          <a class="btn btn-outline-success" routerLink="document-add">Create document!</a>
+          <a class="btn btn-outline-success" routerLink="document-add">Create contract!</a>
         </li>
         <li *ngIf="authority === 'admin'" class="nav-item ">
           <a class="nav-link" routerLink="users-list">Show all users</a>
         </li>
         <li *ngIf="authority === 'admin'" class="nav-item ">
-          <a class="nav-link" id="docs" routerLink="documents-list">Show documents</a>
+          <a class="nav-link" id="docs" routerLink="documents-list">Show contracts</a>
         </li>
         <li *ngIf="authority === 'user'" class="nav-item ">
-          <a class="nav-link" id="docs" routerLink="documents-list">Show my documents</a>
+          <a class="nav-link" id="docs" routerLink="documents-list">Show my contracts</a>
         </li>
 
         <li *ngIf="authority === 'user'" class="nav-item ">
@@ -102,7 +102,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <h4 class="modal-title display-4" id="exampleModalCenterTitle">Login form</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" #closeLog>
           <span aria-hidden="true">&times;</span>
         </button>
@@ -136,8 +136,8 @@
                 characters</small>
             </div>
           </div>
-          <div class="form-group">
-            <button id="login" class="btn btn-primary" routerLink="/profile" style="width:300px;" [disabled]="fl.form.invalid"
+          <div class="form-group d-flex justify-content-center">
+            <button id="login" class="btn btn-primary " routerLink="/profile"  [disabled]="fl.form.invalid"
               (click)="onSubmitl(fl)">Login</button>
 
           </div>
@@ -231,7 +231,7 @@
             </div>
           </div>
 
-          <div class="form-group">
+          <div class="form-group d-flex justify-content-center">
             <button type="button" id="register" [disabled]="fr.form.invalid || load || form2.passwordr!=form2.cpassword"
               class="btn btn-primary" (click)="onSubmitr(fr)">Register account
               <span *ngIf=load class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>

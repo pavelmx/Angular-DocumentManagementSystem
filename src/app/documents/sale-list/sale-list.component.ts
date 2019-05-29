@@ -161,7 +161,7 @@ export class SaleListComponent implements OnInit {
   deleteDocument(doc: ContractOfSale): void {
       this.saleService.deleteById(doc.id).subscribe(data => {
         this.setPage(0);      
-        this.toast.showSuccess('', 'Contracts of sale deleted successfully');
+        this.toast.showSuccess('', 'Contract of sale deleted successfully');
       });
       
     console.log(doc.title);

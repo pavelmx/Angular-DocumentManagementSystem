@@ -163,7 +163,7 @@ export class CreditListComponent implements OnInit {
   deleteDocument(doc: CreditContract): void {
       this.creditService.deleteById(doc.id).subscribe(data => {
         this.setPage(0);      
-        this.toast.showSuccess('', 'Loan contracts deleted successfully');
+        this.toast.showSuccess('', 'Loan contract deleted successfully');
       });
       
     console.log(doc.title);

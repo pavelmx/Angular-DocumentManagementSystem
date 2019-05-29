@@ -149,10 +149,10 @@
       <div class="col-2">
         <div class="form-group">
           <label for="operationMode">Operation mode</label>
-          <select required  class="custom-select" name="operationMode"[(ngModel)]="form.operationMode" 
-            #operationMode="ngModel"         
+          <select required  class="custom-select" name="operationMode" [(ngModel)]="form.operationMode" 
+            #operationMode="ngModel"  [compareWith]="compareFn"        
             [ngClass]="{'is-valid':operationMode.valid && operationMode.touched,'is-invalid':operationMode.invalid && operationMode.touched}">
-            <option *ngFor="let mode of listOfMode" [ngValue]="mode">{{mode.operationMode}}</option>
+            <option *ngFor="let mode of listOfMode" [ngValue]="mode" >{{mode.operationMode}}</option>
           </select>
           
           <div *ngIf="f.submitted && operationMode.invalid || operationMode.touched && operationMode.invalid">
@@ -264,12 +264,13 @@
       >Cancel</button>
       <button *ngIf="isEdit" class="btn btn-secondary mr-3" 
       data-toggle="modal" data-target="#editsale">Cancel</button>
-      <button id="update" [disabled]="isEdit===false  || f.form.invalid" (click)="updateDoc()" class="btn btn-success">Update document</button>
+      <button id="update" [disabled]="isEdit===false  || f.form.invalid" (click)="updateDoc()" class="btn btn-success">Update contract</button>
       <button  class="btn btn-primary ml-3" (click)="saveAsPDF()">Save as PDF</button>
     </div>
   </form>
 </div>
 </div>
+
 <div class="modal fade" id="editsale" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">

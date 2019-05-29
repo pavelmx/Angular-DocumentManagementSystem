@@ -156,7 +156,7 @@ export class CooperationListComponent implements OnInit {
   deleteDocument(doc: CooperationContract): void {
       this.cooperationService.deleteById(doc.id).subscribe(data => {
         this.setPage(0);      
-        this.toast.showSuccess('', 'Cooperation contracts deleted successfully');
+        this.toast.showSuccess('', 'Cooperation contract deleted successfully');
       });
       
     console.log(doc.title);

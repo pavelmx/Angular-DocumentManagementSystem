@@ -161,7 +161,7 @@ export class RentalListComponent implements OnInit {
   deleteDocument(doc: RentalContract): void {
       this.rentalService.deleteById(doc.id).subscribe(data => {
         this.setPage(0);      
-        this.toast.showSuccess('', 'Lease contracts deleted successfully');
+        this.toast.showSuccess('', 'Lease contract deleted successfully');
       });
       
     console.log(doc.title);
