@@ -130,10 +130,12 @@ export class CooperationListComponent implements OnInit {
 
     this.showSpinner = true;
     this.showData = false;
+    this.initFilter();
+    
     if (this.role == 'ROLE_USER') {
       this.filter.username = this.username;
     }
-    this.initFilter();
+    
     console.log(this.filter);
          
       this.cooperationService.getByFilter(this.filter, this.page, this.size)

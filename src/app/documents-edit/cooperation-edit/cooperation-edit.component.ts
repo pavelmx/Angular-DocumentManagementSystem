@@ -12,7 +12,6 @@ import { FileService } from 'src/app/services/file.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { CooperationContract } from 'src/app/models/contracts/cooperation-contract.model';
 import { PDFService } from 'src/app/services/pdf.service';
-import { formArrayNameProvider } from '@angular/forms/src/directives/reactive_directives/form_group_name';
 
 
 @Component({

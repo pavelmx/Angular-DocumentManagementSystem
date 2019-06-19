@@ -70,6 +70,7 @@ export class SaleListComponent implements OnInit {
   init() {
     this.role = this.tokenStorage.getAuthorities()[0];
     this.username = this.tokenStorage.getUsername();
+    console.log(this.username + " " + this.role)
     this.isLogin = this.tokenStorage.isLogin();
     this.label = "All users";
     this.sizes = [5, 10, 25, 50];
@@ -135,11 +136,14 @@ export class SaleListComponent implements OnInit {
 
     this.showSpinner = true;
     this.showData = false;
+    this.initFilter();
+    
     if (this.role == 'ROLE_USER') {
       this.filter.username = this.username;
+      console.log(111111111);
     }
-    this.initFilter();
-    console.log(this.filter);
+    
+    console.log( this.form.username);
          
       this.saleService.getByFilter(this.filter, this.page, this.size)
       .subscribe(data => {

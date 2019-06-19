@@ -41,7 +41,7 @@ export class PDFService {
         doc.text(doc.splitTextToSize("WARRANTY PERIOD", 170), 105, 130, 'center');
         doc.setFontStyle("");
         var warrantytext = "The warranty period for the goods " + warrantyPeriod + " days."
-        doc.text(doc.splitTextToSize(calc2, 170), 20, 140);
+        doc.text(doc.splitTextToSize(warrantytext, 170), 20, 140);
         var details = 155;
         doc.setFontStyle("bold");
         doc.text(doc.splitTextToSize("DETAILS OF THE PARTIES", 170), 105, details, 'center');
